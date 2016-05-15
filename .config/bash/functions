@@ -1,0 +1,66 @@
+function setup_dotfiles {
+    cwd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
+    cp -f ${cwd}/.bash_profile ~/.bash_profile
+    cp -f ${cwd}/.bashrc ~/.bashrc
+    ln -sf ${cwd}/.bash_prompt ~/.bash_prompt
+    ln -sf ${cwd}/.aliases ~/.aliases
+    ln -sf ${cwd}/.exports ~/.exports
+    ln -sf ${cwd}/.functions ~/.functions
+    ln -sf ${cwd}/.paths ~/.paths
+    ln -sf ${cwd}/.vimrc ~/.vimrc
+    ln -sf ${cwd}/.vim ~/.vim
+}
+
+function findit {
+    find . -exec grep -nHi $1 {} \; -maxdepth $2;
+}
+
+function replaceit {
+    EXT=$1
+    FIND=$2
+    REPLACE=$3
+    for i in `find . -name "$EXT"`
+    do
+        echo "Processing $i"
+        chmod +w $i
+        sed "s/$FIND/$REPLACE/g" $i > TEMPFILE
+        mv TEMPFILE $i
+    done
+}
+
+# Docker
+function d_rmia {
+    docker rmi $(docker images | grep '^<none>' | awk '{print $3}')
+}
+
+function d_rma {
+    docker rm $(docker ps -a -q)
+}
+
+function google {
+    open "https://google.com/search?q=${*}"
+}
+
+
+function ccert {
+    echo | openssl s_client -showcerts -connect $1 2>/dev/null | openssl x509 -inform pem -noout -text
+}
+
+function sync_repos {
+    tmpfile=$(mktemp /tmp/sync_repos.XXX)
+    echo ${tmpfile}
+    for repo in $(find . -type dir -name ".git"); do
+        (
+            cd $repo/..;
+            out=$(git pull 2>&1)
+            if [ $? -ne 0 ]; then
+                echo -e "${repo} failed to sync...\n$out\n" >> ${tmpfile}
+            else
+                echo "${repo} good" >> ${tmpfile}
+            fi
+        )& 2>&1 > /dev/null
+    done
+    wait
+    cat ${tmpfile}
+    rm -f ${tmpfile}
+}
