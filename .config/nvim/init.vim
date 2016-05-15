@@ -150,6 +150,7 @@ Plug 'airblade/vim-gitgutter'
 Plug 'tpope/vim-fugitive'
 Plug 'majutsushi/tagbar'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'chriskempson/base16-vim'
 " Plug 'scrooloose/syntastic'
 if has('nvim')
     Plug 'shougo/deoplete.nvim'
@@ -182,6 +183,8 @@ nnoremap <leader>PU :PlugUpdate<cr>
 """""""""""""""""""""""""""""""
 " => Plugin Config
 """""""""""""""""""""""""""""""
+" colorscheme
+colorscheme base16-google
 " Neomake stuff
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_python_flake8_maker = {

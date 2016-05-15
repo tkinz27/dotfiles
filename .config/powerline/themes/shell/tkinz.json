@@ -12,29 +12,36 @@
                         "priority": 10
                     },
                     {
-                        "name": "user",
-                        "function": "powerline.segments.common.env.user"
+                        "function": "powerline.segments.common.env.user",
+                        "priority": 10
                     },
                     {
-                        "function": "powerline.segments.common.env.virtualenv"
+                        "function": "powerline.segments.common.env.virtualenv",
+                        "priority": 50
                     },
                     {
                         "function": "powerline.segments.shell.cwd"
                     },
                     {
-                        "function": "powerline.segments.shell.jobnum"
+                        "function": "powerline.segments.shell.jobnum",
+                        "priority": 10
                     },
-                    {
-						"function": "powerline.segments.common.vcs.branch",
-						"priority": 40
-					},
                     {
                         "function": "powerline_gitstatus.gitstatus",
                         "priority": 40
                     },
                     {
                         "function": "powerline.segments.common.players.spotify_apple_script",
-                        "priority": 50
+                        "args": {
+                            "format": "{state_symbol} {artist} - {title}",
+                            "state_symbols": {
+                                "fallback": "♫",
+                                "play":     "▶",
+                                "pause":    "▮▮",
+                                "stop":     "■"
+                            }
+                        },
+                        "priority": 60
                     }
 
                 ]
