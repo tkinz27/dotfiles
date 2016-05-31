@@ -36718,11 +36718,11 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>683 37 566 232 0 0 1440 900 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>432 404 606 456 0 0 1440 877 </string>
+	<string>374 129 606 456 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>836 1373 592 584 681 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>367 117 570 501 0 0 1440 877 </string>
+	<string>724 1148 570 427 681 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>-1239 1110 1914 842 -1239 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -37517,7 +37517,7 @@
 				</dict>
 			</array>
 			<key>Sync Title</key>
-			<false/>
+			<true/>
 			<key>Tags</key>
 			<array/>
 			<key>Terminal Type</key>
@@ -37557,7 +37557,7 @@
 	<key>NoSyncInstallationId</key>
 	<string>78138996-9363-44A0-8778-FC330878960E</string>
 	<key>NoSyncLastTipTime</key>
-	<real>484952953.23100901</real>
+	<real>485283346.07818401</real>
 	<key>NoSyncNeverRemindPrefsChangesCopy</key>
 	<true/>
 	<key>NoSyncNeverRemindPrefsChangesLostForFile</key>
@@ -37640,6 +37640,9 @@
 		<string>0060</string>
 		<string>0061</string>
 		<string>0062</string>
+		<string>0063</string>
+		<string>0064</string>
+		<string>0065</string>
 	</array>
 	<key>OnlyWhenMoreTabs</key>
 	<false/>
@@ -37711,7 +37714,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-05-12T17:20:26Z</date>
+	<date>2016-05-26T15:39:57Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -37771,6 +37774,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.9.20160426</string>
+	<string>2.9.20160523</string>
 </dict>
 </plist>

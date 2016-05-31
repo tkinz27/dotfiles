@@ -1,14 +1,9 @@
-function setup_dotfiles {
-    cwd="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )"
-    cp -f ${cwd}/.bash_profile ~/.bash_profile
-    cp -f ${cwd}/.bashrc ~/.bashrc
-    ln -sf ${cwd}/.bash_prompt ~/.bash_prompt
-    ln -sf ${cwd}/.aliases ~/.aliases
-    ln -sf ${cwd}/.exports ~/.exports
-    ln -sf ${cwd}/.functions ~/.functions
-    ln -sf ${cwd}/.paths ~/.paths
-    ln -sf ${cwd}/.vimrc ~/.vimrc
-    ln -sf ${cwd}/.vim ~/.vim
+function tab_title {
+    echo -e "\033]1;\"$*\"\007"
+}
+
+function win_title {
+    echo -e "\033]2;\"$*\"\077"
 }
 
 function findit {
@@ -26,6 +21,11 @@ function replaceit {
         sed "s/$FIND/$REPLACE/g" $i > TEMPFILE
         mv TEMPFILE $i
     done
+}
+
+function ggo {
+    dir=$(find $SRC -maxdepth 2 -type d -name ${1})
+    [[ -n "$dir" ]] && cd $dir
 }
 
 # Docker

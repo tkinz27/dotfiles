@@ -6,7 +6,10 @@ export P4CONFIG=.p4c
 
 export PIP_REQUIRE_VIRTUALENV=false
 export PIP_DOWNLOAD_CACHE=$HOME/.pip/cache
+export EDITOR=nvim
 
-export GOPATH=~/code
+export BASE=~/code
+export SRC=${BASE}/src
+export GOPATH=${BASE}
 
 #command -v docker-machine 2>/dev/null && eval "$(docker-machine env dev)"

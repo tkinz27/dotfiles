@@ -93,6 +93,25 @@ set backspace=2
 autocmd BufWritePre * :%s/\s\+$//e
 
 """""""""""""""""""""""""""""""""""
+" Grep
+"""""""""""""""""""""""""""""""""""
+nnoremap <leader>g :set operatorfunc=GrepOperator<cr>g@
+vnoremap <leader>g :<c-u>call GrepOperator(visualmode())<cr>
+
+function! GrepOperator(type)
+    if a:type ==# 'v'
+        normal! `<v`>y
+    elseif a:type ==# 'char'
+        normal! `[v`]y
+    else
+        return
+    endif
+
+    silent execute "grep! -nHIRs " . shellescape(@@) . " ."
+    copen
+endfunction
+
+"""""""""""""""""""""""""""""""""""
 " Window Management Stuff
 """""""""""""""""""""""""""""""""""
 " Move to next or previous tab
