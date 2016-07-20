@@ -157,6 +157,7 @@ onoremap il" :<c-u>normal! F"vi"<cr>
 call plug#begin('~/.config/nvim/plugged')
 
 " Always load
+Plug 'flazz/vim-colorschemes'
 Plug 'vim-airline/vim-airline'
 Plug 'tpope/vim-surround'
 Plug 'ctrlpvim/ctrlp.vim'
@@ -185,7 +186,6 @@ Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
 Plug 'fatih/vim-go', {'for': ['go']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 Plug 'mxw/vim-jsx', {'for': ['jsx']}
-Plug 'pangloss/vim-javascript', {'for': ['javascript']}
 Plug 'artur-shaik/vim-javacomplete2', {'for': ['java']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
@@ -193,6 +193,11 @@ Plug 'derekwyatt/vim-scala', {'for': ['scala']}
 Plug 'hdima/python-syntax', {'for': ['python']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
+Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
+Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
+Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
+Plug 'mhartington/vim-typings', {'for': ['typescript']}
 
 call plug#end()
 
@@ -203,7 +208,7 @@ nnoremap <leader>PU :PlugUpdate<cr>
 " => Plugin Config
 """""""""""""""""""""""""""""""
 " colorscheme
-colorscheme base16-google
+colorscheme base16-3024
 " Neomake stuff
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_python_flake8_maker = {

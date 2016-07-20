@@ -17,7 +17,7 @@
 	<key>AutoCommandHistory</key>
 	<false/>
 	<key>AutoHideTmuxClientSession</key>
-	<false/>
+	<true/>
 	<key>CheckTestRelease</key>
 	<true/>
 	<key>ClosingHotkeySwitchesSpaces</key>
@@ -36652,7 +36652,7 @@
 	<key>HideScrollbar</key>
 	<true/>
 	<key>HideTab</key>
-	<true/>
+	<false/>
 	<key>HighlightTabLabels</key>
 	<true/>
 	<key>HotKeyBookmark</key>
@@ -36718,11 +36718,13 @@
 	<key>NSWindow Frame NSFontPanel</key>
 	<string>683 37 566 232 0 0 1440 900 </string>
 	<key>NSWindow Frame Preferences</key>
-	<string>374 129 606 456 0 0 1440 877 </string>
+	<string>194 421 606 456 0 0 1440 877 </string>
+	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
+	<string>533 726 616 174 0 0 1440 900 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
 	<string>836 1373 592 584 681 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>724 1148 570 427 681 900 1920 1057 </string>
+	<string>270 100 843 587 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>-1239 1110 1914 842 -1239 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -37554,6 +37556,8 @@
 	<true/>
 	<key>NoSyncHaveShownPromoWithId_4</key>
 	<true/>
+	<key>NoSyncHaveWarnedAboutIncompatibleSoftware</key>
+	<true/>
 	<key>NoSyncInstallationId</key>
 	<string>78138996-9363-44A0-8778-FC330878960E</string>
 	<key>NoSyncLastTipTime</key>
@@ -37710,11 +37714,11 @@
 	<key>SUFeedAlternateAppNameKey</key>
 	<string>iTerm</string>
 	<key>SUFeedURL</key>
-	<string>https://iterm2.com/appcasts/testing3.xml?shard=48</string>
+	<string>https://iterm2.com/appcasts/testing.xml?shard=48</string>
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-05-26T15:39:57Z</date>
+	<date>2016-06-30T23:00:01Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -37741,8 +37745,6 @@
 	<integer>10</integer>
 	<key>ToolbeltTools</key>
 	<array>
-		<string>Paste History</string>
-		<string>Jobs</string>
 		<string>Command History</string>
 	</array>
 	<key>TripleClickSelectsFullWrappedLines</key>
@@ -37774,6 +37776,6 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>2.9.20160523</string>
+	<string>3.0.0</string>
 </dict>
 </plist>

@@ -29,21 +29,7 @@
                     {
                         "function": "powerline_gitstatus.gitstatus",
                         "priority": 40
-                    },
-                    {
-                        "function": "powerline.segments.common.players.spotify_apple_script",
-                        "args": {
-                            "format": "{state_symbol} {artist} - {title}",
-                            "state_symbols": {
-                                "fallback": "♫",
-                                "play":     "▶",
-                                "pause":    "▮▮",
-                                "stop":     "■"
-                            }
-                        },
-                        "priority": 60
                     }
-
                 ]
             }
         ],

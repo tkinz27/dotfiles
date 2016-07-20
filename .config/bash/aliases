@@ -39,5 +39,6 @@ alias ssh="ssh -oStrictHostKeyChecking=no -oCheckHostIP=no -oConnectionAttempts=
 alias vg='valgrind --suppressions=$HOME/.vgsup --leak-check=yes'
 
 alias dlogs='syslog -k Sender Docker'
+alias dmachine='eval $(docker-machine env dev)'
 
 command -v hub 2>&1 > /dev/null && eval "$(hub alias -s)"
