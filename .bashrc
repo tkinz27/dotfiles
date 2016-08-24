@@ -51,3 +51,5 @@ done
 unset file
 
 export PATH="$PATH:$HOME/.rvm/scripts/rvm" # Add RVM to PATH for scripting
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash

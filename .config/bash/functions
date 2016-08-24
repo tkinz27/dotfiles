@@ -24,13 +24,13 @@ function replaceit {
 }
 
 function ggo {
-    dir=$(find $SRC -maxdepth 2 -type d -name ${1})
+    dir=$(find $SRC -maxdepth 3 -type d -name ${1})
     [[ -n "$dir" ]] && cd $dir
 }
 
 # Docker
 function d_rmia {
-    docker rmi $(docker images | grep '^<none>' | awk '{print $3}')
+    docker rmi $(docker images -f dangling=true -q)
 }
 
 function d_rma {
@@ -47,20 +47,22 @@ function ccert {
 }
 
 function sync_repos {
-    tmpfile=$(mktemp /tmp/sync_repos.XXX)
-    echo ${tmpfile}
-    for repo in $(find . -type dir -name ".git"); do
-        (
-            cd $repo/..;
-            out=$(git pull 2>&1)
-            if [ $? -ne 0 ]; then
-                echo -e "${repo} failed to sync...\n$out\n" >> ${tmpfile}
-            else
-                echo "${repo} good" >> ${tmpfile}
-            fi
-        )& 2>&1 > /dev/null
-    done
-    wait
+    {
+        tmpfile=$(mktemp /tmp/sync_repos.XXX)
+        echo ${tmpfile}
+        for repo in $(find . -type dir -name ".git"); do
+            (
+                cd $repo/..;
+                out=$(git pull 2>&1)
+                if [ $? -ne 0 ]; then
+                    echo -e "${repo} failed to sync...\n$out\n" >> ${tmpfile}
+                else
+                    echo "${repo} good" >> ${tmpfile}
+                fi
+            )& 2>&1 > /dev/null
+        done
+        wait
+    } &> /dev/null
     cat ${tmpfile}
     rm -f ${tmpfile}
 }

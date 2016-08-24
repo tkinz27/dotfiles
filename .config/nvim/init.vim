@@ -20,8 +20,6 @@ set smartcase
 set hlsearch
 " Find words as typing out search
 set incsearch
-" Enable extended % matching
-runtime macros/matchit.vim
 " Start scrolling before cursor hits top/bottom
 set scrolloff=5
 " Number of lines to jump when scrolling off screen
@@ -156,60 +154,144 @@ onoremap il" :<c-u>normal! F"vi"<cr>
 
 call plug#begin('~/.config/nvim/plugged')
 
-" Always load
-Plug 'flazz/vim-colorschemes'
+" ##### APPEARENCE #####
 Plug 'vim-airline/vim-airline'
-Plug 'tpope/vim-surround'
-Plug 'ctrlpvim/ctrlp.vim'
-Plug 'SirVer/ultisnips'
-Plug 'honza/vim-snippets'
-Plug 'spiroid/vim-ultisnip-scala'
-Plug 'airblade/vim-rooter'
-Plug 'benekastah/neomake'
-Plug 'airblade/vim-gitgutter'
-Plug 'tpope/vim-fugitive'
-Plug 'majutsushi/tagbar'
-Plug 'terryma/vim-multiple-cursors'
+let g:airline#extensions#tabline#enabled = 1
+let g:airline_powerline_fonts = 1
+
+Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
-" Plug 'scrooloose/syntastic'
+
+Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
+nnoremap <leader>( :RainbowParenthesesToggleAll<cr>
+
+Plug 'junegunn/goyo.vim'
+nnoremap <leader>clear :Goyo<CR>
+Plug 'junegunn/limelight.vim'
+let g:limelight_default_coefficient = 0.7
+let g:limelight_conceal_ctermfg = 238
+nmap <silent> gl :Limelight!!<CR>
+xmap gl <Plug>(Limelight)
+
+Plug 'nathanaelkane/vim-indent-guides'
+let g:indent_guides_exclude_filetypes = ['help', 'startify', 'man', 'rogue']
+
+" ##### APPEARENCE #####
+
+
+" ##### TEXT MANIPULATION #####
+Plug 'tpope/vim-sleuth'
+Plug 'tpope/vim-surround'
+Plug 'terryma/vim-multiple-cursors'
+Plug 'tmhedberg/matchit'
+
+Plug 'godlygeek/tabular', {'on': 'Tabularize'}
+" Tabular stuff ########################################
+" see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
+if exists(":Tabularize")
+    nnoremap <leader>a= :Tabularize /=<CR>
+    vnoremap <leader>a= :Tabularize /=<CR>
+    nnoremap <leader>a: :Tabularize /:\zs<CR>
+    vnoremap <leader>a: :Tabularize /:\zs<CR>
+endif
+inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
+function! s:align()
+  let p = '^\s*|\s.*\s|\s*$'
+  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
+    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
+    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
+    Tabularize/|/l1
+    normal! 0
+    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
+  endif
+endfunction
+" end tabularize
+
+" ##### TEXT MANIPULATION #####
+
+" ##### COMPLETION #####
+Plug 'SirVer/ultisnips'
+let g:UltiSnipsEditSplit="context"
+let g:UltiSnipsListSnippets="<c-s-tab>"
+let g:ultisnips_python_style="sphinx"
+
 if has('nvim')
     Plug 'shougo/deoplete.nvim'
+" deoplete stuff ########################################
+
+    if exists(':DeopleteEnable')
+        let g:deoplete#enable_at_startup = 1
+    endif
+" deoplete stuff ########################################
 endif
 
-" On Command
-Plug 'godlygeek/tabular', {'on': 'Tabularize'}
+Plug 'honza/vim-snippets'
+Plug 'spiroid/vim-ultisnip-scala'
+
+" ##### NAVIGATION #####
+Plug 'airblade/vim-rooter'
+
 Plug 'scrooloose/nerdtree', {'on':  'NERDTreeToggle'}
+nnoremap <F6> :NERDTreeToggle<cr>
+
+Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+nnoremap <silent> <Leader>ff :Files<CR>
+nnoremap <silent> <Leader>fc :Colors<CR>
+nnoremap <silent> <Leader>fh :History<CR>
+nnoremap <silent> <Leader>bb :Buffers<CR>
+nnoremap <silent> <Leader>; :Commands<CR>
+nnoremap <silent> <Leader>h :Helptags<CR>
+nnoremap <silent> <Leader>ll :Lines<CR>
+nnoremap <silent> <Leader>lb :BLines<CR>
+
+Plug 'majutsushi/tagbar'
+nnoremap <leader>tag :TagbarOpen fjc<cr>
+
+Plug 'ludovicchabant/vim-gutentags'
+let g:gutentags_exclude = [
+  \ '*.min.js',
+  \ '*html*',
+  \ '*/vendor/*',
+  \ '*/node_modules/*',
+  \ ]
+nnoremap <leader>t! :GutentagsUpdate!<CR>
+
+" ##### NAVIGATION #####
+
+" ##### UTILITIES #####
+Plug 'Shougo/junkfile.vim'
+nnoremap <leader>jo :JunkfileOpen
+let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
+
+Plug 'janko-m/vim-test'
+function! TerminalSplitStrategy(cmd) abort
+	tabnew | call termopen(a:cmd) | startinsert
+endfunction
+let g:test#custom_strategies = get(g:, 'test#custom_strategies', {})
+let g:test#custom_strategies.terminal_split = function('TerminalSplitStrategy')
+let test#strategy = 'terminal_split'
+nnoremap <silent> <leader>rr :TestFile<CR>
+nnoremap <silent> <leader>rf :TestNearest<CR>
+nnoremap <silent> <leader>rs :TestSuite<CR>
+nnoremap <silent> <leader>ra :TestLast<CR>
+nnoremap <silent> <leader>ro :TestVisit<CR>
+
+" ##### LANGUAGES #####
 Plug 'rizzatti/dash.vim', {'on': 'Dash'}
-Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
+nmap <silent> <leader>d <Plug>DashSearch
 
-" On File Type
-Plug 'fatih/vim-go', {'for': ['go']}
-Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
-Plug 'mxw/vim-jsx', {'for': ['jsx']}
-Plug 'artur-shaik/vim-javacomplete2', {'for': ['java']}
-Plug 'stephpy/vim-yaml', {'for': ['yaml']}
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
-Plug 'derekwyatt/vim-scala', {'for': ['scala']}
-Plug 'hdima/python-syntax', {'for': ['python']}
-Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
-Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
-Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
-Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
-Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
-Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
-Plug 'mhartington/vim-typings', {'for': ['typescript']}
-
-call plug#end()
-
-nnoremap <leader>PI :PlugInstall<cr>
-nnoremap <leader>PU :PlugUpdate<cr>
-
-"""""""""""""""""""""""""""""""
-" => Plugin Config
-"""""""""""""""""""""""""""""""
-" colorscheme
-colorscheme base16-3024
-" Neomake stuff
+" Plug 'scrooloose/syntastic'
+Plug 'benekastah/neomake'
 let g:neomake_python_enabled_makers = ['flake8']
 let g:neomake_python_flake8_maker = {
     \ 'args': ['--ignore=E501']
@@ -227,61 +309,25 @@ let g:neomake_airline = 1
 
 autocmd! BufReadPost * Neomake
 autocmd! BufWritePost * Neomake
+" end neomake
 
-" Status Bar Stuff
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
+Plug 'fatih/vim-go', {'for': ['go']}
+Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
+Plug 'mxw/vim-jsx', {'for': ['jsx']}
+Plug 'stephpy/vim-yaml', {'for': ['yaml']}
+Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
+Plug 'derekwyatt/vim-scala', {'for': ['scala']}
+Plug 'hdima/python-syntax', {'for': ['python']}
+Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
+Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
+Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
+Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
+Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
+Plug 'mhartington/vim-typings', {'for': ['typescript']}
+Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 
-" Tabular stuff - see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
-if exists(":Tabularize")
-    nnoremap <leader>a= :Tabularize /=<CR>
-    vnoremap <leader>a= :Tabularize /=<CR>
-    nnoremap <leader>a: :Tabularize /:\zs<CR>
-    vnoremap <leader>a: :Tabularize /:\zs<CR>
-
-endif
-
-" ctrl-p stuff
-let g:ctrlp_user_command = ['.git', 'git -C %s ls-files -co --exclude-standard']
-
-if exists(':DeopleteEnable')
-    let g:deoplete#enable_at_startup = 1
-endif
-
-inoremap <silent> <Bar>   <Bar><Esc>:call <SID>align()<CR>a
-
-function! s:align()
-  let p = '^\s*|\s.*\s|\s*$'
-  if exists(':Tabularize') && getline('.') =~# '^\s*|' && (getline(line('.')-1) =~# p || getline(line('.')+1) =~# p)
-    let column = strlen(substitute(getline('.')[0:col('.')],'[^|]','','g'))
-    let position = strlen(matchstr(getline('.')[0:col('.')],'.*|\s*\zs.*'))
-    Tabularize/|/l1
-    normal! 0
-    call search(repeat('[^|]*|',column).'\s\{-\}'.repeat('.',position),'ce',line('.'))
-  endif
-endfunction
-
-" Move to the TagBar if already opened or open and focus
-" close the TagBar after selection
-nnoremap <leader>tag :TagbarOpen fjc<cr>
-
-" Toggle NERDTree
-nnoremap <F6> :NERDTreeToggle<cr>
-" List Tasks
-nnoremap <leader>l :TaskList<cr>
-
-" Ultisnips stuff
-let g:UltiSnipsEditSplit="context"
-let g:UltiSnipsListSnippets="<c-s-tab>"
-let g:ultisnips_python_style="sphinx"
-
-" Rainbow Parens stuff
-nnoremap <leader>( :RainbowParenthesesToggleAll<cr>
-
-" Dash.vim stuff
-nmap <silent> <leader>d <Plug>DashSearch
-
-" javacomplete stuff
+Plug 'artur-shaik/vim-javacomplete2', {'for': ['java']}
 autocmd FileType java setlocal omnifunc=javacomplete#Complete
 nmap <F3> <Plug>(JavaComplete-Imports-Add)
 imap <F3> <Plug>(JavaComplete-Imports-Add)
@@ -289,3 +335,24 @@ nmap <F4> <Plug>(JavaComplete-Imports-AddMissing)
 imap <F4> <Plug>(JavaComplete-Imports-AddMissing)
 nmap <F5> <Plug>(JavaComplete-Imports-RemoveMissing)
 imap <F5> <Plug>(JavaComplete-Imports-RemoveMissing)
+
+" ##### LANGUAGES #####
+
+" ##### GIT #####
+Plug 'tpope/vim-fugitive'
+nnoremap <leader>gs :Gstatus<CR>
+nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gw :Gwrite<CR>
+
+
+Plug 'airblade/vim-gitgutter'
+let g:gitgutter_diff_args = '--ignore-space-at-eol'
+nmap [h <Plug>GitGutterPrevHunk
+nmap ]h <Plug>GitGutterNextHunk
+
+call plug#end()
+
+nnoremap <leader>PI :PlugInstall<cr>
+nnoremap <leader>PU :PlugUpdate<cr>
+
+colorscheme base16-3024
