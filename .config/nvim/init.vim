@@ -55,7 +55,7 @@ set nowb
 set noswapfile
 
 " Echo the full path of file being edited
-nnoremap <leader>f :echo expand('%:p')<cr>
+nnoremap <leader>path :echo expand('%:p')<cr>
 
 " Source and Edit nvim/init
 nnoremap <leader>src :source ~/.config/nvim/init.vim<cr>
@@ -93,21 +93,21 @@ autocmd BufWritePre * :%s/\s\+$//e
 """""""""""""""""""""""""""""""""""
 " Grep
 """""""""""""""""""""""""""""""""""
-nnoremap <leader>g :set operatorfunc=GrepOperator<cr>g@
-vnoremap <leader>g :<c-u>call GrepOperator(visualmode())<cr>
-
-function! GrepOperator(type)
-    if a:type ==# 'v'
-        normal! `<v`>y
-    elseif a:type ==# 'char'
-        normal! `[v`]y
-    else
-        return
-    endif
-
-    silent execute "grep! -nHIRs " . shellescape(@@) . " ."
-    copen
-endfunction
+" nnoremap <leader>g :set operatorfunc=GrepOperator<cr>g@
+" vnoremap <leader>g :<c-u>call GrepOperator(visualmode())<cr>
+"
+" function! GrepOperator(type)
+"     if a:type ==# 'v'
+"         normal! `<v`>y
+"     elseif a:type ==# 'char'
+"         normal! `[v`]y
+"     else
+"         return
+"     endif
+"
+"     silent execute "grep! -nHIRs " . shellescape(@@) . " ."
+"     copen
+" endfunction
 
 """""""""""""""""""""""""""""""""""
 " Window Management Stuff
@@ -171,7 +171,7 @@ Plug 'junegunn/limelight.vim'
 let g:limelight_default_coefficient = 0.7
 let g:limelight_conceal_ctermfg = 238
 nmap <silent> gl :Limelight!!<CR>
-xmap gl <Plug>(Limelight)
+xmap <silent> gl <Plug>(Limelight)
 
 Plug 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_exclude_filetypes = ['help', 'startify', 'man', 'rogue']
@@ -253,6 +253,7 @@ nnoremap <silent> <Leader>; :Commands<CR>
 nnoremap <silent> <Leader>h :Helptags<CR>
 nnoremap <silent> <Leader>ll :Lines<CR>
 nnoremap <silent> <Leader>lb :BLines<CR>
+nnoremap <silent> <Leader>tt :Tags<CR>
 
 Plug 'majutsushi/tagbar'
 nnoremap <leader>tag :TagbarOpen fjc<cr>
@@ -265,6 +266,15 @@ let g:gutentags_exclude = [
   \ '*/node_modules/*',
   \ ]
 nnoremap <leader>t! :GutentagsUpdate!<CR>
+
+" Plug 'mhinz/vim-grepper'
+" let g:grepper = {
+"     \ 'tools': ['ag', 'git', 'grep'],
+"     \ }
+" nnoremap <leader>git :Grepper -tool git<cr>
+" nnoremap <leader>ag :Grepper -tool ag -grepprg ag --vimgrep<cr>
+" nmap gs <plug>(GrepperOperator)
+" xmap gs <plug>(GrepperOperator)
 
 " ##### NAVIGATION #####
 
