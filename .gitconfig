@@ -19,3 +19,5 @@
 	required = true
 [hub]
 	host = git.viasat.com
+[core]
+	excludesfile = ~/.gitignore
