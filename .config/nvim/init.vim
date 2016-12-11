@@ -77,8 +77,8 @@ autocmd FileType make set noexpandtab
 set smarttab
 
 " 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
+setg shiftwidth=4
+setg tabstop=4
 
 " Auto indent and wrap lines
 set ai
@@ -156,8 +156,10 @@ call plug#begin('~/.config/nvim/plugged')
 
 " ##### APPEARENCE #####
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
+let g:airline_theme='distinguished'
 
 Plug 'flazz/vim-colorschemes'
 Plug 'chriskempson/base16-vim'
@@ -176,17 +178,17 @@ xmap <silent> gl <Plug>(Limelight)
 Plug 'nathanaelkane/vim-indent-guides'
 let g:indent_guides_exclude_filetypes = ['help', 'startify', 'man', 'rogue']
 
+Plug 'machakann/vim-highlightedyank'
+
 " ##### APPEARENCE #####
 
 
 " ##### TEXT MANIPULATION #####
-Plug 'tpope/vim-sleuth'
 Plug 'tpope/vim-surround'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tmhedberg/matchit'
 
 Plug 'godlygeek/tabular', {'on': 'Tabularize'}
-" Tabular stuff ########################################
 " see http://vimcasts.org/episodes/aligning-text-with-tabular-vim/
 if exists(":Tabularize")
     nnoremap <leader>a= :Tabularize /=<CR>
@@ -207,6 +209,9 @@ function! s:align()
 endfunction
 " end tabularize
 
+inoremap <C-a> <Esc>I
+inoremap <C-e> <Esc>A
+
 " ##### TEXT MANIPULATION #####
 
 " ##### COMPLETION #####
@@ -217,19 +222,22 @@ let g:ultisnips_python_style="sphinx"
 
 if has('nvim')
     Plug 'shougo/deoplete.nvim'
-" deoplete stuff ########################################
 
     if exists(':DeopleteEnable')
         let g:deoplete#enable_at_startup = 1
     endif
-" deoplete stuff ########################################
 endif
 
 Plug 'honza/vim-snippets'
 Plug 'spiroid/vim-ultisnip-scala'
 
+if has('nvim')
+  Plug 'neovim/node-host', {'do': 'npm install'}
+endif
+
 " ##### NAVIGATION #####
 Plug 'airblade/vim-rooter'
+Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/nerdtree', {'on':  'NERDTreeToggle'}
 nnoremap <F6> :NERDTreeToggle<cr>
@@ -259,6 +267,7 @@ Plug 'majutsushi/tagbar'
 nnoremap <leader>tag :TagbarOpen fjc<cr>
 
 Plug 'ludovicchabant/vim-gutentags'
+let g:gutentags_enabled = 0
 let g:gutentags_exclude = [
   \ '*.min.js',
   \ '*html*',
@@ -267,7 +276,7 @@ let g:gutentags_exclude = [
   \ ]
 nnoremap <leader>t! :GutentagsUpdate!<CR>
 
-" Plug 'mhinz/vim-grepper'
+Plug 'mhinz/vim-grepper'
 " let g:grepper = {
 "     \ 'tools': ['ag', 'git', 'grep'],
 "     \ }
@@ -301,32 +310,38 @@ Plug 'rizzatti/dash.vim', {'on': 'Dash'}
 nmap <silent> <leader>d <Plug>DashSearch
 
 " Plug 'scrooloose/syntastic'
-Plug 'benekastah/neomake'
-let g:neomake_python_enabled_makers = ['flake8']
-let g:neomake_python_flake8_maker = {
-    \ 'args': ['--ignore=E501']
-    \ }
-let g:neomake_error_sign = {
-    \ 'text': '✗',
-    \ }
-let g:neomake_warning_sign = {
-    \ 'text': '⚠',
-    \ }
-let g:neomake_info_sign = {
-    \ 'text': '>',
-    \ }
-let g:neomake_airline = 1
-
-autocmd! BufReadPost * Neomake
-autocmd! BufWritePost * Neomake
+" Plug 'benekastah/neomake'
+" let g:neomake_python_enabled_makers = ['flake8']
+" let g:neomake_python_flake8_maker = {
+"     \ 'args': ['--ignore=E501']
+"     \ }
+" let g:neomake_error_sign = {
+"     \ 'text': '✗',
+"     \ }
+" let g:neomake_warning_sign = {
+"     \ 'text': '⚠',
+"     \ }
+" let g:neomake_info_sign = {
+"     \ 'text': '>',
+"     \ }
+" let g:neomake_airline = 1
+"
+" autocmd! BufReadPost * Neomake
+" autocmd! BufWritePost * Neomake
 " end neomake
+Plug 'w0rp/ale'
+let airline#extensions#ale#enabled = 1
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+let g:ale_python_flake8_args = '--ignore=E501'
+let g:ale_sign_error = '✗'
+let g:ale_sign_warning = '⚠'
 
 Plug 'fatih/vim-go', {'for': ['go']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 Plug 'mxw/vim-jsx', {'for': ['jsx']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
-Plug 'derekwyatt/vim-scala', {'for': ['scala']}
 Plug 'hdima/python-syntax', {'for': ['python']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
@@ -337,15 +352,31 @@ Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
 Plug 'mhartington/vim-typings', {'for': ['typescript']}
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 
-Plug 'artur-shaik/vim-javacomplete2', {'for': ['java']}
-autocmd FileType java setlocal omnifunc=javacomplete#Complete
-nmap <F3> <Plug>(JavaComplete-Imports-Add)
-imap <F3> <Plug>(JavaComplete-Imports-Add)
-nmap <F4> <Plug>(JavaComplete-Imports-AddMissing)
-imap <F4> <Plug>(JavaComplete-Imports-AddMissing)
-nmap <F5> <Plug>(JavaComplete-Imports-RemoveMissing)
-imap <F5> <Plug>(JavaComplete-Imports-RemoveMissing)
+Plug 'elzr/vim-json', {'for': ['json']}
+autocmd FileType json setlocal foldmethod=syntax
 
+
+Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}
+Plug 'ensime/ensime-vim', {'for': ['scala', 'java', 'sbt.scala']}
+autocmd BufWritePost *.scala silent :EnTypeCheck
+nnoremap <localleader>tc :EnTypeCheck<CR>
+nnoremap <localleader>ti :EnInspectCheck<CR>
+nnoremap <localleader>tp :EnTypeCheck<CR>
+
+" Jump to Declarations
+au FileType scala nnoremap <leader>gd :EnDeclarationSplit v<CR>
+au FileType scala nnoremap <leader>si :EnSuggestImport<CR>
+
+" Suggest Import
+nnoremap <silent> <leader>I :EnSuggestImport<CR>
+
+" Remap omnicomplete
+inoremap <C-o> <C-X><C-O>
+" Use Tab and Shift-Tab
+inoremap <expr> <TAB> pumvisible() ? '<C-n>' : '<TAB>'
+inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
+" Map the Enter type to do <C-Y> to select without a newline in omicomplete
+inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 " ##### LANGUAGES #####
 
 " ##### GIT #####
@@ -362,7 +393,4 @@ nmap ]h <Plug>GitGutterNextHunk
 
 call plug#end()
 
-nnoremap <leader>PI :PlugInstall<cr>
-nnoremap <leader>PU :PlugUpdate<cr>
-
-colorscheme base16-3024
+colorscheme gruvbox

@@ -3,7 +3,20 @@
 	name = Tony Kinsley
 [push]
 	default = simple
+[merge]
+    tool = vimdiff
+    conflictstyle = diff3
+[mergetool]
+    prompt = false
+[diff]
+    tool = vimdiff
+[difftool]
+    prompt = false
 [alias]
+    mt = mergetool
+    s = status --porcelain
+    edit = "!$EDITOR $(git status --porcelain | awk '{print $2}')"
+    d = difftool
     pi = pull --rebase=interactive
     bl = branch -ra
     la = "!git config -l | grep alias | cut -c 7-"

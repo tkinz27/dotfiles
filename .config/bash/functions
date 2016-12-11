@@ -34,7 +34,7 @@ function d_rmia {
 }
 
 function d_rma {
-    docker rm $(docker ps -a -q)
+    docker rm $(docker ps -a -q --filter status=exited)
 }
 
 function google {
@@ -65,4 +65,15 @@ function sync_repos {
     } &> /dev/null
     cat ${tmpfile}
     rm -f ${tmpfile}
+}
+
+function screengif {
+    docker run -t -i \
+        -v $(pwd)/srv/screengif \
+        dergachev/screengif \
+        /bin/bash -c "umask 002; /bin/screengif ${@}"
+}
+
+function reset_host {
+    sed -i '' ${1}d ~/.ssh/known_hosts
 }

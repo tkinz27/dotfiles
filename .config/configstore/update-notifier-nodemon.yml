@@ -1,0 +1,8 @@
+optOut: false
+lastUpdateCheck: 1462221439565
+update:
+  latest: 1.9.2
+  current: 1.2.1
+  type: minor
+  date: '2016-04-29T20:34:20.989Z'
+  name: nodemon
