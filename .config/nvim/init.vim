@@ -77,8 +77,8 @@ autocmd FileType make set noexpandtab
 set smarttab
 
 " 1 tab == 4 spaces
-setg shiftwidth=4
-setg tabstop=4
+set shiftwidth=4
+set tabstop=4
 
 " Auto indent and wrap lines
 set ai
@@ -231,6 +231,7 @@ endif
 Plug 'honza/vim-snippets'
 Plug 'spiroid/vim-ultisnip-scala'
 
+
 if has('nvim')
   Plug 'neovim/node-host', {'do': 'npm install'}
 endif
@@ -276,7 +277,6 @@ let g:gutentags_exclude = [
   \ ]
 nnoremap <leader>t! :GutentagsUpdate!<CR>
 
-Plug 'mhinz/vim-grepper'
 " let g:grepper = {
 "     \ 'tools': ['ag', 'git', 'grep'],
 "     \ }
@@ -333,7 +333,7 @@ Plug 'w0rp/ale'
 let airline#extensions#ale#enabled = 1
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-let g:ale_python_flake8_args = '--ignore=E501'
+let g:ale_python_flake8_args = '--ignore E501 '
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
 
@@ -351,6 +351,9 @@ Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
 Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
 Plug 'mhartington/vim-typings', {'for': ['typescript']}
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
+
+Plug 'davidhalter/jedi-vim', {'for': ['python']}
+Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
 Plug 'elzr/vim-json', {'for': ['json']}
 autocmd FileType json setlocal foldmethod=syntax
@@ -382,7 +385,7 @@ inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 " ##### GIT #####
 Plug 'tpope/vim-fugitive'
 nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gp :Gpush<CR>
+nnoremap <leader>gp :Gpull<CR>
 nnoremap <leader>gw :Gwrite<CR>
 
 

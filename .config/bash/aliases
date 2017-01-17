@@ -19,8 +19,14 @@ export LS_COLORS='no=00:fi=00:di=01;34:ln=01;36:pi=40;33:so=01;35:do=01;35:bd=40
 alias ag="ag --color-line-number 33 --color-path 34 --color-match 32"
 
 command -v nvim 2>&1 > /dev/null && alias vim=nvim
-alias src=". ~/.bash_profile"
-alias erc="vim ~/.bash_profile"
+if [ -n "$ZSH_VERSION" ]; then
+    alias src=". ${ZDOTDIR:-$HOME}/.zshrc"
+    alias erc="vim ${ZDOTDIR:-$HOME}/.zshrc"
+elif [ -n "$BASH_VERSION" ]; then
+    alias src=". ~/.bash_profile"
+    alias erc="vim ~/.bash_profile"
+fi
+
 alias grep="grep --color=auto"
 alias work="ssh -Y akinsley@192.168.130.104"
 alias gocode="cd $GOPATH"

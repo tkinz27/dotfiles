@@ -26,6 +26,7 @@ function replaceit {
 function ggo {
     dir=$(find $SRC -maxdepth 3 -type d -name ${1})
     [[ -n "$dir" ]] && cd $dir
+    unset dir
 }
 
 # Docker
