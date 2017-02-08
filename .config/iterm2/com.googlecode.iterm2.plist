@@ -36855,7 +36855,7 @@
 	<key>DimOnlyText</key>
 	<true/>
 	<key>DisableFullscreenTransparency</key>
-	<false/>
+	<true/>
 	<key>EnableRendezvous</key>
 	<false/>
 	<key>FocusFollowsMouse</key>
@@ -37085,17 +37085,17 @@
 	<key>NSWindow Frame SUAutomaticUpdateAlert</key>
 	<string>1333 1579 616 174 681 900 1920 1080 </string>
 	<key>NSWindow Frame SUStatusFrame</key>
-	<string>1441 1613 400 129 681 900 1920 1080 </string>
+	<string>520 562 400 129 0 0 1440 877 </string>
 	<key>NSWindow Frame SUUpdateAlert</key>
 	<string>-589 1416 620 392 -1239 900 1920 1080 </string>
 	<key>NSWindow Frame SessionsPreferences</key>
-	<string>1105 1191 606 456 681 900 1920 1080 </string>
+	<string>269 207 606 456 0 0 1440 900 </string>
 	<key>NSWindow Frame SharedPreferences</key>
-	<string>1023 1479 770 381 681 900 1920 1080 </string>
+	<string>196 386 796 473 0 0 1440 877 </string>
 	<key>NSWindow Frame UKCrashReporter</key>
-	<string>836 1373 592 584 681 900 1920 1057 </string>
+	<string>99 293 592 584 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 0</key>
-	<string>0 657 570 423 0 0 1440 877 </string>
+	<string>0 0 1440 878 0 0 1440 877 </string>
 	<key>NSWindow Frame iTerm Window 1</key>
 	<string>-1239 1110 1914 842 -1239 900 1920 1057 </string>
 	<key>NSWindow Frame iTerm Window 2</key>
@@ -38865,7 +38865,7 @@
 	<key>SUHasLaunchedBefore</key>
 	<true/>
 	<key>SULastCheckTime</key>
-	<date>2016-12-13T22:40:33Z</date>
+	<date>2017-01-26T00:16:51Z</date>
 	<key>SavePasteHistory</key>
 	<false/>
 	<key>ShowBookmarkName</key>
@@ -38897,7 +38897,7 @@
 	<key>TripleClickSelectsFullWrappedLines</key>
 	<false/>
 	<key>UKCrashReporterLastCrashReportDate</key>
-	<real>1430238976</real>
+	<real>1485137664</real>
 	<key>URLHandlersByGuid</key>
 	<dict/>
 	<key>Use background pattern indicator</key>
@@ -38907,7 +38907,7 @@
 	<key>UseCompactLabel</key>
 	<true/>
 	<key>UseLionStyleFullscreen</key>
-	<true/>
+	<false/>
 	<key>WebKitDefaultFontSize</key>
 	<integer>11</integer>
 	<key>WebKitStandardFont</key>
@@ -38923,7 +38923,7 @@
 	<key>findRegex_iTerm</key>
 	<false/>
 	<key>iTerm Version</key>
-	<string>3.0.12</string>
+	<string>3.0.13</string>
 	<key>kCPKSelectionViewPreferredModeKey</key>
 	<integer>1</integer>
 	<key>kCPKSelectionViewShowHSBTextFieldsKey</key>

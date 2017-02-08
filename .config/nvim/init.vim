@@ -337,10 +337,12 @@ let g:ale_python_flake8_args = '--ignore E501 '
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
 
+Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'fatih/vim-go', {'for': ['go']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 Plug 'mxw/vim-jsx', {'for': ['jsx']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
+Plug 'cespare/vim-toml', {'for': ['toml']}
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
 Plug 'hdima/python-syntax', {'for': ['python']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
@@ -351,6 +353,18 @@ Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
 Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
 Plug 'mhartington/vim-typings', {'for': ['typescript']}
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
+
+Plug 'rust-lang/rust.vim', {'for': ['rust']}
+let g:rustfmt_autosave = 1
+Plug 'racer-rust/vim-racer', {'for': ['rust']}
+set hidden
+let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
+let g:racer_experimental_completer = 1
+
+au FileType rust nmap gd <Plug>(rust-def)
+au FileType rust nmap gs <Plug>(rust-def-split)
+au FileType rust nmap gx <Plug>(rust-def-vertical)
+au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
 Plug 'davidhalter/jedi-vim', {'for': ['python']}
 Plug 'zchee/deoplete-jedi', {'for': ['python']}
@@ -365,6 +379,8 @@ autocmd BufWritePost *.scala silent :EnTypeCheck
 nnoremap <localleader>tc :EnTypeCheck<CR>
 nnoremap <localleader>ti :EnInspectCheck<CR>
 nnoremap <localleader>tp :EnTypeCheck<CR>
+
+au BufNewFile,BufRead Jenkinsfile set filetype=groovy
 
 " Jump to Declarations
 au FileType scala nnoremap <leader>gd :EnDeclarationSplit v<CR>
@@ -383,12 +399,6 @@ inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 " ##### LANGUAGES #####
 
 " ##### GIT #####
-Plug 'tpope/vim-fugitive'
-nnoremap <leader>gs :Gstatus<CR>
-nnoremap <leader>gp :Gpull<CR>
-nnoremap <leader>gw :Gwrite<CR>
-
-
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_diff_args = '--ignore-space-at-eol'
 nmap [h <Plug>GitGutterPrevHunk
