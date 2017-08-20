@@ -11,9 +11,8 @@ setopt EXTENDED_GLOB        # Use extended globbing syntax.
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
-zplug 'zplug/zplug', hook-build:'zplug --self-manage'
-
 zplug "zsh-users/zsh-completions"
+zplug "zsh-users/zsh-autosuggestions"
 zplug "zsh-users/zsh-history-substring-search"
 zplug "zsh-users/zsh-syntax-highlighting"
 
@@ -30,9 +29,14 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 zplug load
 
+
 for file in $(ls ~/.config/bash); do
     [ "$file" != "powerline" ] && source ~/.config/bash/${file}
 done
+
+alias erc="vim ~/.config/zsh-zplug/.zshrc"
+
+bindkey '^ ' autosuggest-accept
 
 [ -r ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

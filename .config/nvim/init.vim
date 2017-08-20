@@ -9,6 +9,7 @@ let mapleader = ","
 " => VIM user interface
 """""""""""""""""""""""""""""""
 " Turn on the Wild menu
+set wildmode=longest:full,full
 set wildmenu
 " Ignore compiled files
 set wildignore=*.o,*~,*.pyc,*/tmp/*,*.zip
@@ -152,7 +153,7 @@ onoremap il" :<c-u>normal! F"vi"<cr>
 " vim-plug setup
 """"""""""""""""""""""""""""""""""""""""""""""""
 
-call plug#begin('~/.config/nvim/plugged')
+call plug#begin('~/.local/share/nvim/plugged')
 
 " ##### APPEARENCE #####
 Plug 'vim-airline/vim-airline'
@@ -221,12 +222,18 @@ let g:UltiSnipsListSnippets="<c-s-tab>"
 let g:ultisnips_python_style="sphinx"
 
 if has('nvim')
-    Plug 'shougo/deoplete.nvim'
+    Plug 'shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
+    Plug 'shougo/neco-syntax', {'do': 'UpdateRemotePlugins'}
 
     if exists(':DeopleteEnable')
         let g:deoplete#enable_at_startup = 1
+        autocmd CompleteDone * silent! pclose!
     endif
 endif
+
+Plug 'Shougo/echodoc.vim'
+set noshowmode
+" needed for echodoc
 
 Plug 'honza/vim-snippets'
 Plug 'spiroid/vim-ultisnip-scala'
@@ -241,6 +248,7 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/nerdtree', {'on':  'NERDTreeToggle'}
+Plug 'Xuyuanp/nerdtree-git-plugin'
 nnoremap <F6> :NERDTreeToggle<cr>
 
 Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
@@ -264,26 +272,22 @@ nnoremap <silent> <Leader>ll :Lines<CR>
 nnoremap <silent> <Leader>lb :BLines<CR>
 nnoremap <silent> <Leader>tt :Tags<CR>
 
+command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
+
+set grepprg=rg\ --vimgrep
+
 Plug 'majutsushi/tagbar'
 nnoremap <leader>tag :TagbarOpen fjc<cr>
 
 Plug 'ludovicchabant/vim-gutentags'
 let g:gutentags_enabled = 0
-let g:gutentags_exclude = [
+let g:gutentags_ctags_exclude = [
   \ '*.min.js',
   \ '*html*',
   \ '*/vendor/*',
   \ '*/node_modules/*',
   \ ]
 nnoremap <leader>t! :GutentagsUpdate!<CR>
-
-" let g:grepper = {
-"     \ 'tools': ['ag', 'git', 'grep'],
-"     \ }
-" nnoremap <leader>git :Grepper -tool git<cr>
-" nnoremap <leader>ag :Grepper -tool ag -grepprg ag --vimgrep<cr>
-" nmap gs <plug>(GrepperOperator)
-" xmap gs <plug>(GrepperOperator)
 
 " ##### NAVIGATION #####
 
@@ -306,36 +310,42 @@ nnoremap <silent> <leader>ra :TestLast<CR>
 nnoremap <silent> <leader>ro :TestVisit<CR>
 
 " ##### LANGUAGES #####
-Plug 'rizzatti/dash.vim', {'on': 'Dash'}
-nmap <silent> <leader>d <Plug>DashSearch
+" Hopefully i can remove much of this and just use the language servers
+Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+let g:LanguageClient_serverCommands = {
+    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ }
+" 'python': ['~/code/venv3/bin/pyls'],
 
-" Plug 'scrooloose/syntastic'
-" Plug 'benekastah/neomake'
-" let g:neomake_python_enabled_makers = ['flake8']
-" let g:neomake_python_flake8_maker = {
-"     \ 'args': ['--ignore=E501']
-"     \ }
-" let g:neomake_error_sign = {
-"     \ 'text': '✗',
-"     \ }
-" let g:neomake_warning_sign = {
-"     \ 'text': '⚠',
-"     \ }
-" let g:neomake_info_sign = {
-"     \ 'text': '>',
-"     \ }
-" let g:neomake_airline = 1
-"
-" autocmd! BufReadPost * Neomake
-" autocmd! BufWritePost * Neomake
-" end neomake
+let g:LanguageClient_autoStart = 1
+nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+
 Plug 'w0rp/ale'
 let airline#extensions#ale#enabled = 1
 nmap <silent> <C-k> <Plug>(ale_previous_wrap)
 nmap <silent> <C-j> <Plug>(ale_next_wrap)
-let g:ale_python_flake8_args = '--ignore E501 '
+let g:ale_python_flake8_args = '--ignore E501,E402 '
 let g:ale_sign_error = '✗'
 let g:ale_sign_warning = '⚠'
+
+Plug 'reedes/vim-pencil'
+" augroup pencil
+"   autocmd!
+"   autocmd FileType markdown,mkd call pencil#init()
+"   autocmd FileType asciidoc call pencil#init()
+" augroup END
+let g:pencil#textwidth = 100
+let g:pencil#map#suspend_af = 'K'
+nnoremap <leader>Q gqap
+
+Plug 'hdima/python-syntax', {'for': ['python']}
+Plug 'tshirtman/vim-cython', {'for': ['cython']}
+" Set cython filetype if name contains pxi, pxd
+au BufRead,BufNewFile *.pxi set filetype=cython
+au BufRead,BufNewFile *.pxd set filetype=cython
+au BufRead,BufNewFile *.pyx set filetype=cython
 
 Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'fatih/vim-go', {'for': ['go']}
@@ -344,7 +354,6 @@ Plug 'mxw/vim-jsx', {'for': ['jsx']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'cespare/vim-toml', {'for': ['toml']}
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
-Plug 'hdima/python-syntax', {'for': ['python']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
 Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
@@ -352,22 +361,32 @@ Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
 Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
 Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
 Plug 'mhartington/vim-typings', {'for': ['typescript']}
+Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+Plug 'IN3D/vim-raml', {'for': ['raml']}
+Plug 'evanmiller/nginx-vim-syntax', {'for': ['nginx']}
+Plug 'jalvesaq/Nvim-R', {'for': ['r']}
+let g:R_assign = 2
+autocmd FileType r setlocal sw=2 ts=2
+
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
+" Set Dockefile filetype if name contains Dockerfile
+au BufRead,BufNewFile Dockerfile set filetype=dockerfile
+au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
 Plug 'rust-lang/rust.vim', {'for': ['rust']}
 let g:rustfmt_autosave = 1
-Plug 'racer-rust/vim-racer', {'for': ['rust']}
-set hidden
-let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
-let g:racer_experimental_completer = 1
+" Plug 'racer-rust/vim-racer', {'for': ['rust']}
+" set hidden
+" let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
+" let g:racer_experimental_completer = 1
 
-au FileType rust nmap gd <Plug>(rust-def)
-au FileType rust nmap gs <Plug>(rust-def-split)
-au FileType rust nmap gx <Plug>(rust-def-vertical)
-au FileType rust nmap <leader>gd <Plug>(rust-doc)
+" au FileType rust nmap gd <Plug>(rust-def)
+" au FileType rust nmap gs <Plug>(rust-def-split)
+" au FileType rust nmap gx <Plug>(rust-def-vertical)
+" au FileType rust nmap <leader>gd <Plug>(rust-doc)
 
-Plug 'davidhalter/jedi-vim', {'for': ['python']}
-Plug 'zchee/deoplete-jedi', {'for': ['python']}
+" Plug 'davidhalter/jedi-vim', {'for': ['python']}
+" Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
 Plug 'elzr/vim-json', {'for': ['json']}
 autocmd FileType json setlocal foldmethod=syntax

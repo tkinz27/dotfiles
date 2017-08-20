@@ -25,3 +25,10 @@ export LESS_TERMCAP_so=$(printf "\e[1;44;33m")
 export LESS_TERMCAP_ue=$(printf "\e[0m")
 export LESS_TERMCAP_us=$(printf "\e[1;32m")
 export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
+
+# TINY CARE DASHBOARD
+export TTC_WEATHER=92024
+export TTC_CONSUMER_KEY=r264H0nFGFzSqNwPilpSjmHH4
+export TTC_CONSUMER_SECRET=If7CRSsY5tPcgttbZqJWuKyc2JyeHg4QpnsJKIlG9U3woqWPGw
+export TTC_ACCESS_TOKEN=236652288-o9GSyGv98emvosfAzVmHDCkGQvqXNDqvjZHo1Gkz
+export TTC_ACCESS_TOKEN_SECRET=POfUtX3piDno6AelmFaqBYcexcI2RtkSZwECeE8OGkp1B
