@@ -28,7 +28,6 @@ elif [ -n "$BASH_VERSION" ]; then
 fi
 
 alias grep="grep --color=auto"
-alias work="ssh -Y akinsley@192.168.130.104"
 alias gocode="cd $GOPATH"
 alias root='cd "$(git rev-parse --show-toplevel)"'
 
@@ -40,7 +39,7 @@ alias cpr="rsync -rv --progress --whole-file"
 alias ra="rsync -avzP"
 alias rr="rsync -rvzP"
 
-alias ssh="ssh -oStrictHostKeyChecking=no -oCheckHostIP=no -oConnectionAttempts=5 -oConnectTimeout=8 -oServerAliveInterval=5 -oTCPKeepAlive=no -Y"
+alias ssh="ssh -o StrictHostKeyChecking=no -o CheckHostIP=no -o ConnectionAttempts=5 -o ConnectTimeout=8 -o ServerAliveInterval=5 -o TCPKeepAlive=no -Y"
 
 # consoles
 alias vg='valgrind --suppressions=$HOME/.vgsup --leak-check=yes'
@@ -49,3 +48,6 @@ alias dlogs='syslog -k Sender Docker'
 alias dmachine='eval $(docker-machine env dev)'
 
 command -v hub 2>&1 > /dev/null && eval "$(hub alias -s)"
+
+alias venv="source ~/code/venv2/bin/activate"
+alias venv3="source ~/code/venv3/bin/activate"

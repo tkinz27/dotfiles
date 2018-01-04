@@ -8,6 +8,10 @@ setopt AUTO_NAME_DIRS       # Auto add variable-stored paths to ~ list.
 setopt MULTIOS              # Write to multiple descriptors.
 setopt EXTENDED_GLOB        # Use extended globbing syntax.
 
+# zsh does not read /etc/inputrc
+bindkey "^[[3~" delete-char
+bindkey "^[3;5~" delete-char
+
 export ZPLUG_HOME=/usr/local/opt/zplug
 source $ZPLUG_HOME/init.zsh
 
@@ -30,7 +34,7 @@ zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 zplug load
 
 
-for file in $(ls ~/.config/bash); do
+for file in $(ls ~/.config/bash | sort); do
     [ "$file" != "powerline" ] && source ~/.config/bash/${file}
 done
 
@@ -42,3 +46,4 @@ bindkey '^ ' autosuggest-accept
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"
+export PATH="/usr/local/opt/openssl/bin:$PATH"

@@ -4,6 +4,9 @@
 filetype plugin indent on
 
 let mapleader = ","
+" Tell neovim where to find neovim python packages
+let g:python_host_prod='/usr/local/bin/python2'
+let g:python3_host_prog='/usr/local/bin/python3'
 
 """""""""""""""""""""""""""""""
 " => VIM user interface
@@ -168,20 +171,15 @@ Plug 'chriskempson/base16-vim'
 Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
 nnoremap <leader>( :RainbowParenthesesToggleAll<cr>
 
-Plug 'junegunn/goyo.vim'
-nnoremap <leader>clear :Goyo<CR>
-Plug 'junegunn/limelight.vim'
-let g:limelight_default_coefficient = 0.7
-let g:limelight_conceal_ctermfg = 238
-nmap <silent> gl :Limelight!!<CR>
-xmap <silent> gl <Plug>(Limelight)
-
-Plug 'nathanaelkane/vim-indent-guides'
-let g:indent_guides_exclude_filetypes = ['help', 'startify', 'man', 'rogue']
+Plug 'Yggdroot/indentLine'
 
 Plug 'machakann/vim-highlightedyank'
 
 " ##### APPEARENCE #####
+
+if has('nvim')
+    set inccommand=nosplit
+endif
 
 
 " ##### TEXT MANIPULATION #####
@@ -314,21 +312,22 @@ nnoremap <silent> <leader>ro :TestVisit<CR>
 Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'typescript': ['javascript-typescript-stdio'],
+    \ 'python': ['pyls', '-v', '--log-file', '~/.pyls.log'],
     \ }
-" 'python': ['~/code/venv3/bin/pyls'],
 
 let g:LanguageClient_autoStart = 1
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-Plug 'w0rp/ale'
-let airline#extensions#ale#enabled = 1
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
-let g:ale_python_flake8_args = '--ignore E501,E402 '
-let g:ale_sign_error = '✗'
-let g:ale_sign_warning = '⚠'
+" Plug 'w0rp/ale'
+" let airline#extensions#ale#enabled = 1
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" let g:ale_python_flake8_args = '--ignore E501,E402 '
+" let g:ale_sign_error = '✗'
+" let g:ale_sign_warning = '⚠'
 
 Plug 'reedes/vim-pencil'
 " augroup pencil
@@ -341,29 +340,33 @@ let g:pencil#map#suspend_af = 'K'
 nnoremap <leader>Q gqap
 
 Plug 'hdima/python-syntax', {'for': ['python']}
+
 Plug 'tshirtman/vim-cython', {'for': ['cython']}
 " Set cython filetype if name contains pxi, pxd
 au BufRead,BufNewFile *.pxi set filetype=cython
 au BufRead,BufNewFile *.pxd set filetype=cython
 au BufRead,BufNewFile *.pyx set filetype=cython
 
-Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'fatih/vim-go', {'for': ['go']}
+Plug 'zchee/deoplete-go', {'for': ['go']}
+
+Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 Plug 'mxw/vim-jsx', {'for': ['jsx']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
+
 Plug 'cespare/vim-toml', {'for': ['toml']}
+au BufRead,BufNewFile Pipfile set filetype=toml
+
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
 Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
-Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
-Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
-Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
-Plug 'mhartington/vim-typings', {'for': ['typescript']}
-Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+" Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
+" Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
+" Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
+" Plug 'mhartington/vim-typings', {'for': ['typescript']}
 Plug 'IN3D/vim-raml', {'for': ['raml']}
-Plug 'evanmiller/nginx-vim-syntax', {'for': ['nginx']}
 Plug 'jalvesaq/Nvim-R', {'for': ['r']}
 let g:R_assign = 2
 autocmd FileType r setlocal sw=2 ts=2
@@ -390,6 +393,7 @@ let g:rustfmt_autosave = 1
 
 Plug 'elzr/vim-json', {'for': ['json']}
 autocmd FileType json setlocal foldmethod=syntax
+au BufRead,BufNewFile Pipfile.json set filetype=json
 
 
 Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}

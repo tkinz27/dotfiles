@@ -3,5 +3,6 @@ PATH=/usr/local/bin:$PATH
 PATH=/usr/local/sbin:$PATH
 PATH=$GOPATH/bin:$PATH
 PATH=~/.cargo/bin:$PATH
+PATH=~/Library/Python/3.6/bin:$PATH
 export PATH
 
