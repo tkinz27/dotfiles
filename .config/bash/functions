@@ -78,3 +78,7 @@ function screengif {
 function reset_host {
     sed -i '' ${1}d ~/.ssh/known_hosts
 }
+
+function dotfiles_push {
+    pushd ~/.files && git push && popd
+}
