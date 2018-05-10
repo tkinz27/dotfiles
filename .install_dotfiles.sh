@@ -1,8 +1,12 @@
 #!/bin/sh
 
 # This script just sets up https://github.com/tkinz27/dotfiles repo as a bare repo in the home directory.
-# It requires git zsh curl to already be setup.
+# It requires git to already be installed.
 # Currently this is not an idempotent script
+
+# To run this script in one command (requires curl and jq)
+# curl -sL https://api.github.com/repos/tkinz27/dotfiles/contents/.install_dotfiles.sh \
+#   | jq -r .content | base64 -d | sh -
 
 git clone --bare https://github.com/tkinz27/dotfiles $HOME/.files
 
