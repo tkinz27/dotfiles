@@ -47,6 +47,10 @@ function ccert {
     echo | openssl s_client -showcerts -connect $1 2>/dev/null | openssl x509 -inform pem -noout -text
 }
 
+function certbundle {
+    openssl crl2pkcs7 -nocrl -certfile $1 | openssl pkcs7 -print_certs -text -noout
+}
+
 function sync_repos {
     {
         tmpfile=$(mktemp /tmp/sync_repos.XXX)

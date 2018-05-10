@@ -39,7 +39,7 @@ set pastetoggle=<F11>
 
 " Quick funtion that will
 " highlight over 80 columns
-autocmd FileType cpp :autocmd! BufWritePre * :match ErrorMsg '\%>80v.\+'
+" autocmd FileType cpp :autocmd! BufWritePre * :match ErrorMsg '\%>80v.\+'
 
 " Use Unix as the standard file type
 set ffs=unix,mac,dos
@@ -184,7 +184,7 @@ endif
 
 " ##### TEXT MANIPULATION #####
 Plug 'tpope/vim-surround'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'tpope/vim-commentary'
 Plug 'tmhedberg/matchit'
 
 Plug 'godlygeek/tabular', {'on': 'Tabularize'}
@@ -274,25 +274,30 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 
 set grepprg=rg\ --vimgrep
 
-Plug 'majutsushi/tagbar'
+Plug 'majutsushi/tagbar', {'on': ['TagbarOpen']}
 nnoremap <leader>tag :TagbarOpen fjc<cr>
 
-Plug 'ludovicchabant/vim-gutentags'
-let g:gutentags_enabled = 0
-let g:gutentags_ctags_exclude = [
-  \ '*.min.js',
-  \ '*html*',
-  \ '*/vendor/*',
-  \ '*/node_modules/*',
-  \ ]
-nnoremap <leader>t! :GutentagsUpdate!<CR>
+" Plug 'ludovicchabant/vim-gutentags'
+" let g:gutentags_enabled = 0
+" let g:gutentags_ctags_exclude = [
+"   \ '*.min.js',
+"   \ '*html*',
+"   \ '*/vendor/*',
+"   \ '*/node_modules/*',
+"   \ ]
+" nnoremap <leader>t! :GutentagsUpdate!<CR>
+
+" Working with the quickfix list
+map <C-n> :cnext<CR>
+map <C-m> :cprevious<CR>
+nnoremap <leader>a :cclose<CR>
 
 " ##### NAVIGATION #####
 
 " ##### UTILITIES #####
-Plug 'Shougo/junkfile.vim'
-nnoremap <leader>jo :JunkfileOpen
-let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
+" Plug 'Shougo/junkfile.vim'
+" nnoremap <leader>jo :JunkfileOpen
+" let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
 
 Plug 'janko-m/vim-test'
 function! TerminalSplitStrategy(cmd) abort
@@ -309,16 +314,23 @@ nnoremap <silent> <leader>ro :TestVisit<CR>
 
 " ##### LANGUAGES #####
 " Hopefully i can remove much of this and just use the language servers
-Plug 'autozimu/LanguageClient-neovim', { 'do': ':UpdateRemotePlugins' }
+Plug 'autozimu/LanguageClient-neovim', {
+            \ 'branch': 'next',
+            \ 'do': 'bash install.sh',
+            \ }
+set hidden
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
     \ 'typescript': ['javascript-typescript-stdio'],
+    \ 'javascript': ['javascript-typescript-stdio'],
+    \ 'javascript.jsx': ['javascript-typescript-stdio'],
     \ 'python': ['pyls', '-v', '--log-file', '~/.pyls.log'],
     \ }
 
 let g:LanguageClient_autoStart = 1
 nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
 nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
+nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
 " Plug 'w0rp/ale'
@@ -348,6 +360,15 @@ au BufRead,BufNewFile *.pxd set filetype=cython
 au BufRead,BufNewFile *.pyx set filetype=cython
 
 Plug 'fatih/vim-go', {'for': ['go']}
+let g:go_fmt_options = {
+    \ 'gofmt': '-s',
+    \ 'goimports': '-local github.com/braincorp',
+    \ }
+let g:go_fmt_command = "goimports"
+let g:go_auto_type_info = 0
+autocmd FileType go nmap <leader>b <Plug>(go-build)
+autocmd FileType go nmap <leader>r <Plug>(go-run)
+
 Plug 'zchee/deoplete-go', {'for': ['go']}
 
 Plug 'motus/pig.vim', {'for': ['pig']}
@@ -360,7 +381,13 @@ au BufRead,BufNewFile Pipfile set filetype=toml
 
 Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
 Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
+
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
+let g:terraform_fmt_on_save = 1
+let g:terraform_fold_sections = 1
+let g:terraform_align =1
+autocmd FileType terraform setlocal commentstring=#%s
+
 Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
 " Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
 " Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
@@ -371,6 +398,8 @@ Plug 'jalvesaq/Nvim-R', {'for': ['r']}
 let g:R_assign = 2
 autocmd FileType r setlocal sw=2 ts=2
 
+Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
+
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 " Set Dockefile filetype if name contains Dockerfile
 au BufRead,BufNewFile Dockerfile set filetype=dockerfile
@@ -379,7 +408,6 @@ au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 Plug 'rust-lang/rust.vim', {'for': ['rust']}
 let g:rustfmt_autosave = 1
 " Plug 'racer-rust/vim-racer', {'for': ['rust']}
-" set hidden
 " let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
 " let g:racer_experimental_completer = 1
 
@@ -392,40 +420,45 @@ let g:rustfmt_autosave = 1
 " Plug 'zchee/deoplete-jedi', {'for': ['python']}
 
 Plug 'elzr/vim-json', {'for': ['json']}
+let g:vim_json_syntax_conceal = 0
 autocmd FileType json setlocal foldmethod=syntax
 au BufRead,BufNewFile Pipfile.json set filetype=json
 
+Plug 'peter-edge/vim-capnp', {'for': ['capnp']}
 
-Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}
-Plug 'ensime/ensime-vim', {'for': ['scala', 'java', 'sbt.scala']}
-autocmd BufWritePost *.scala silent :EnTypeCheck
-nnoremap <localleader>tc :EnTypeCheck<CR>
-nnoremap <localleader>ti :EnInspectCheck<CR>
-nnoremap <localleader>tp :EnTypeCheck<CR>
 
-au BufNewFile,BufRead Jenkinsfile set filetype=groovy
-
-" Jump to Declarations
-au FileType scala nnoremap <leader>gd :EnDeclarationSplit v<CR>
-au FileType scala nnoremap <leader>si :EnSuggestImport<CR>
-
-" Suggest Import
-nnoremap <silent> <leader>I :EnSuggestImport<CR>
-
-" Remap omnicomplete
-inoremap <C-o> <C-X><C-O>
-" Use Tab and Shift-Tab
-inoremap <expr> <TAB> pumvisible() ? '<C-n>' : '<TAB>'
-inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
-" Map the Enter type to do <C-Y> to select without a newline in omicomplete
-inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
+" Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}
+" Plug 'ensime/ensime-vim', {'for': ['scala', 'java', 'sbt.scala']}
+" autocmd BufWritePost *.scala silent :EnTypeCheck
+" nnoremap <localleader>tc :EnTypeCheck<CR>
+" nnoremap <localleader>ti :EnInspectCheck<CR>
+" nnoremap <localleader>tp :EnTypeCheck<CR>
+"
+" au BufNewFile,BufRead Jenkinsfile set filetype=groovy
+"
+" " Jump to Declarations
+" au FileType scala nnoremap <leader>gd :EnDeclarationSplit v<CR>
+" au FileType scala nnoremap <leader>si :EnSuggestImport<CR>
+"
+" " Suggest Import
+" nnoremap <silent> <leader>I :EnSuggestImport<CR>
+"
+" " Remap omnicomplete
+" inoremap <C-o> <C-X><C-O>
+" " Use Tab and Shift-Tab
+" inoremap <expr> <TAB> pumvisible() ? '<C-n>' : '<TAB>'
+" inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
+" " Map the Enter type to do <C-Y> to select without a newline in omicomplete
+" inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 " ##### LANGUAGES #####
 
 " ##### GIT #####
+Plug 'tpope/vim-fugitive'
 Plug 'airblade/vim-gitgutter'
 let g:gitgutter_diff_args = '--ignore-space-at-eol'
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
+nmap <leader>hv <Plug>GitGutterPreviewHunk
 
 call plug#end()
 
