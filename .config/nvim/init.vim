@@ -222,11 +222,7 @@ let g:ultisnips_python_style="sphinx"
 if has('nvim')
     Plug 'shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
     Plug 'shougo/neco-syntax', {'do': 'UpdateRemotePlugins'}
-
-    if exists(':DeopleteEnable')
-        let g:deoplete#enable_at_startup = 1
-        autocmd CompleteDone * silent! pclose!
-    endif
+    let g:deoplete#enable_at_startup = 1
 endif
 
 Plug 'Shougo/echodoc.vim'
@@ -369,12 +365,20 @@ let g:go_auto_type_info = 0
 autocmd FileType go nmap <leader>b <Plug>(go-build)
 autocmd FileType go nmap <leader>r <Plug>(go-run)
 
-Plug 'zchee/deoplete-go', {'for': ['go']}
+Plug 'prettier/vim-prettier', {
+    \ 'do': 'npm install',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue']}
+let g:prettier#autoformat = 0
+autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+
+
+" Plug 'zchee/deoplete-go', {'for': ['go']}
 
 Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 Plug 'mxw/vim-jsx', {'for': ['jsx']}
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
+Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
 
 Plug 'cespare/vim-toml', {'for': ['toml']}
 au BufRead,BufNewFile Pipfile set filetype=toml
@@ -388,7 +392,7 @@ let g:terraform_fold_sections = 1
 let g:terraform_align =1
 autocmd FileType terraform setlocal commentstring=#%s
 
-Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+" Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
 " Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
 " Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
 " Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
@@ -407,6 +411,7 @@ au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
 Plug 'rust-lang/rust.vim', {'for': ['rust']}
 let g:rustfmt_autosave = 1
+let g:rustfmt_command = "cargo fmt -- "
 " Plug 'racer-rust/vim-racer', {'for': ['rust']}
 " let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
 " let g:racer_experimental_completer = 1

@@ -33,7 +33,7 @@
 	smudge = git-lfs smudge -- %f
 	required = true
 	process = git-lfs filter-process
-[hub]
-	host = git.viasat.com
 [core]
 	excludesfile = ~/.gitignore
+[credential]
+	helper = store

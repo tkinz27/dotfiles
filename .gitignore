@@ -3,3 +3,7 @@ tags
 
 .ropeproject
 .mypy_cache
+
+stupid.go
+
+.rgignore
