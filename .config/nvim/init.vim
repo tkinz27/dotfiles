@@ -429,7 +429,7 @@ let g:vim_json_syntax_conceal = 0
 autocmd FileType json setlocal foldmethod=syntax
 au BufRead,BufNewFile Pipfile.json set filetype=json
 
-Plug 'peter-edge/vim-capnp', {'for': ['capnp']}
+Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
 
 
 " Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}
