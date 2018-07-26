@@ -159,6 +159,8 @@ onoremap il" :<c-u>normal! F"vi"<cr>
 call plug#begin('~/.local/share/nvim/plugged')
 
 " ##### APPEARENCE #####
+set termguicolors
+
 Plug 'vim-airline/vim-airline'
 Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
@@ -166,7 +168,6 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='distinguished'
 
 Plug 'flazz/vim-colorschemes'
-Plug 'chriskempson/base16-vim'
 
 Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
 nnoremap <leader>( :RainbowParenthesesToggleAll<cr>
@@ -242,6 +243,7 @@ Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/nerdtree', {'on':  'NERDTreeToggle'}
+Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 nnoremap <F6> :NERDTreeToggle<cr>
 
@@ -468,3 +470,4 @@ nmap <leader>hv <Plug>GitGutterPreviewHunk
 call plug#end()
 
 colorscheme gruvbox
+hi! Normal ctermbg=None guibg=None
