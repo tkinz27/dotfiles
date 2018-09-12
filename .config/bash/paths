@@ -1,5 +1,6 @@
 if [ $(uname -s) = "Linux" ]; then
-    PATH=/usr/lib/go-1.10/bin:$PATH
+    # PATH=/usr/lib/go-1.10/bin:$PATH
+    PATH=/usr/lib/go-1.11-manual/go/bin:$PATH
 fi
 if [ $(uname -s) = "Darwin" ]; then
     PATH=/usr/local/opt/python/libexec/bin:$PATH
@@ -10,5 +11,6 @@ PATH=/usr/local/bin:$PATH
 PATH=/usr/local/sbin:$PATH
 PATH=$GOPATH/bin:$PATH
 PATH=~/.cargo/bin:$PATH
+PATH=~/.npm-global/bin:$PATH
 PATH=~/.local/bin:$PATH
 export PATH

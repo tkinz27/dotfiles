@@ -7,10 +7,14 @@ setopt CDABLE_VARS          # Change directory to a path stored in a variable.
 setopt AUTO_NAME_DIRS       # Auto add variable-stored paths to ~ list.
 setopt MULTIOS              # Write to multiple descriptors.
 setopt EXTENDED_GLOB        # Use extended globbing syntax.
+setopt inc_append_history   # Appends every command to the history file once it is executed
+setopt share_history        # reload history whenever you use it
 
 # zsh does not read /etc/inputrc
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
+bindkey '^r' history-incremental-search-backward
+bindkey -e
 
 #####################################################################
 # zplug
@@ -23,12 +27,10 @@ elif [ $(uname -s) = "Linux" ]; then
 fi
 source $ZPLUG_HOME/init.zsh
 
-zplug "zsh-users/zsh-completions"
-zplug "zsh-users/zsh-autosuggestions"
-zplug "zsh-users/zsh-history-substring-search"
-zplug "zsh-users/zsh-syntax-highlighting"
-
-zplug "modules/spectrum", from:prezto
+zplug "zsh-users/zsh-syntax-highlighting", defer:2
+zplug "zsh-users/zsh-autosuggestions", defer:2
+zplug "zsh-users/zsh-history-substring-search", defer:2
+zplug "zsh-users/zsh-completions", defer:2
 
 zplug "b4b4r07/enhancd", use:init.sh
 ENHANCD_FILTER=fzf; export ENHANCD_FILTER
@@ -39,7 +41,8 @@ zplug "lukechilds/zsh-better-npm-completion", defer:3
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
-zplug "supercrabtree/k"
+zplug "plugins/git", from:oh-my-zsh, as:plugin
+zplug "plugins/gitfast", from:oh-my-zsh
 
 zplug load
 
@@ -47,11 +50,22 @@ zplug load
 # completions
 #####################################################################
 
+# autoload -Uz url-quote-magic
+# zle -N self-insert url-quote-magic
+#
+# autoload -Uz bracketed-paste-magic
+# zle -N bracketed-paste bracketed-paste-magic
+
 # Enable completions
 if [ -d ~/.zsh/comp ]; then
     fpath=(~/.zsh/comp $fpath)
     autoload -U ~/.zsh/comp/*(:t)
 fi
+
+if [ $commands[kubectl] ]; then
+    source <(kubectl completion zsh)
+fi
+alias k=kubectl
 
 zstyle ':completion:*' group-name ''
 zstyle ':completion:*:messages' format '%d'
@@ -78,18 +92,10 @@ zstyle ':completion:*' completer _oldlist _complete _match _ignored \
 
 autoload -U compinit; compinit -d ~/.zcompdump
 
-# Original complete functions
-compdef '_files -g "*.hs"' runhaskell
-compdef _man w3mman
-compdef _tex platex
-
-# cd search path
-cdpath=($HOME)
-
 zstyle ':completion:*:processes' command "ps -u $USER -o pid,stat,%cpu,%mem,cputime,command"
 
 
-for file in $(ls ~/.config/bash | sort); do
+for file in $(ls --color=never ~/.config/bash | sort); do
     [ "$file" != "powerline" ] && source ~/.config/bash/${file}
 done
 
@@ -97,7 +103,7 @@ alias erc="vim ~/.config/zsh-zplug/.zshrc"
 
 bindkey '^ ' autosuggest-accept
 
-[ -r ~/.localrc ] && source ~/.localrc
+[ -f ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 test -e "${HOME}/.iterm2_shell_integration.zsh" && source "${HOME}/.iterm2_shell_integration.zsh"

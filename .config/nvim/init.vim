@@ -247,7 +247,8 @@ Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 nnoremap <F6> :NERDTreeToggle<cr>
 
-Plug '/usr/local/opt/fzf' | Plug 'junegunn/fzf.vim'
+Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+Plug 'junegunn/fzf.vim'
 nmap <leader><tab> <plug>(fzf-maps-n)
 xmap <leader><tab> <plug>(fzf-maps-x)
 omap <leader><tab> <plug>(fzf-maps-o)
@@ -275,40 +276,12 @@ set grepprg=rg\ --vimgrep
 Plug 'majutsushi/tagbar', {'on': ['TagbarOpen']}
 nnoremap <leader>tag :TagbarOpen fjc<cr>
 
-" Plug 'ludovicchabant/vim-gutentags'
-" let g:gutentags_enabled = 0
-" let g:gutentags_ctags_exclude = [
-"   \ '*.min.js',
-"   \ '*html*',
-"   \ '*/vendor/*',
-"   \ '*/node_modules/*',
-"   \ ]
-" nnoremap <leader>t! :GutentagsUpdate!<CR>
-
 " Working with the quickfix list
 map <C-n> :cnext<CR>
 map <C-m> :cprevious<CR>
 nnoremap <leader>a :cclose<CR>
 
 " ##### NAVIGATION #####
-
-" ##### UTILITIES #####
-" Plug 'Shougo/junkfile.vim'
-" nnoremap <leader>jo :JunkfileOpen
-" let g:junkfile#directory = $HOME . '/.nvim/cache/junkfile'
-
-Plug 'janko-m/vim-test'
-function! TerminalSplitStrategy(cmd) abort
-	tabnew | call termopen(a:cmd) | startinsert
-endfunction
-let g:test#custom_strategies = get(g:, 'test#custom_strategies', {})
-let g:test#custom_strategies.terminal_split = function('TerminalSplitStrategy')
-let test#strategy = 'terminal_split'
-nnoremap <silent> <leader>rr :TestFile<CR>
-nnoremap <silent> <leader>rf :TestNearest<CR>
-nnoremap <silent> <leader>rs :TestSuite<CR>
-nnoremap <silent> <leader>ra :TestLast<CR>
-nnoremap <silent> <leader>ro :TestVisit<CR>
 
 " ##### LANGUAGES #####
 " Hopefully i can remove much of this and just use the language servers
@@ -331,32 +304,31 @@ nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
 nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
 nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
 
-" Plug 'w0rp/ale'
-" let airline#extensions#ale#enabled = 1
-" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-j> <Plug>(ale_next_wrap)
-" let g:ale_python_flake8_args = '--ignore E501,E402 '
-" let g:ale_sign_error = '✗'
-" let g:ale_sign_warning = '⚠'
+" ##### RUST #####
+Plug 'rust-lang/rust.vim', {'for': ['rust']}
+let g:rustfmt_autosave = 1
+let g:rustfmt_command = "cargo fmt -- "
+
+Plug 'elzr/vim-json', {'for': ['json']}
+let g:vim_json_syntax_conceal = 0
+autocmd FileType json setlocal foldmethod=syntax
+
+Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
 
 Plug 'reedes/vim-pencil'
-" augroup pencil
-"   autocmd!
-"   autocmd FileType markdown,mkd call pencil#init()
-"   autocmd FileType asciidoc call pencil#init()
-" augroup END
 let g:pencil#textwidth = 100
 let g:pencil#map#suspend_af = 'K'
 nnoremap <leader>Q gqap
 
-Plug 'hdima/python-syntax', {'for': ['python']}
-
-Plug 'tshirtman/vim-cython', {'for': ['cython']}
+" ##### PYTHON ####
+" Plug 'hdima/python-syntax', {'for': ['python']}
+" Plug 'tshirtman/vim-cython', {'for': ['cython']}
 " Set cython filetype if name contains pxi, pxd
-au BufRead,BufNewFile *.pxi set filetype=cython
-au BufRead,BufNewFile *.pxd set filetype=cython
-au BufRead,BufNewFile *.pyx set filetype=cython
+" au BufRead,BufNewFile *.pxi set filetype=cython
+" au BufRead,BufNewFile *.pxd set filetype=cython
+" au BufRead,BufNewFile *.pyx set filetype=cython
 
+" ##### GO ####
 Plug 'fatih/vim-go', {'for': ['go']}
 let g:go_fmt_options = {
     \ 'gofmt': '-s',
@@ -372,21 +344,27 @@ Plug 'prettier/vim-prettier', {
     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue']}
 let g:prettier#autoformat = 0
 autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+" Plug 'mxw/vim-jsx', {'for': ['jsx']}
+" Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
+" Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
+" Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
+" Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
+" Plug 'mhartington/vim-typings', {'for': ['typescript']}
 
+" #### HTML ####
+Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
+Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 
-" Plug 'zchee/deoplete-go', {'for': ['go']}
-
-Plug 'motus/pig.vim', {'for': ['pig']}
 Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
-Plug 'mxw/vim-jsx', {'for': ['jsx']}
+
+" #### YAML ####
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
 
+" #### TOML ####
 Plug 'cespare/vim-toml', {'for': ['toml']}
 au BufRead,BufNewFile Pipfile set filetype=toml
 
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
-Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
 let g:terraform_fmt_on_save = 1
@@ -394,69 +372,15 @@ let g:terraform_fold_sections = 1
 let g:terraform_align =1
 autocmd FileType terraform setlocal commentstring=#%s
 
-" Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
-" Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
-" Plug 'jason0x43/vim-js-indent', {'for': ['typescript', 'javascript']}
-" Plug 'Quramy/vim-dtsm', {'for': ['typescript']}
-" Plug 'mhartington/vim-typings', {'for': ['typescript']}
-Plug 'IN3D/vim-raml', {'for': ['raml']}
-Plug 'jalvesaq/Nvim-R', {'for': ['r']}
-let g:R_assign = 2
-autocmd FileType r setlocal sw=2 ts=2
-
+" ##### Jenkinsfile #####
 Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
 
+" ##### Dockerfile #####
 Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 " Set Dockefile filetype if name contains Dockerfile
 au BufRead,BufNewFile Dockerfile set filetype=dockerfile
 au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
-Plug 'rust-lang/rust.vim', {'for': ['rust']}
-let g:rustfmt_autosave = 1
-let g:rustfmt_command = "cargo fmt -- "
-" Plug 'racer-rust/vim-racer', {'for': ['rust']}
-" let g:racer_cmd = "/Users/akinsley/.cargo/bin/racer"
-" let g:racer_experimental_completer = 1
-
-" au FileType rust nmap gd <Plug>(rust-def)
-" au FileType rust nmap gs <Plug>(rust-def-split)
-" au FileType rust nmap gx <Plug>(rust-def-vertical)
-" au FileType rust nmap <leader>gd <Plug>(rust-doc)
-
-" Plug 'davidhalter/jedi-vim', {'for': ['python']}
-" Plug 'zchee/deoplete-jedi', {'for': ['python']}
-
-Plug 'elzr/vim-json', {'for': ['json']}
-let g:vim_json_syntax_conceal = 0
-autocmd FileType json setlocal foldmethod=syntax
-au BufRead,BufNewFile Pipfile.json set filetype=json
-
-Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
-
-
-" Plug 'derekwyatt/vim-scala', {'for': ['scala', 'sbt.scala']}
-" Plug 'ensime/ensime-vim', {'for': ['scala', 'java', 'sbt.scala']}
-" autocmd BufWritePost *.scala silent :EnTypeCheck
-" nnoremap <localleader>tc :EnTypeCheck<CR>
-" nnoremap <localleader>ti :EnInspectCheck<CR>
-" nnoremap <localleader>tp :EnTypeCheck<CR>
-"
-" au BufNewFile,BufRead Jenkinsfile set filetype=groovy
-"
-" " Jump to Declarations
-" au FileType scala nnoremap <leader>gd :EnDeclarationSplit v<CR>
-" au FileType scala nnoremap <leader>si :EnSuggestImport<CR>
-"
-" " Suggest Import
-" nnoremap <silent> <leader>I :EnSuggestImport<CR>
-"
-" " Remap omnicomplete
-" inoremap <C-o> <C-X><C-O>
-" " Use Tab and Shift-Tab
-" inoremap <expr> <TAB> pumvisible() ? '<C-n>' : '<TAB>'
-" inoremap <expr> <S-TAB> pumvisible() ? '<C-p>' : '<S-TAB>'
-" " Map the Enter type to do <C-Y> to select without a newline in omicomplete
-" inoremap <expr> <CR> pumvisible() ? '<C-Y>' : '<CR>'
 " ##### LANGUAGES #####
 
 " ##### GIT #####
