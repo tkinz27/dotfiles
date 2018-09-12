@@ -1,6 +1,5 @@
-if [ $(uname -s) = "Linux" ]; then
-    echo "not exporting java home"
-fi
+# if [ $(uname -s) = "Linux" ]; then
+# fi
 if [ $(uname -s) = "Darwin" ]; then
     export JAVA_HOME=$(/usr/libexec/java_home)
 fi

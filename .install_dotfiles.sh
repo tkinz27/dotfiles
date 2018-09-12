@@ -25,3 +25,7 @@ else
 fi
 dotfiles checkout
 dotfiles config status.showUntrackedFiles no
+dotfiles submodule init
+dotfiles submodule update
+
+echo "chsh -s /usr/bin/zsh $(whoami)"
