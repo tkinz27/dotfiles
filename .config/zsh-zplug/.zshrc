@@ -42,7 +42,6 @@ zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
 zplug "plugins/git", from:oh-my-zsh, as:plugin
-zplug "plugins/gitfast", from:oh-my-zsh
 
 zplug load
 
@@ -50,11 +49,11 @@ zplug load
 # completions
 #####################################################################
 
-# autoload -Uz url-quote-magic
-# zle -N self-insert url-quote-magic
-#
-# autoload -Uz bracketed-paste-magic
-# zle -N bracketed-paste bracketed-paste-magic
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
+
+autoload -Uz bracketed-paste-magic
+zle -N bracketed-paste bracketed-paste-magic
 
 # Enable completions
 if [ -d ~/.zsh/comp ]; then

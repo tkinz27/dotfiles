@@ -39,8 +39,6 @@ alias cpr="rsync -rv --progress --whole-file"
 alias ra="rsync -avzP"
 alias rr="rsync -rvzP"
 
-alias ssh="ssh -o StrictHostKeyChecking=no -o CheckHostIP=no"
-
 # consoles
 alias vg='valgrind --suppressions=$HOME/.vgsup --leak-check=yes'
 

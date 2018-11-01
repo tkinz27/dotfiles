@@ -5,7 +5,7 @@ filetype plugin indent on
 
 let mapleader = ","
 " Tell neovim where to find neovim python packages
-let g:python_host_prod='/usr/local/bin/python2'
+let g:python_host_prog='/usr/local/bin/python2'
 let g:python3_host_prog='/usr/local/bin/python3'
 
 """""""""""""""""""""""""""""""
@@ -36,6 +36,8 @@ map <F11> :set nopaste<cr>
 imap <F10> <C-O>:set paste<CR>
 imap <F11> <nop>
 set pastetoggle=<F11>
+
+set diffopt+=vertical
 
 " Quick funtion that will
 " highlight over 80 columns
