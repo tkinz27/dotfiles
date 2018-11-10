@@ -334,7 +334,6 @@ nnoremap <leader>Q gqap
 Plug 'fatih/vim-go', {'for': ['go']}
 let g:go_fmt_options = {
     \ 'gofmt': '-s',
-    \ 'goimports': '-local github.com/braincorp',
     \ }
 let g:go_fmt_command = "goimports"
 let g:go_auto_type_info = 0
