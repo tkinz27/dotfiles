@@ -10,11 +10,16 @@ setopt EXTENDED_GLOB        # Use extended globbing syntax.
 setopt inc_append_history   # Appends every command to the history file once it is executed
 setopt share_history        # reload history whenever you use it
 
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 # zsh does not read /etc/inputrc
 bindkey "^[[3~" delete-char
 bindkey "^[3;5~" delete-char
 bindkey '^r' history-incremental-search-backward
 bindkey -e
+
+autoload -Uz url-quote-magic
+zle -N self-insert url-quote-magic
 
 #####################################################################
 # zplug
@@ -48,9 +53,6 @@ zplug load
 #####################################################################
 # completions
 #####################################################################
-
-autoload -Uz url-quote-magic
-zle -N self-insert url-quote-magic
 
 autoload -Uz bracketed-paste-magic
 zle -N bracketed-paste bracketed-paste-magic

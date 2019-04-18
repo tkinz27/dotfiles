@@ -9,11 +9,7 @@ export HISTCONTROL=ignoreboth
 export PIP_REQUIRE_VIRTUALENV=false
 export EDITOR=nvim
 
-export BASE=~/code
-export SRC=${BASE}/src
 # using go 111 modules
-export GOPATH=${BASE}
-export GOBIN=${BASE}/bin
 export GO111MODULE=yes
 
 # colorize man pages

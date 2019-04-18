@@ -170,6 +170,7 @@ let g:airline_powerline_fonts = 1
 let g:airline_theme='distinguished'
 
 Plug 'flazz/vim-colorschemes'
+Plug 'dguo/blood-moon', {'rtp': 'applications/vim'}
 
 Plug 'kien/rainbow_parentheses.vim', {'on': 'RainbowParenthesesToggleAll'}
 nnoremap <leader>( :RainbowParenthesesToggleAll<cr>
@@ -275,8 +276,8 @@ command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-h
 
 set grepprg=rg\ --vimgrep
 
-Plug 'majutsushi/tagbar', {'on': ['TagbarOpen']}
-nnoremap <leader>tag :TagbarOpen fjc<cr>
+" Plug 'majutsushi/tagbar', {'on': ['TagbarOpen']}
+" nnoremap <leader>tag :TagbarOpen fjc<cr>
 
 " Working with the quickfix list
 map <C-n> :cnext<CR>
@@ -294,6 +295,7 @@ Plug 'autozimu/LanguageClient-neovim', {
 set hidden
 let g:LanguageClient_serverCommands = {
     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+    \ 'go': ['gopls'],
     \ 'typescript': ['javascript-typescript-stdio'],
     \ 'javascript': ['javascript-typescript-stdio'],
     \ 'javascript.jsx': ['javascript-typescript-stdio'],
@@ -301,10 +303,19 @@ let g:LanguageClient_serverCommands = {
     \ }
 
 let g:LanguageClient_autoStart = 1
-nnoremap <silent> K :call LanguageClient_textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient_textDocument_definition()<CR>
-nnoremap <silent> gf :call LanguageClient_textDocument_formatting()<CR>
-nnoremap <silent> <F2> :call LanguageClient_textDocument_rename()<CR>
+let g:LanguageClient_completionPreferTextEdit = 1
+let g:airline#extensions#languageclient#enabled = 1
+
+nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+
+nnoremap <leader>ref :call LanguageClient#textDocument_references()<CR>
+nnoremap <leader>sym :call LanguageClient#workspace_symbol()<CR>
+
+
+set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
+" autocmd BufWritePre * :call LanguageClient#textDocument_formatting_sync()
 
 " ##### RUST #####
 Plug 'rust-lang/rust.vim', {'for': ['rust']}
@@ -331,14 +342,17 @@ nnoremap <leader>Q gqap
 " au BufRead,BufNewFile *.pyx set filetype=cython
 
 " ##### GO ####
-Plug 'fatih/vim-go', {'for': ['go']}
-let g:go_fmt_options = {
-    \ 'gofmt': '-s',
-    \ }
-let g:go_fmt_command = "goimports"
-let g:go_auto_type_info = 0
-autocmd FileType go nmap <leader>b <Plug>(go-build)
-autocmd FileType go nmap <leader>r <Plug>(go-run)
+autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+
+" Plug 'fatih/vim-go', {'for': ['go']}
+" let g:go_fmt_options = {
+"     \ 'gofmt': '-s',
+"     \ }
+" let g:go_fmt_command = "goimports"
+" let g:go_auto_type_info = 0
+" let g:go_def_mode = "gopls"
+" autocmd FileType go nmap <leader>b <Plug>(go-build)
+" autocmd FileType go nmap <leader>r <Plug>(go-run)
 
 Plug 'prettier/vim-prettier', {
     \ 'do': 'npm install',
@@ -394,5 +408,5 @@ nmap <leader>hv <Plug>GitGutterPreviewHunk
 
 call plug#end()
 
-colorscheme gruvbox
+colorscheme blood-moon
 hi! Normal ctermbg=None guibg=None
