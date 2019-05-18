@@ -217,30 +217,6 @@ inoremap <C-e> <Esc>A
 
 " ##### TEXT MANIPULATION #####
 
-" ##### COMPLETION #####
-Plug 'SirVer/ultisnips'
-let g:UltiSnipsEditSplit="context"
-let g:UltiSnipsListSnippets="<c-s-tab>"
-let g:ultisnips_python_style="sphinx"
-
-if has('nvim')
-    Plug 'shougo/deoplete.nvim', {'do': ':UpdateRemotePlugins'}
-    Plug 'shougo/neco-syntax', {'do': 'UpdateRemotePlugins'}
-    let g:deoplete#enable_at_startup = 1
-endif
-
-Plug 'Shougo/echodoc.vim'
-set noshowmode
-" needed for echodoc
-
-Plug 'honza/vim-snippets'
-Plug 'spiroid/vim-ultisnip-scala'
-
-
-if has('nvim')
-  Plug 'neovim/node-host', {'do': 'npm install'}
-endif
-
 " ##### NAVIGATION #####
 Plug 'airblade/vim-rooter'
 Plug 'tpope/vim-repeat'
@@ -287,51 +263,120 @@ nnoremap <leader>a :cclose<CR>
 " ##### NAVIGATION #####
 
 " ##### LANGUAGES #####
+Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+
+set cmdheight=2
+set updatetime=300
+set shortmess+=c
+
+" Use `[c` and `]c` to navigate diagnostics
+nmap <silent> [c <Plug>(coc-diagnostic-prev)
+nmap <silent> ]c <Plug>(coc-diagnostic-next)
+
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+" Use K to show documentation in preview window
+nnoremap <silent> K :call <SID>show_documentation()<CR>
+
+function! s:show_documentation()
+  if (index(['vim','help'], &filetype) >= 0)
+    execute 'h '.expand('<cword>')
+  else
+    call CocAction('doHover')
+  endif
+endfunction
+
+" Highlight symbol under cursor on CursorHold
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" Remap for rename current word
+nmap <leader>rn <Plug>(coc-rename)
+
+" Remap for format selected region
+vmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+augroup mygroup
+  autocmd!
+  " Setup formatexpr specified filetype(s).
+  autocmd FileType go,typescript,json setl formatexpr=CocAction('formatSelected')
+  " Update signature help on jump placeholder
+  autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
+augroup end
+
+" Remap for do codeAction of selected region, ex: `<leader>aap` for current paragraph
+xmap <leader>a  <Plug>(coc-codeaction-selected)
+nmap <leader>a  <Plug>(coc-codeaction-selected)
+
+" Remap for do codeAction of current line
+nmap <leader>ac  <Plug>(coc-codeaction)
+" Fix autofix problem of current line
+nmap <leader>qf  <Plug>(coc-fix-current)
+
+" Use `:Format` to format current buffer
+command! -nargs=0 Format :call CocAction('format')
+
+" Use `:Fold` to fold current buffer
+command! -nargs=? Fold :call     CocAction('fold', <f-args>)
+
+nnoremap <silent> <leader>diag :<C-U>CocList diagnostics<cr>
+nnoremap <silent> <leader>ext :<C-U>CocList extensions<cr>
+nnoremap <silent> <leader>cmd :<C-U>CocList commands<cr>
+nnoremap <silent> <leader>outline :<C-U>CocList outline<cr>
+nnoremap <silent> <leader>sym :<C-U>CocList -I symbols<cr>
+nnoremap <silent> <space>j :<C-U>CocNext<cr>
+nnoremap <silent> <space>k :<C-U>CocPrev<cr>
+nnoremap <silent> <space>p :<C-U>CocLIstResume<cr>
+
 " Hopefully i can remove much of this and just use the language servers
-Plug 'autozimu/LanguageClient-neovim', {
-            \ 'branch': 'next',
-            \ 'do': 'bash install.sh',
-            \ }
-set hidden
-let g:LanguageClient_serverCommands = {
-    \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
-    \ 'go': ['gopls'],
-    \ 'typescript': ['javascript-typescript-stdio'],
-    \ 'javascript': ['javascript-typescript-stdio'],
-    \ 'javascript.jsx': ['javascript-typescript-stdio'],
-    \ 'python': ['pyls', '-v', '--log-file', '~/.pyls.log'],
-    \ }
-
-let g:LanguageClient_autoStart = 1
-let g:LanguageClient_completionPreferTextEdit = 1
-let g:airline#extensions#languageclient#enabled = 1
-
-nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
-
-nnoremap <leader>ref :call LanguageClient#textDocument_references()<CR>
-nnoremap <leader>sym :call LanguageClient#workspace_symbol()<CR>
-
-
-set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
+" Plug 'autozimu/LanguageClient-neovim', {
+"             \ 'branch': 'next',
+"             \ 'do': 'bash install.sh',
+"             \ }
+" set hidden
+" let g:LanguageClient_serverCommands = {
+"     \ 'rust': ['rustup', 'run', 'nightly', 'rls'],
+"     \ 'go': ['gopls'],
+"     \ 'typescript': ['javascript-typescript-stdio'],
+"     \ 'javascript': ['javascript-typescript-stdio'],
+"     \ 'javascript.jsx': ['javascript-typescript-stdio'],
+"     \ 'python': ['pyls', '-v', '--log-file', '~/.pyls.log'],
+"     \ }
+"
+" let g:LanguageClient_autoStart = 1
+" let g:LanguageClient_completionPreferTextEdit = 1
+" let g:airline#extensions#languageclient#enabled = 1
+"
+" nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+" nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+" nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+"
+" nnoremap <leader>ref :call LanguageClient#textDocument_references()<CR>
+" nnoremap <leader>sym :call LanguageClient#workspace_symbol()<CR>
+"
+"
+" set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
 " autocmd BufWritePre * :call LanguageClient#textDocument_formatting_sync()
 
 " ##### RUST #####
-Plug 'rust-lang/rust.vim', {'for': ['rust']}
-let g:rustfmt_autosave = 1
-let g:rustfmt_command = "cargo fmt -- "
-
-Plug 'elzr/vim-json', {'for': ['json']}
-let g:vim_json_syntax_conceal = 0
-autocmd FileType json setlocal foldmethod=syntax
-
-Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
-
-Plug 'reedes/vim-pencil'
-let g:pencil#textwidth = 100
-let g:pencil#map#suspend_af = 'K'
-nnoremap <leader>Q gqap
+" Plug 'rust-lang/rust.vim', {'for': ['rust']}
+" let g:rustfmt_autosave = 1
+" let g:rustfmt_command = "cargo fmt -- "
+"
+" Plug 'elzr/vim-json', {'for': ['json']}
+" let g:vim_json_syntax_conceal = 0
+" autocmd FileType json setlocal foldmethod=syntax
+"
+" Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
+"
+" Plug 'reedes/vim-pencil'
+" let g:pencil#textwidth = 100
+" let g:pencil#map#suspend_af = 'K'
+" nnoremap <leader>Q gqap
 
 " ##### PYTHON ####
 " Plug 'hdima/python-syntax', {'for': ['python']}
@@ -342,7 +387,7 @@ nnoremap <leader>Q gqap
 " au BufRead,BufNewFile *.pyx set filetype=cython
 
 " ##### GO ####
-autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
+" autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 
 " Plug 'fatih/vim-go', {'for': ['go']}
 " let g:go_fmt_options = {
@@ -354,11 +399,11 @@ autocmd BufWritePre *.go :call LanguageClient#textDocument_formatting_sync()
 " autocmd FileType go nmap <leader>b <Plug>(go-build)
 " autocmd FileType go nmap <leader>r <Plug>(go-run)
 
-Plug 'prettier/vim-prettier', {
-    \ 'do': 'npm install',
-    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue']}
-let g:prettier#autoformat = 0
-autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
+" Plug 'prettier/vim-prettier', {
+"     \ 'do': 'npm install',
+"     \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue']}
+" let g:prettier#autoformat = 0
+" autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.graphql,*.md,*.vue PrettierAsync
 " Plug 'mxw/vim-jsx', {'for': ['jsx']}
 " Plug 'leafgarland/typescript-vim', {'for': ['typescript']}
 " Plug 'Quramy/vim-js-pretty-template', {'for': ['typescript', 'javascript']}
@@ -367,18 +412,18 @@ autocmd BufWritePre *.js,*.jsx,*.mjs,*.ts,*.tsx,*.css,*.less,*.scss,*.json,*.gra
 " Plug 'mhartington/vim-typings', {'for': ['typescript']}
 
 " #### HTML ####
-Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
-Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
-
-Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
-
-" #### YAML ####
+" Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
+" Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
+"
+" Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
+"
+" " #### YAML ####
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
-Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
-
-" #### TOML ####
-Plug 'cespare/vim-toml', {'for': ['toml']}
-au BufRead,BufNewFile Pipfile set filetype=toml
+" Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
+"
+" " #### TOML ####
+" Plug 'cespare/vim-toml', {'for': ['toml']}
+" au BufRead,BufNewFile Pipfile set filetype=toml
 
 
 Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
@@ -387,14 +432,14 @@ let g:terraform_fold_sections = 1
 let g:terraform_align =1
 autocmd FileType terraform setlocal commentstring=#%s
 
-" ##### Jenkinsfile #####
-Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
-
-" ##### Dockerfile #####
-Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
-" Set Dockefile filetype if name contains Dockerfile
-au BufRead,BufNewFile Dockerfile set filetype=dockerfile
-au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
+" " ##### Jenkinsfile #####
+" Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
+"
+" " ##### Dockerfile #####
+" Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
+" " Set Dockefile filetype if name contains Dockerfile
+" au BufRead,BufNewFile Dockerfile set filetype=dockerfile
+" au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
 " ##### LANGUAGES #####
 
@@ -408,5 +453,5 @@ nmap <leader>hv <Plug>GitGutterPreviewHunk
 
 call plug#end()
 
-colorscheme blood-moon
+colorscheme gruvbox
 hi! Normal ctermbg=None guibg=None
