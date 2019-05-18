@@ -9,12 +9,20 @@
 #   | jq -r .content | base64 -d | sh -
 
 function install_ubuntu {
-    sudo add-apt-repository ppa:neovim-ppa/stable
-    sudo add-apt-repository ppa:git-core/ppa
+    sudo add-apt-repository -y ppa:neovim-ppa/stable
+    sudo add-apt-repository -y ppa:git-core/ppa
+
+    curl -sSL https://deb.nodesource.com/setup_12.x | sudo -E bash -
+    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
 
     sudo apt update
 
-    sudo apt install -y git neovim zsh
+    sudo apt install -y git neovim zsh nodejs yarn
+}
+
+function install_mac {
+    echo "NOT IMPLEMENTED YET"
 }
 
 if [[ ! -d ~/.files ]]; then
@@ -50,4 +58,6 @@ elif [[ $(uname -s) == "Darwin" ]]; then
     install_mac
 fi
 
-chsh -s /usr/bin/zsh $(whoami)
+[ -n "$(which zsh)" ] && [ "$SHELL" != "$(which zsh)" ] && chsh -s $(which zsh) $(whoami)
+
+mkdir -p ~/.npm-packages
