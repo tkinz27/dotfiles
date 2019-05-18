@@ -23,8 +23,10 @@ export LESS_TERMCAP_ue=$(printf "\e[0m")
 export LESS_TERMCAP_us=$(printf "\e[1;32m")
 export LESS='--quit-if-one-screen --ignore-case --status-column --LONG-PROMPT --RAW-CONTROL-CHARS --HILITE-UNREAD --tabs=4 --no-init --window=-4'
 
-KUBECONFIG=""
-for file in $(ls --color=never ~/.kube/); do
-    KUBECFG=$KUBECONFIG:${file}
-done
-export KUBECONFIG
+if [ -d  ~/.kube ]; then
+    KUBECONFIG=""
+    for file in $(ls --color=never ~/.kube/); do
+        KUBECFG=$KUBECONFIG:${file}
+    done
+    export KUBECONFIG
+fi
