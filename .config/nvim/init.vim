@@ -370,8 +370,8 @@ nnoremap <silent> <space>p :<C-U>CocLIstResume<cr>
 " Plug 'elzr/vim-json', {'for': ['json']}
 " let g:vim_json_syntax_conceal = 0
 " autocmd FileType json setlocal foldmethod=syntax
-"
-" Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
+
+Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
 "
 " Plug 'reedes/vim-pencil'
 " let g:pencil#textwidth = 100
@@ -415,31 +415,35 @@ nnoremap <silent> <space>p :<C-U>CocLIstResume<cr>
 " Plug 'mattn/emmet-vim', {'for': ['html', 'css']}
 " Plug 'vim-scripts/SQLUtilities', {'for': ['sql']}
 "
-" Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
+Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 "
 " " #### YAML ####
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
-" Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
-"
+Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
+
 " " #### TOML ####
 " Plug 'cespare/vim-toml', {'for': ['toml']}
 " au BufRead,BufNewFile Pipfile set filetype=toml
 
+" " #### jsonnet ####
+Plug 'google/vim-jsonnet', {'for': ['jsonnet']}
 
-Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
+
+" " #### terraform ####
+" Plug 'hashivim/vim-hashicorp-tools', {'for': ['terraform']}
+Plug 'hashivim/vim-terraform', {'for': ['terraform']}
 let g:terraform_fmt_on_save = 1
 let g:terraform_fold_sections = 1
 let g:terraform_align =1
-autocmd FileType terraform setlocal commentstring=#%s
 
-" " ##### Jenkinsfile #####
-" Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
-"
-" " ##### Dockerfile #####
-" Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
-" " Set Dockefile filetype if name contains Dockerfile
-" au BufRead,BufNewFile Dockerfile set filetype=dockerfile
-" au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
+" ##### Jenkinsfile #####
+Plug 'martinda/Jenkinsfile-vim-syntax', {'for': ['Jenkinsfile']}
+
+" ##### Dockerfile #####
+Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
+" Set Dockefile filetype if name contains Dockerfile
+au BufRead,BufNewFile Dockerfile set filetype=dockerfile
+au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
 " ##### LANGUAGES #####
 

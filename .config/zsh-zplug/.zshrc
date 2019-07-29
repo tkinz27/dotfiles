@@ -25,11 +25,7 @@ zle -N self-insert url-quote-magic
 # zplug
 #####################################################################
 
-if [ $(uname -s) = "Darwin" ]; then
-    export ZPLUG_HOME=/usr/local/opt/zplug
-elif [ $(uname -s) = "Linux" ]; then
-    export ZPLUG_HOME=~/.zplug
-fi
+export ZPLUG_HOME=~/.zplug
 source $ZPLUG_HOME/init.zsh
 
 zplug "zsh-users/zsh-syntax-highlighting", defer:2
@@ -46,7 +42,7 @@ zplug "lukechilds/zsh-better-npm-completion", defer:3
 zplug "mafredri/zsh-async", from:github
 zplug "sindresorhus/pure", use:pure.zsh, from:github, as:theme
 
-zplug "plugins/git", from:oh-my-zsh, as:plugin
+# zplug "plugins/gitfast", from:oh-my-zsh
 
 zplug load
 
