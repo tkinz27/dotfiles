@@ -1,5 +1,9 @@
 #!/bin/zsh
 
+setopt share_history        # reload history whenever you use it
+
+WORDCHARS='*?_-.[]~=&;!#$%^(){}<>'
+
 #####################################################################
 # plugins
 #####################################################################
@@ -20,6 +24,7 @@ for file in ~/.config/bash/*; do
     [ "$file" != "powerline" ] && source ${file}
 done
 
+bindkey -e
 bindkey '^ ' autosuggest-accept
 
 [ -f ~/.localrc ] && source ~/.localrc

@@ -263,7 +263,7 @@ nnoremap <leader>a :cclose<CR>
 " ##### NAVIGATION #####
 
 " ##### LANGUAGES #####
-Plug 'neoclide/coc.nvim', {'tag': '*', 'do': './install.sh'}
+Plug 'neoclide/coc.nvim', {'do': 'yarn install --frozen-lockfile'}
 
 set cmdheight=2
 set updatetime=300
@@ -326,13 +326,14 @@ command! -nargs=? Fold :call     CocAction('fold', <f-args>)
 nnoremap <silent> <leader>diag :<C-U>CocList diagnostics<cr>
 nnoremap <silent> <leader>ext :<C-U>CocList extensions<cr>
 nnoremap <silent> <leader>cmd :<C-U>CocList commands<cr>
-nnoremap <silent> <leader>outline :<C-U>CocList outline<cr>
+nnoremap <silent> <leader>out :<C-U>CocList outline<cr>
 nnoremap <silent> <leader>sym :<C-U>CocList -I symbols<cr>
 nnoremap <silent> <space>j :<C-U>CocNext<cr>
 nnoremap <silent> <space>k :<C-U>CocPrev<cr>
-nnoremap <silent> <space>p :<C-U>CocLIstResume<cr>
+nnoremap <silent> <space>p :<C-U>CocListResume<cr>
 
-" Hopefully i can remove much of this and just use the language servers
+autocmd BufWritePre *.go :call CocAction('runCommand', 'editor.action.organizeImport')
+
 " Plug 'autozimu/LanguageClient-neovim', {
 "             \ 'branch': 'next',
 "             \ 'do': 'bash install.sh',
@@ -360,23 +361,17 @@ nnoremap <silent> <space>p :<C-U>CocLIstResume<cr>
 "
 "
 " set formatexpr=LanguageClient#textDocument_rangeFormatting_sync()
-" autocmd BufWritePre * :call LanguageClient#textDocument_formatting_sync()
 
 " ##### RUST #####
 " Plug 'rust-lang/rust.vim', {'for': ['rust']}
 " let g:rustfmt_autosave = 1
 " let g:rustfmt_command = "cargo fmt -- "
 "
-" Plug 'elzr/vim-json', {'for': ['json']}
-" let g:vim_json_syntax_conceal = 0
-" autocmd FileType json setlocal foldmethod=syntax
+Plug 'elzr/vim-json', {'for': ['json']}
+let g:vim_json_syntax_conceal = 0
+autocmd FileType json setlocal foldmethod=syntax
 
 Plug 'cstrahan/vim-capnp', {'for': ['capnp']}
-"
-" Plug 'reedes/vim-pencil'
-" let g:pencil#textwidth = 100
-" let g:pencil#map#suspend_af = 'K'
-" nnoremap <leader>Q gqap
 
 " ##### PYTHON ####
 " Plug 'hdima/python-syntax', {'for': ['python']}
@@ -457,5 +452,8 @@ nmap <leader>hv <Plug>GitGutterPreviewHunk
 
 call plug#end()
 
-colorscheme gruvbox
-hi! Normal ctermbg=None guibg=None
+colorscheme nord
+set termguicolors
+
+highlight Normal ctermbg=none guibg=none
+highlight NonText ctermbg=none guibg=none

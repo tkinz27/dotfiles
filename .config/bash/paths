@@ -1,9 +1,5 @@
 #!/bin/sh
 
-# Start with a fresh path variable
-PATH=
-source /etc/environment
-
 if [ $(uname -s) = "Linux" ]; then
     PATH=/usr/local/go/bin:$PATH
 fi
