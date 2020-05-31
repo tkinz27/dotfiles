@@ -4,12 +4,12 @@
 [push]
 	default = simple
 [merge]
-    tool = vimdiff
+    tool = vim -d
     conflictstyle = diff3
 [mergetool]
     prompt = false
 [diff]
-    tool = vimdiff
+    tool = vim -d
 [difftool]
     prompt = false
 [alias]
