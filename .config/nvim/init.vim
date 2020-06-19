@@ -201,16 +201,10 @@ nnoremap <silent> <Leader>fh :History<CR>
 nnoremap <silent> <Leader>bb :Buffers<CR>
 nnoremap <silent> <Leader>; :Commands<CR>
 nnoremap <silent> <Leader>h :Helptags<CR>
-nnoremap <silent> <Leader>ll :Lines<CR>
-nnoremap <silent> <Leader>lb :BLines<CR>
-nnoremap <silent> <Leader>tt :Tags<CR>
+nnoremap <silent> <Leader>cm :Commits<CR>
+nnoremap <silent> <Leader>rg :Rg<CR>
 
-command! -bang -nargs=* Find call fzf#vim#grep('rg --column --line-number --no-heading --fixed-strings --ignore-case --no-ignore --hidden --follow --glob "!.git/*" --color "always" '.shellescape(<q-args>).'| tr -d "\017"', 1, <bang>0)
-
-set grepprg=rg\ --vimgrep
-
-" Plug 'majutsushi/tagbar', {'on': ['TagbarOpen']}
-" nnoremap <leader>tag :TagbarOpen fjc<cr>
+let g:fzf_layout = {'window': {'width': 0.95, 'height': 0.5, 'border': 'rounded'}}
 
 " Working with the quickfix list
 map <C-n> :cnext<CR>
@@ -281,6 +275,8 @@ let g:gitgutter_diff_args = '--ignore-space-at-eol'
 nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
 
+Plug 'rhysd/git-messenger.vim'
+
 " ##### External #####
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
 let g:firenvim_config = {'localSettings': {}}
@@ -317,6 +313,9 @@ nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
 nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
+nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
+nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
+nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 set omnifunc=v:lua.vim.lsp.omnifunc
 
 " autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
