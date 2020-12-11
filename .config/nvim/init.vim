@@ -94,25 +94,6 @@ set backspace=2
 autocmd BufWritePre * :%s/\s\+$//e
 
 """""""""""""""""""""""""""""""""""
-" Grep
-"""""""""""""""""""""""""""""""""""
-" nnoremap <leader>g :set operatorfunc=GrepOperator<cr>g@
-" vnoremap <leader>g :<c-u>call GrepOperator(visualmode())<cr>
-"
-" function! GrepOperator(type)
-"     if a:type ==# 'v'
-"         normal! `<v`>y
-"     elseif a:type ==# 'char'
-"         normal! `[v`]y
-"     else
-"         return
-"     endif
-"
-"     silent execute "grep! -nHIRs " . shellescape(@@) . " ."
-"     copen
-" endfunction
-
-"""""""""""""""""""""""""""""""""""
 " Window Management Stuff
 """""""""""""""""""""""""""""""""""
 " Move to next or previous tab
@@ -176,12 +157,16 @@ inoremap <C-e> <Esc>A
 
 " ##### NAVIGATION #####
 Plug 'airblade/vim-rooter'
+" let g:rooter_manual_only = 1
+
 Plug 'tpope/vim-repeat'
 
 Plug 'scrooloose/nerdtree'
 Plug 'ryanoasis/vim-devicons'
 Plug 'Xuyuanp/nerdtree-git-plugin'
 nnoremap <F6> :NERDTreeToggle<cr>
+
+Plug 'yssl/QFEnter'
 
 Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
 Plug 'junegunn/fzf.vim'
@@ -214,15 +199,19 @@ nnoremap <leader>a :cclose<CR>
 " ##### NAVIGATION #####
 
 " ##### LANGUAGES #####
-Plug 'neovim/nvim-lsp'
-Plug 'liuchengxu/vista.vim'
+Plug 'neovim/nvim-lspconfig'
+" Plug 'liuchengxu/vista.vim'
 
-let g:vista_default_executive = 'nvim_lsp'
-nnoremap <leader>tag :Vista!!<cr>
+" let g:vista_default_executive = 'nvim_lsp'
+" nnoremap <leader>tag :Vista!!<cr>
+
+Plug 'nvim-lua/completion-nvim'
 
 " ##### BAZEL #####
 Plug 'google/vim-maktaba'
 Plug 'bazelbuild/vim-bazel'
+
+Plug 'cappyzawa/starlark.vim'
 
 " ##### GOLANG #####
 " Plug 'fatih/vim-go', {'for': ['go'], 'do': ':GoUpdateBinaries'}
@@ -244,14 +233,20 @@ Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
 
 " " #### TOML ####
-" Plug 'cespare/vim-toml', {'for': ['toml']}
+Plug 'cespare/vim-toml', {'for': ['toml']}
 " au BufRead,BufNewFile Pipfile set filetype=toml
+
+" " #### rego ####
+Plug 'tsandall/vim-rego', {'for': ['rego']}
+
 
 " " #### jsonnet ####
 Plug 'google/vim-jsonnet', {'for': ['jsonnet']}
 
+" " #### protobuf ####
+Plug 'uarun/vim-protobuf', {'for': ['proto']}
 
-" " #### terraform ####
+" #### terraform ####
 Plug 'hashivim/vim-terraform', {'for': ['terraform']}
 let g:terraform_fmt_on_save = 1
 let g:terraform_fold_sections = 1
@@ -266,6 +261,9 @@ Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 au BufRead,BufNewFile Dockerfile set filetype=dockerfile
 au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
+" ##### Mustache #####
+Plug 'mustache/vim-mustache-handlebars', {'for': ['mustache']}
+
 " ##### LANGUAGES #####
 
 " ##### GIT #####
@@ -276,6 +274,8 @@ nmap [h <Plug>GitGutterPrevHunk
 nmap ]h <Plug>GitGutterNextHunk
 
 Plug 'rhysd/git-messenger.vim'
+
+let g:git_messenger_always_into_popup = v:true
 
 " ##### External #####
 Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
@@ -295,19 +295,98 @@ call plug#end()
 
 " ##### LSP #####
 lua << EOF
-local nvim_lsp = require 'nvim_lsp'
+local lspconfig = require 'lspconfig'
+local configs = require 'lspconfig/configs'
 
-nvim_lsp.gopls.setup{}
+local on_attach_vim = function(client)
+  require'completion'.on_attach(client)
+end
 
-nvim_lsp.sumneko_lua.setup{}
-
-nvim_lsp.pyls_ms.setup{
-    log_level = vim.lsp.protocol.MessageType.Log;
-    message_level = vim.lsp.protocol.MessageType.Log;
+lspconfig.gopls.setup{
+  on_attach=on_attach_vim;
+  cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"};
+  settings = {
+    usePlaceholders = true;
+    experimentalWorkspaceModule = true;
+  };
 }
 
-nvim_lsp.bashls.setup{}
+lspconfig.rust_analyzer.setup{}
+
+lspconfig.cmake.setup{}
+
+-- lspconfig.sumneko_lua.setup{}
+
+-- lspconfig.pyls.setup{}
+
+-- if not nvim_lsp.pyright then
+--   configs.pyright = {
+--     default_config = {
+--       cmd = {"pyright-langserver", "--stdio"};
+--       filetypes = {"python"};
+--       root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirements.txt");
+--       settings = {
+--         analysis = { autoSearchPaths = true; };
+--         pyright = { useLibraryCodeForTypes = true; };
+--       };
+--       before_init = function(initialize_params)
+--         initialize_params['workspaceFolders'] = {{
+--           name = 'workspace',
+--           uri = initialize_params['rootUri']
+--         }}
+--       end
+--     };
+--   }
+-- end
+-- nvim_lsp.pyright.setup{}
+
+lspconfig.bashls.setup{
+  on_attach=on_attach_vim;
+}
+
+lspconfig.terraformls.setup{
+  on_attach=on_attach_vim;
+  cmd={'terraform-ls', 'serve', '-log-file', '/tmp/terraform-ls.log'};
+}
+
+lspconfig.yamlls.setup{
+  on_attach=on_attach_vim;
+}
+
+-- organize imports sync
+function go_org_imports(options, timeout_ms)
+  local context = { source = { organizeImports = true } }
+  vim.validate { context = { context, 't', true } }
+  local params = vim.lsp.util.make_range_params()
+  params.context = context
+
+  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
+  if not result then return end
+  result = result[1].result
+  if not result then return end
+  edit = result[1].edit
+  vim.lsp.util.apply_workspace_edit(edit)
+end
+
+-- vim.api.nvim_command("au BufWritePre *.go lua go_org_imports({}, 1000)")
+
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+  vim.lsp.diagnostic.on_publish_diagnostics, {
+    virtual_text = {
+      spacing = 4,
+      prefix = "■",
+    }
+  }
+)
 EOF
+
+call sign_define("LspDiagnosticsErrorSign", {"text" : "✗", "texthl" : "LspDiagnosticsError"})
+call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠", "texthl" : "LspDiagnosticsWarning"})
+call sign_define("LspDiagnosticsInformationSign", {"text" : "ⓘ", "texthl" : "LspDiagnosticsInformation"})
+call sign_define("LspDiagnosticsHintSign", {"text" : "✓", "texthl" : "LspDiagnosticsHint"})
+
+set completeopt=menuone,noinsert,noselect
+set shortmess+=c
 
 nnoremap <silent> gd    <cmd>lua vim.lsp.buf.definition()<CR>
 nnoremap <silent> gh     <cmd>lua vim.lsp.buf.hover()<CR>
@@ -315,10 +394,12 @@ nnoremap <silent> gD    <cmd>lua vim.lsp.buf.implementation()<CR>
 nnoremap <silent> <c-k> <cmd>lua vim.lsp.buf.signature_help()<CR>
 nnoremap <silent> gr    <cmd>lua vim.lsp.buf.references()<CR>
 nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
-nnoremap <silent> g0    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gs    <cmd>lua vim.lsp.buf.document_symbol()<CR>
+nnoremap <silent> gnd   <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 set omnifunc=v:lua.vim.lsp.omnifunc
 
-" autocmd BufWritePre *.go lua vim.lsp.buf.formatting()
+autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync({}, 1000)
+autocmd BufWritePre *.tf lua vim.lsp.buf.formatting_sync({}, 1000)
 
 colorscheme onedark
 set termguicolors

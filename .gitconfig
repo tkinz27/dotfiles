@@ -4,14 +4,16 @@
 [push]
 	default = simple
 [merge]
-    tool = vim -d
+    tool = nvimdiff
     conflictstyle = diff3
 [mergetool]
     prompt = false
 [diff]
-    tool = vim -d
+    tool = nvimdiff
 [difftool]
     prompt = false
+[difftool "nvimdiff"]
+    cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
     mt = mergetool
     s = status --porcelain
@@ -29,14 +31,15 @@
     sc = show --pretty="" --name-only
 [core]
 	excludesfile = ~/.gitignore
+	attributesfile = /home/kinsley/.gitattributes
 [credential]
 	helper = store
 [fetch]
 	prune = true
+[url "git@github.com:"]
+	insteadOf = https://github.com/
 [filter "lfs"]
-	clean = git-lfs clean -- %f
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process
 	required = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+	clean = git-lfs clean -- %f

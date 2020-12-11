@@ -1,2 +1,2 @@
 #export ZDOTDIR=~/.config/zsh-zplug
-export ZDOTDIR=~/.config/zsh-antibody
+export ZDOTDIR=~/.config/zsh-sheldon
