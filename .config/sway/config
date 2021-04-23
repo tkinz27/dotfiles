@@ -22,7 +22,7 @@ set $menu bash -c "source /etc/profile.d/apps-bin-path.sh; j4-dmenu-desktop"  | 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in @datadir@/backgrounds/sway/)
-output * bg ~/Pictures/solar-system.png fill
+output * bg ~/Pictures/spiderverse.png fill
 #
 # Example configuration:
 #

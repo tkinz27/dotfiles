@@ -20,6 +20,8 @@ for dump in ~/.zcompdump(N.mh+24); do
 done
 compinit -C
 
+# eval "$(starship init zsh)"
+
 for file in ~/.config/bash/*; do
     [ "$file" != "powerline" ] && source ${file}
 done

@@ -132,6 +132,7 @@ Plug 'vim-airline/vim-airline-themes'
 let g:airline#extensions#tabline#enabled = 1
 let g:airline_powerline_fonts = 1
 let g:airline_theme='distinguished'
+let g:airline#extensions#nvimlsp#enabled = 0
 
 Plug 'joshdick/onedark.vim'
 
@@ -200,6 +201,7 @@ nnoremap <leader>a :cclose<CR>
 
 " ##### LANGUAGES #####
 Plug 'neovim/nvim-lspconfig'
+Plug 'norcalli/snippets.nvim'
 " Plug 'liuchengxu/vista.vim'
 
 " let g:vista_default_executive = 'nvim_lsp'
@@ -207,20 +209,17 @@ Plug 'neovim/nvim-lspconfig'
 
 Plug 'nvim-lua/completion-nvim'
 
+" ##### javascript #####
+Plug 'prettier/vim-prettier', {
+    \ 'do': 'yarn install',
+    \ 'for': ['javascript', 'typescript', 'css', 'less', 'scss', 'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'] }
+
 " ##### BAZEL #####
 Plug 'google/vim-maktaba'
 Plug 'bazelbuild/vim-bazel'
 
 Plug 'cappyzawa/starlark.vim'
 
-" ##### GOLANG #####
-" Plug 'fatih/vim-go', {'for': ['go'], 'do': ':GoUpdateBinaries'}
-
-" ##### RUST #####
-" Plug 'rust-lang/rust.vim', {'for': ['rust']}
-" let g:rustfmt_autosave = 1
-" let g:rustfmt_command = "cargo fmt -- "
-"
 Plug 'elzr/vim-json', {'for': ['json']}
 let g:vim_json_syntax_conceal = 0
 autocmd FileType json setlocal foldmethod=syntax
@@ -261,6 +260,9 @@ Plug 'ekalinin/Dockerfile.vim', {'for': ['dockerfile']}
 au BufRead,BufNewFile Dockerfile set filetype=dockerfile
 au BufRead,BufNewFile Dockerfile* set filetype=dockerfile
 
+" ##### Helm #####
+Plug 'towolf/vim-helm', {'for': ['helm']}
+
 " ##### Mustache #####
 Plug 'mustache/vim-mustache-handlebars', {'for': ['mustache']}
 
@@ -298,50 +300,94 @@ lua << EOF
 local lspconfig = require 'lspconfig'
 local configs = require 'lspconfig/configs'
 
+local snippets = require 'snippets'
+snippets.use_suggested_mappings()
+
 local on_attach_vim = function(client)
   require'completion'.on_attach(client)
 end
 
 lspconfig.gopls.setup{
-  on_attach=on_attach_vim;
-  cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"};
+  on_attach=on_attach_vim,
+  cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
   settings = {
-    usePlaceholders = true;
-    experimentalWorkspaceModule = true;
-  };
+    gopls = {
+      analyses = {
+        unusedParams = true,
+        ST1003 = false,
+      },
+      directoryFilters = {
+        "-build",
+      },
+      staticcheck = true,
+      usePlaceholders = true,
+      experimentalWorkspaceModule = true,
+    },
+  },
 }
 
-lspconfig.rust_analyzer.setup{}
+lspconfig.tsserver.setup{
+  on_attach=on_attach_vim,
+}
 
-lspconfig.cmake.setup{}
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities.textDocument.completion.completionItem.snippetSupport = true
+lspconfig.html.setup{
+  capabilities=capabilities,
+  on_attach=on_attach_vim,
+}
 
--- lspconfig.sumneko_lua.setup{}
+lspconfig.rust_analyzer.setup{
+  on_attach=on_attach_vim,
+}
+
+lspconfig.cmake.setup{
+  on_attach=on_attach_vim,
+}
+
+
+local system_name
+if vim.fn.has("mac") == 1 then
+    system_name = "macOS"
+elseif vim.fn.has("unix") == 1 then
+    system_name = "Linux"
+else
+    print("Unsupported system for sumneko")
+end
+
+local sumneko_root_path = vim.fn.expand("~/code/github.com/sumneko/lua-language-server")
+local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
+
+lspconfig.sumneko_lua.setup{
+  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
+  settings = {
+    Lua = {
+        runtime = {
+            version = 'LuaJIT',
+            path = vim.split(package.path, ';'),
+        },
+        diagnostics = {
+            globals = {'vim'},
+        },
+        workspace = {
+            library = {
+                [vim.fn.expand('$VIMRUNTIME/lua')] = true,
+                [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
+            },
+        },
+        telemetry = {
+            enable = false
+        },
+    },
+  },
+  on_attach=on_attach_vim,
+}
 
 -- lspconfig.pyls.setup{}
-
--- if not nvim_lsp.pyright then
---   configs.pyright = {
---     default_config = {
---       cmd = {"pyright-langserver", "--stdio"};
---       filetypes = {"python"};
---       root_dir = util.root_pattern(".git", "setup.py", "setup.cfg", "pyproject.toml", "requirements.txt");
---       settings = {
---         analysis = { autoSearchPaths = true; };
---         pyright = { useLibraryCodeForTypes = true; };
---       };
---       before_init = function(initialize_params)
---         initialize_params['workspaceFolders'] = {{
---           name = 'workspace',
---           uri = initialize_params['rootUri']
---         }}
---       end
---     };
---   }
--- end
--- nvim_lsp.pyright.setup{}
+lspconfig.pyright.setup{}
 
 lspconfig.bashls.setup{
-  on_attach=on_attach_vim;
+  on_attach=on_attach_vim,
 }
 
 lspconfig.terraformls.setup{
@@ -349,26 +395,31 @@ lspconfig.terraformls.setup{
   cmd={'terraform-ls', 'serve', '-log-file', '/tmp/terraform-ls.log'};
 }
 
-lspconfig.yamlls.setup{
-  on_attach=on_attach_vim;
-}
+-- lspconfig.yamlls.setup{
+--   on_attach=on_attach_vim;
+-- }
 
--- organize imports sync
-function go_org_imports(options, timeout_ms)
-  local context = { source = { organizeImports = true } }
-  vim.validate { context = { context, 't', true } }
-  local params = vim.lsp.util.make_range_params()
-  params.context = context
+function goimports(timeoutms)
+    local context = { source = { organizeImports = true } }
+    vim.validate { context = { context, "t", true } }
 
-  local result = vim.lsp.buf_request_sync(0, "textDocument/codeAction", params, timeout_ms)
-  if not result then return end
-  result = result[1].result
-  if not result then return end
-  edit = result[1].edit
-  vim.lsp.util.apply_workspace_edit(edit)
+    local params = vim.lsp.util.make_range_params()
+    params.context = context
+
+    local method = "textDocument/codeAction"
+    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
+    if resp and resp[1] then
+      local result = resp[1].result
+      if result and result[1] then
+        local edit = result[1].edit
+        vim.lsp.util.apply_workspace_edit(edit)
+      end
+    end
+
+    vim.lsp.buf.formatting_sync(nil, 1000)
 end
 
--- vim.api.nvim_command("au BufWritePre *.go lua go_org_imports({}, 1000)")
+vim.api.nvim_command("au BufWritePre *.go lua goimports(1000)")
 
 vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
   vim.lsp.diagnostic.on_publish_diagnostics, {
@@ -397,9 +448,6 @@ nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gs    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gnd   <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 set omnifunc=v:lua.vim.lsp.omnifunc
-
-autocmd BufWritePre *.go lua vim.lsp.buf.formatting_sync({}, 1000)
-autocmd BufWritePre *.tf lua vim.lsp.buf.formatting_sync({}, 1000)
 
 colorscheme onedark
 set termguicolors

@@ -1,5 +1,4 @@
-setopt share_history 
-
+setopt share_history
 
 source <(sheldon source)
 

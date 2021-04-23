@@ -1,8 +1,10 @@
 # theme
-mafredri/zsh-async
-sindresorhus/pure
+# mafredri/zsh-async
+# sindresorhus/pure
 
 zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
 zsh-users/zsh-syntax-highlighting
 zsh-users/zsh-history-substring-search
+
+wfxr/forgit

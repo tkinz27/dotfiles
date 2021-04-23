@@ -1,5 +1,5 @@
 [user]
-	email = tkinsley.9@gmail.com
+	email = tony.kinsley@braincorp.com
 	name = Tony Kinsley
 [push]
 	default = simple
@@ -15,6 +15,7 @@
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
+    su = submodule update --init --recursive
     mt = mergetool
     s = status --porcelain
     edit = "!$EDITOR $(git status --porcelain | awk '{print $2}')"
@@ -43,3 +44,8 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[pull]
+	rebase = true
+[maintenance]
+	repo = /home/tony.kinsley/code/github.com/braincorp/shining_software
+	repo = /home/tony.kinsley/code/github.com/braincorp/titanium
