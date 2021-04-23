@@ -7,3 +7,6 @@
 [submodule "rofi-themes"]
 	path = rofi-themes
 	url = git@github.com:davatorium/rofi-themes.git
+[submodule ".local/share/nvim/site/pack/packer/start/packer.nvim"]
+	path = .local/share/nvim/site/pack/packer/start/packer.nvim
+	url = git@github.com:wbthomason/packer.nvim
