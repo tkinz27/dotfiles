@@ -1,61 +1,10 @@
-""""""""""""""""""""""""""""""""""""""""""""""""
-" Generic setup
-""""""""""""""""""""""""""""""""""""""""""""""""
-filetype plugin indent on
-
-let mapleader = ","
-
-"""""""""""""""""""""""""""""""
-" => VIM user interface
-"""""""""""""""""""""""""""""""
-" Turn on the Wild menu
-set wildmode=longest:full,full
-set wildmenu
-" Ignore compiled files
-set wildignore=*.o,*~,*.pyc,*/tmp/*,*.zip
-" Always show current position
-set ruler
-" When searching try to be smart about cases
-set smartcase
-" Highlight search results
-set hlsearch
-" Find words as typing out search
-set incsearch
-" Start scrolling before cursor hits top/bottom
-set scrolloff=5
-" Number of lines to jump when scrolling off screen
-" -# = percentage
-set scrolljump=-10
-
-" Set the paste toggle
-map <F10> :set paste<cr>
-map <F11> :set nopaste<cr>
-imap <F10> <C-O>:set paste<CR>
-imap <F11> <nop>
-set pastetoggle=<F11>
-
-set diffopt+=vertical
+" new lua config
+lua require('locals')
 
 " Quick funtion that will
 " highlight over 80 columns
 " autocmd FileType cpp :autocmd! BufWritePre * :match ErrorMsg '\%>80v.\+'
 
-" Use Unix as the standard file type
-set ffs=unix,mac,dos
-
-""""""""""""""""""""""""""""
-" => Tags
-""""""""""""""""""""""""""""
-" setup tags
-set tags=./.tags;/
-
-""""""""""""""""""""""""""""
-" => Files, backups and undo
-""""""""""""""""""""""""""""
-" Turn backup off, since most stuff is in SVN, git etc.
-set nobackup
-set nowb
-set noswapfile
 
 " Echo the full path of file being edited
 nnoremap <leader>path :echo expand('%:p')<cr>
@@ -70,25 +19,8 @@ nnoremap <leader>save :w !sudo dd of=%<cr>
 """"""""""""""""""""""""""""
 " => Text, tab and indent related
 """"""""""""""""""""""""""""
-" Use spaces instead of tabs
-set expandtab
-
 " Do not expand tab for Makefiles
 autocmd FileType make set noexpandtab
-
-" Be smart when using tabs
-set smarttab
-
-" 1 tab == 4 spaces
-set shiftwidth=4
-set tabstop=4
-
-" Auto indent and wrap lines
-set ai
-set wrap
-
-" Set the backspace to work as expected
-set backspace=2
 
 " Auto remove trailing whitespace on write
 autocmd BufWritePre * :%s/\s\+$//e
@@ -108,8 +40,6 @@ nnoremap <leader>> :vertical resize +10<cr>
 nnoremap <leader>wvh <C-w>t<C-w>K
 nnoremap <leader>whv <C-w>t<C-w>H
 
-set background=dark
-
 """""""""""""""""""""""""""""""""""
 " Neovim terminal support
 """""""""""""""""""""""""""""""""""
@@ -117,29 +47,14 @@ if has('nvim')
     tnoremap <Esc> <C-\><C-n>
 endif
 
+
 """"""""""""""""""""""""""""""""""""""""""""""""
 " vim-plug setup
 """"""""""""""""""""""""""""""""""""""""""""""""
 
+
 call plug#begin('~/.local/share/nvim/plugged')
 
-
-" ##### APPEARENCE #####
-set termguicolors
-
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-let g:airline#extensions#tabline#enabled = 1
-let g:airline_powerline_fonts = 1
-let g:airline_theme='distinguished'
-let g:airline#extensions#nvimlsp#enabled = 0
-
-Plug 'joshdick/onedark.vim'
-
-Plug 'Yggdroot/indentLine'
-Plug 'machakann/vim-highlightedyank'
-
-" ##### APPEARENCE #####
 
 if has('nvim')
     set inccommand=nosplit
@@ -157,40 +72,35 @@ inoremap <C-e> <Esc>A
 " ##### TEXT MANIPULATION #####
 
 " ##### NAVIGATION #####
-Plug 'airblade/vim-rooter'
+" Plug 'airblade/vim-rooter'
 " let g:rooter_manual_only = 1
 
-Plug 'tpope/vim-repeat'
+" Plug 'tpope/vim-repeat'
 
-Plug 'scrooloose/nerdtree'
-Plug 'ryanoasis/vim-devicons'
-Plug 'Xuyuanp/nerdtree-git-plugin'
-nnoremap <F6> :NERDTreeToggle<cr>
+" Plug 'yssl/QFEnter'
 
-Plug 'yssl/QFEnter'
-
-Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
-Plug 'junegunn/fzf.vim'
-nmap <leader><tab> <plug>(fzf-maps-n)
-xmap <leader><tab> <plug>(fzf-maps-x)
-omap <leader><tab> <plug>(fzf-maps-o)
+" Plug 'junegunn/fzf', {'dir': '~/.fzf', 'do': './install --all'}
+" Plug 'junegunn/fzf.vim'
+" nmap <leader><tab> <plug>(fzf-maps-n)
+" xmap <leader><tab> <plug>(fzf-maps-x)
+" omap <leader><tab> <plug>(fzf-maps-o)
 
 " Insert mode completion
-imap <c-x><c-k> <plug>(fzf-complete-word)
-imap <c-x><c-f> <plug>(fzf-complete-path)
-imap <c-x><c-j> <plug>(fzf-complete-file-ag)
-imap <c-x><c-l> <plug>(fzf-complete-line)
+" imap <c-x><c-k> <plug>(fzf-complete-word)
+" imap <c-x><c-f> <plug>(fzf-complete-path)
+" imap <c-x><c-j> <plug>(fzf-complete-file-ag)
+" imap <c-x><c-l> <plug>(fzf-complete-line)
 
-nnoremap <silent> <Leader>ff :Files<CR>
-nnoremap <silent> <Leader>fc :Colors<CR>
-nnoremap <silent> <Leader>fh :History<CR>
-nnoremap <silent> <Leader>bb :Buffers<CR>
-nnoremap <silent> <Leader>; :Commands<CR>
-nnoremap <silent> <Leader>h :Helptags<CR>
-nnoremap <silent> <Leader>cm :Commits<CR>
-nnoremap <silent> <Leader>rg :Rg<CR>
+" nnoremap <silent> <Leader>ff :Files<CR>
+" nnoremap <silent> <Leader>fc :Colors<CR>
+" nnoremap <silent> <Leader>fh :History<CR>
+" nnoremap <silent> <Leader>bb :Buffers<CR>
+" nnoremap <silent> <Leader>; :Commands<CR>
+" nnoremap <silent> <Leader>h :Helptags<CR>
+" nnoremap <silent> <Leader>cm :Commits<CR>
+" nnoremap <silent> <Leader>rg :Rg<CR>
 
-let g:fzf_layout = {'window': {'width': 0.95, 'height': 0.5, 'border': 'rounded'}}
+" let g:fzf_layout = {'window': {'width': 0.95, 'height': 0.5, 'border': 'rounded'}}
 
 " Working with the quickfix list
 map <C-n> :cnext<CR>
@@ -200,14 +110,13 @@ nnoremap <leader>a :cclose<CR>
 " ##### NAVIGATION #####
 
 " ##### LANGUAGES #####
-Plug 'neovim/nvim-lspconfig'
-Plug 'norcalli/snippets.nvim'
-" Plug 'liuchengxu/vista.vim'
+" Plug 'neovim/nvim-lspconfig'
+" Plug 'norcalli/snippets.nvim'
 
 " let g:vista_default_executive = 'nvim_lsp'
 " nnoremap <leader>tag :Vista!!<cr>
 
-Plug 'nvim-lua/completion-nvim'
+" Plug 'nvim-lua/completion-nvim'
 
 " ##### javascript #####
 Plug 'prettier/vim-prettier', {
@@ -279,156 +188,11 @@ Plug 'rhysd/git-messenger.vim'
 
 let g:git_messenger_always_into_popup = v:true
 
-" ##### External #####
-Plug 'glacambre/firenvim', { 'do': { _ -> firenvim#install(0) } }
-let g:firenvim_config = {'localSettings': {}}
-let fc = g:firenvim_config['localSettings']
-let fc['.*'] = { 'takeover': 'never' }
-
-if exists('g:started_by_firenvim')
-    nnoremap <leader>exit :call firenvim#focus_page()<CR>
-endif
-
-" Add custom plugins
-" Plug '~/code/github.com/tkinz27/nvim-symbar'
-
 call plug#end()
 
 
 " ##### LSP #####
 lua << EOF
-local lspconfig = require 'lspconfig'
-local configs = require 'lspconfig/configs'
-
-local snippets = require 'snippets'
-snippets.use_suggested_mappings()
-
-local on_attach_vim = function(client)
-  require'completion'.on_attach(client)
-end
-
-lspconfig.gopls.setup{
-  on_attach=on_attach_vim,
-  cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
-  settings = {
-    gopls = {
-      analyses = {
-        unusedParams = true,
-        ST1003 = false,
-      },
-      directoryFilters = {
-        "-build",
-      },
-      staticcheck = true,
-      usePlaceholders = true,
-      experimentalWorkspaceModule = true,
-    },
-  },
-}
-
-lspconfig.tsserver.setup{
-  on_attach=on_attach_vim,
-}
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-lspconfig.html.setup{
-  capabilities=capabilities,
-  on_attach=on_attach_vim,
-}
-
-lspconfig.rust_analyzer.setup{
-  on_attach=on_attach_vim,
-}
-
-lspconfig.cmake.setup{
-  on_attach=on_attach_vim,
-}
-
-
-local system_name
-if vim.fn.has("mac") == 1 then
-    system_name = "macOS"
-elseif vim.fn.has("unix") == 1 then
-    system_name = "Linux"
-else
-    print("Unsupported system for sumneko")
-end
-
-local sumneko_root_path = vim.fn.expand("~/code/github.com/sumneko/lua-language-server")
-local sumneko_binary = sumneko_root_path.."/bin/"..system_name.."/lua-language-server"
-
-lspconfig.sumneko_lua.setup{
-  cmd = {sumneko_binary, "-E", sumneko_root_path .. "/main.lua"};
-  settings = {
-    Lua = {
-        runtime = {
-            version = 'LuaJIT',
-            path = vim.split(package.path, ';'),
-        },
-        diagnostics = {
-            globals = {'vim'},
-        },
-        workspace = {
-            library = {
-                [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-                [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-            },
-        },
-        telemetry = {
-            enable = false
-        },
-    },
-  },
-  on_attach=on_attach_vim,
-}
-
--- lspconfig.pyls.setup{}
-lspconfig.pyright.setup{}
-
-lspconfig.bashls.setup{
-  on_attach=on_attach_vim,
-}
-
-lspconfig.terraformls.setup{
-  on_attach=on_attach_vim;
-  cmd={'terraform-ls', 'serve', '-log-file', '/tmp/terraform-ls.log'};
-}
-
--- lspconfig.yamlls.setup{
---   on_attach=on_attach_vim;
--- }
-
-function goimports(timeoutms)
-    local context = { source = { organizeImports = true } }
-    vim.validate { context = { context, "t", true } }
-
-    local params = vim.lsp.util.make_range_params()
-    params.context = context
-
-    local method = "textDocument/codeAction"
-    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
-    if resp and resp[1] then
-      local result = resp[1].result
-      if result and result[1] then
-        local edit = result[1].edit
-        vim.lsp.util.apply_workspace_edit(edit)
-      end
-    end
-
-    vim.lsp.buf.formatting_sync(nil, 1000)
-end
-
-vim.api.nvim_command("au BufWritePre *.go lua goimports(1000)")
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = {
-      spacing = 4,
-      prefix = "■",
-    }
-  }
-)
 EOF
 
 call sign_define("LspDiagnosticsErrorSign", {"text" : "✗", "texthl" : "LspDiagnosticsError"})
@@ -448,9 +212,3 @@ nnoremap <silent> gW    <cmd>lua vim.lsp.buf.workspace_symbol()<CR>
 nnoremap <silent> gs    <cmd>lua vim.lsp.buf.document_symbol()<CR>
 nnoremap <silent> gnd   <cmd>lua vim.lsp.diagnostic.goto_next()<CR>
 set omnifunc=v:lua.vim.lsp.omnifunc
-
-colorscheme onedark
-set termguicolors
-
-highlight Normal ctermbg=none guibg=none
-highlight NonText ctermbg=none guibg=none
