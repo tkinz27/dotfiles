@@ -33,6 +33,24 @@ return require('packer').startup(function(use)
       requires = 'kyazdani42/nvim-web-devicons',
   }
 
+  use {
+    'nvim-telescope/telescope.nvim',
+    requires = {{'nvim-lua/popup.nvim'}, {'nvim-lua/plenary.nvim'}}
+  }
+
+  use {
+    'nvim-telescope/telescope-github.nvim',
+    requires = 'nvim-telescope/telescope.nvim',
+  }
+
+  -- use 'airblade/vim-rooter'
+  -- use 'yssl/QFEnter'
+
+  ----------------------------------------
+  -- Text Manipulation
+  ----------------------------------------
+  use 'tpope/vim-surround'
+
   ----------------------------------------
   -- Languages
   ----------------------------------------

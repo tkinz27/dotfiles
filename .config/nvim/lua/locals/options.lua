@@ -1,25 +1,29 @@
 
 vim.o.wildmenu = true
-vim.o.wildmode = 'longest,list,full'
+vim.o.wildmode = 'longest:full,full'
 vim.o.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'
-vim.o.wildoptions = 'pum'
 
 vim.o.incsearch = true
 vim.o.ignorecase = true -- ignore case when searching
 vim.o.smartcase = true -- unless there are caps in search
-vim.o.cursorline = true -- highlight current line
+vim.wo.cursorline = true -- highlight current line
 vim.o.scrolloff = 10
+vim.wo.scrolloff = 10
 
 -- tabs
-vim.o.wrap = true
+vim.wo.wrap = true
 vim.o.expandtab = true
+vim.bo.expandtab = true
 vim.o.tabstop = 4
+vim.bo.tabstop = 4
 vim.o.shiftwidth = 4
+vim.bo.shiftwidth = 4
 vim.o.softtabstop = 4
+vim.bo.softtabstop = 4
 
 vim.o.backup = false
 vim.o.writebackup = false
-vim.o.swapfile = false
+vim.bo.swapfile = false
 
 -- vim.o.diffopt = vim.o.diffopt .. 'vertical' -- TODO doesn't work
 vim.o.mouse = 'n'

@@ -72,7 +72,6 @@ inoremap <C-e> <Esc>A
 " ##### TEXT MANIPULATION #####
 
 " ##### NAVIGATION #####
-" Plug 'airblade/vim-rooter'
 " let g:rooter_manual_only = 1
 
 " Plug 'tpope/vim-repeat'
@@ -110,9 +109,6 @@ nnoremap <leader>a :cclose<CR>
 " ##### NAVIGATION #####
 
 " ##### LANGUAGES #####
-" Plug 'neovim/nvim-lspconfig'
-" Plug 'norcalli/snippets.nvim'
-
 " let g:vista_default_executive = 'nvim_lsp'
 " nnoremap <leader>tag :Vista!!<cr>
 
@@ -139,10 +135,6 @@ Plug 'mitsuhiko/vim-jinja', {'for': ['jinja']}
 " " #### YAML ####
 Plug 'stephpy/vim-yaml', {'for': ['yaml']}
 Plug 'pedrohdz/vim-yaml-folds', {'for': ['yaml']}
-
-" " #### TOML ####
-Plug 'cespare/vim-toml', {'for': ['toml']}
-" au BufRead,BufNewFile Pipfile set filetype=toml
 
 " " #### rego ####
 Plug 'tsandall/vim-rego', {'for': ['rego']}
@@ -190,10 +182,6 @@ let g:git_messenger_always_into_popup = v:true
 
 call plug#end()
 
-
-" ##### LSP #####
-lua << EOF
-EOF
 
 call sign_define("LspDiagnosticsErrorSign", {"text" : "✗", "texthl" : "LspDiagnosticsError"})
 call sign_define("LspDiagnosticsWarningSign", {"text" : "⚠", "texthl" : "LspDiagnosticsWarning"})
