@@ -1,7 +1,11 @@
+vim.g.mapleader = ','
 
 vim.o.wildmenu = true
 vim.o.wildmode = 'longest:full,full'
 vim.o.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'
+vim.o.completeopt = 'menuone,noinsert,noselect'
+vim.o.shortmess = vim.o.shortmess..'c'
+vim.o.inccommand = "nosplit"
 
 vim.o.incsearch = true
 vim.o.ignorecase = true -- ignore case when searching
@@ -41,3 +45,19 @@ vim.o.formatoptions = vim.o.formatoptions
                     + 'j'     -- Auto-remove comments if possible.
                     - '2'     -- I'm not in gradeschool anymore
 ]]--
+
+local mapopts = {noremap=true, silent=true}
+vim.api.nvim_set_keymap('n', '<leader>erc', ':vsp ~/.config/nvim/init.vim<cr>', mapopts)
+vim.api.nvim_set_keymap('n', '<leader>path', [[:echo expand('%:p')<cr>]], mapopts)
+
+vim.api.nvim_set_keymap('n', '<leader>save', [[:w !sudo dd of=%<cr>]], mapopts)
+
+vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], {noremap=true, silent=true})
+
+vim.api.nvim_set_keymap('i', '<C-a>', '<Esc>I', {noremap=true, silent=true})
+vim.api.nvim_set_keymap('i', '<C-e>', '<Esc>A', {noremap=true, silent=true})
+
+vim.cmd [[autocmd BufWritePre * :%s/\s\+$//e]]
+
+-- better way for this?
+vim.cmd [[autocmd FileType make set noexpandtab]]

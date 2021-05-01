@@ -1,14 +1,73 @@
 local lspconfig = require 'lspconfig'
 
+-- diagnostic config
+vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
+    vim.lsp.diagnostic.on_publish_diagnostics, {
+        underline = false,
+        virtual_text = {spacing = 4, prefix = "■"},
+        signs = true,
+        update_in_insert = false,
+    }
+)
+
+-- signs
+vim.fn.sign_define("LspDiagnosticsErrorSign", {text="✗", texthl="LspDiagnosticsError"})
+vim.fn.sign_define("LspDiagnosticsWarningSign", {text="⚠", texthl="LspDiagnosticsWarning"})
+vim.fn.sign_define("LspDiagnosticsInformationSign", {text="ⓘ", texthl="LspDiagnosticsInformation"})
+vim.fn.sign_define("LspDiagnosticsHintSign", {text="✓", texthl="LspDiagnosticsHint"})
+
+local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
+updated_capabilities.textDocument.completion.completionItem.snippetSupport = true
+
 local snippets = require 'snippets'
 snippets.use_suggested_mappings()
 
-local on_attach_vim = function(client)
-  require'completion'.on_attach(client)
+local _attach = function(client)
+    require'completion'.on_attach(client)
+
+    vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+
+    local nmap = function(k, v)
+        local o = {noremap=true, silent=true}
+        vim.api.nvim_buf_set_keymap(0, 'n', k, v, o)
+    end
+    nmap('ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+    nmap('gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
+    nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    nmap('K', '<cmd>lua vim.lsp.buf.hover()<cr>')
+    nmap('<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+    nmap('dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>')
+    nmap('dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
+
+    -- Set autocommands conditional on server capabilities
+    if client.resolved_capabilities.document_highlight then
+        vim.cmd [[
+            augroup lsp_document_highlight
+                autocmd! * <buffer>
+                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
+                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
+            augroup END
+        ]]
+    end
+end
+
+local lsps = {
+    "pyright",
+    "tsserver",
+    "bashls",
+    "terraformls",
+    "rust_analyzer",
+    "cmake",
+    "html",
+}
+for _, s in ipairs(lsps) do
+    lspconfig[s].setup {
+        on_attach = _attach,
+        capabilities = updated_capabilities,
+    }
 end
 
 lspconfig.gopls.setup{
-  on_attach=on_attach_vim,
   cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
   settings = {
     gopls = {
@@ -24,9 +83,11 @@ lspconfig.gopls.setup{
       experimentalWorkspaceModule = true,
     },
   },
+  on_attach=_attach,
+  capabilities=updated_capabilities,
 }
 
-function goimports(timeoutms)
+function GoImports(timeoutms)
     local context = { source = { organizeImports = true } }
     vim.validate { context = { context, "t", true } }
 
@@ -45,28 +106,7 @@ function goimports(timeoutms)
 
     vim.lsp.buf.formatting_sync(nil, 1000)
 end
-
-vim.api.nvim_command("au BufWritePre *.go lua goimports(1000)")
-
-lspconfig.tsserver.setup{
-  on_attach=on_attach_vim,
-}
-
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities.textDocument.completion.completionItem.snippetSupport = true
-lspconfig.html.setup{
-  capabilities=capabilities,
-  on_attach=on_attach_vim,
-}
-
-lspconfig.rust_analyzer.setup{
-  on_attach=on_attach_vim,
-}
-
-lspconfig.cmake.setup{
-  on_attach=on_attach_vim,
-}
-
+vim.api.nvim_command("au BufWritePre *.go lua GoImports(1000)")
 
 local system_name
 if vim.fn.has("mac") == 1 then
@@ -102,28 +142,6 @@ lspconfig.sumneko_lua.setup{
         },
     },
   },
-  on_attach=on_attach_vim,
+  on_attach=_attach,
+  capabilities=updated_capabilities,
 }
-
--- lspconfig.pyls.setup{}
-lspconfig.pyright.setup{}
-
-lspconfig.bashls.setup{
-  on_attach=on_attach_vim,
-}
-
-lspconfig.terraformls.setup{
-  on_attach=on_attach_vim;
-  cmd={'terraform-ls', 'serve', '-log-file', '/tmp/terraform-ls.log'};
-}
-
-
-vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-  vim.lsp.diagnostic.on_publish_diagnostics, {
-    virtual_text = {
-      spacing = 4,
-      prefix = "■",
-    }
-  }
-)
-

@@ -1,3 +1,11 @@
+----------------------------------------
+-- nvim-tree.lua
+----------------------------------------
+vim.api.nvim_set_keymap('', '<F6>', [[:NvimTreeToggle<cr>]], {silent=true})
+
+----------------------------------------
+-- Telescope
+----------------------------------------
 local telescope = require('telescope')
 local actions = require('telescope.actions')
 
@@ -15,7 +23,7 @@ telescope.setup{
     mappings = {
       i = {
         ["<c-j>"] = actions.move_selection_next,
-	["<c-k>"] = actions.move_selection_previous,
+        ["<c-k>"] = actions.move_selection_previous,
       }
     }
   }
