@@ -51,5 +51,8 @@ vim.api.nvim_set_keymap(
   'n', '<leader>fll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]], opts
 )
 vim.api.nvim_set_keymap(
-  'n', '<leader>fref', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]], opts
+  'n', '<leader>lr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]], opts
+)
+vim.api.nvim_set_keymap(
+  'n', '<leader>li', [[<cmd>lua require('telescope.builtin').lsp_implementations{}<cr>]], opts
 )

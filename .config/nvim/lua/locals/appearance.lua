@@ -1,7 +1,4 @@
-require('nvim-treesitter.configs').setup {
-    highlight = { enable = true },
-    indent = { enable = true },
-}
+-- require('nvim-treesitter.configs').setup { }
 
 vim.o.termguicolors = true
 vim.o.background = 'dark'
@@ -29,3 +26,8 @@ require('bufferline').setup{
 
 vim.g.indent_blankline_use_treesitter = true
 vim.g.indent_blankline_show_current_context = true
+vim.g.indent_blankline_context_patterns = {
+    'class', 'function', 'method', '^if', '^while',
+    '^for', '^object', '^table', 'block', 'arguments',
+    'func_literal', 'block',
+}

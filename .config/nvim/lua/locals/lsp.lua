@@ -31,11 +31,17 @@ local _attach = function(client)
         local o = {noremap=true, silent=true}
         vim.api.nvim_buf_set_keymap(0, 'n', k, v, o)
     end
+    local imap = function(k, v)
+        local o = {noremap=true, silent=true}
+        vim.api.nvim_buf_set_keymap(0, 'i', k, v, o)
+    end
     nmap('ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
     nmap('gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
+    nmap('gr', '<cmd>lua vim.lsp.buf.references()<cr>')
     nmap('K', '<cmd>lua vim.lsp.buf.hover()<cr>')
     nmap('<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
+    imap('<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
     nmap('dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>')
     nmap('dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
 
@@ -49,6 +55,8 @@ local _attach = function(client)
             augroup END
         ]]
     end
+
+    vim.api.nvim_set_current_dir(client.config.root_dir)
 end
 
 local lsps = {
@@ -56,7 +64,6 @@ local lsps = {
     "tsserver",
     "bashls",
     "terraformls",
-    "rust_analyzer",
     "cmake",
     "html",
 }
@@ -67,6 +74,9 @@ for _, s in ipairs(lsps) do
     }
 end
 
+------------------------------------------------------------
+-- golang
+------------------------------------------------------------
 lspconfig.gopls.setup{
   cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
   settings = {
@@ -108,6 +118,9 @@ function GoImports(timeoutms)
 end
 vim.api.nvim_command("au BufWritePre *.go lua GoImports(1000)")
 
+------------------------------------------------------------
+-- lua
+------------------------------------------------------------
 local system_name
 if vim.fn.has("mac") == 1 then
     system_name = "macOS"
@@ -144,4 +157,26 @@ lspconfig.sumneko_lua.setup{
   },
   on_attach=_attach,
   capabilities=updated_capabilities,
+}
+
+------------------------------------------------------------
+-- rust
+------------------------------------------------------------
+lspconfig.rust_analyzer.setup {
+    on_attach=_attach,
+    capabilities=updated_capabilities,
+    settings = {
+        ["rust-analyzer"] = {
+            assist= {
+                importMergeBehavior = "last",
+                importPrefix = "by_self",
+            },
+            cargo =  {
+                loadOutDirsFromCheck = true,
+            },
+            procMacro = {
+                enable = true,
+            },
+        },
+    },
 }

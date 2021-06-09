@@ -42,6 +42,19 @@ use 'tpope/vim-surround'
 use 'justinmk/vim-sneak'
 
 use {
+    'terrortylor/nvim-comment',
+    config = function()
+        require('nvim_comment').setup {
+            marker_padding = true,
+            comment_empty = true,
+            create_mappings = true,
+            line_mapping = "gcc",
+            operator_mapping = "gc",
+        }
+    end
+}
+
+use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
 }
@@ -81,9 +94,10 @@ use 'f-person/git-blame.nvim'
 -- Languages
 ----------------------------------------
 use 'neovim/nvim-lspconfig'
+use 'nvim-lua/lsp_extensions.nvim'
 use 'nvim-lua/completion-nvim'
 use 'norcalli/snippets.nvim'
-use 'liuchengxu/vista.vim'
+use 'ray-x/lsp_signature.nvim'
 
 -- :Bazel build //...
 use { 'bazelbuild/vim-bazel', requires = 'google/vim-maktaba' }
@@ -112,6 +126,24 @@ use { 'ekalinin/Dockerfile.vim', ft = 'dockerfile',
     end
 }
 
+-- use {
+--     'prettier/vim-prettier',
+--     ft = {'javascript', 'typescript', 'css', 'less', 'scss',
+--           'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'},
+--     run = 'yarn install',
+-- }
+
+-- use {
+--      'elzr/vim-json',
+--      ft = 'json',
+--      config = function()
+--          vim.g.vim_json_syntax_conceal = '0'
+--          vim.cmd [[autocmd FileType json setlocal foldmethod=syntax]]
+--      end
+--}
+
+use { 'stephpy/vim-yaml', ft = 'yaml' }
+use { 'pedrohdz/vim-yaml-folds', ft = 'yaml' }
 
 ----------------------------------------
 -- Debug
