@@ -114,9 +114,9 @@ function GoImports(timeoutms)
       end
     end
 
-    vim.lsp.buf.formatting_sync(nil, 1000)
+    vim.lsp.buf.formatting_sync(nil, timeoutms)
 end
-vim.api.nvim_command("au BufWritePre *.go lua GoImports(1000)")
+vim.api.nvim_command("au BufWritePre *.go lua GoImports(10000)")
 
 ------------------------------------------------------------
 -- lua

@@ -5,15 +5,9 @@ window:
 
 # Font configuration
 font:
-  # Normal (roman) font face
   normal:
-    # Font family
-    #
-    # Default:
-    #   - (macOS) Menlo
-    #   - (Linux) monospace
-    #   - (Windows) Consolas
-    family: Roboto Mono Light for Powerline
+    family: JetBrainsMono Nerd Font
+    style: Regular
 
 colorschemes:
   gruvbox_dark: &gruvbox_dark

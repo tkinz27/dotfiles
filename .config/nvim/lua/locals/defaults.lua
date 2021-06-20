@@ -24,7 +24,7 @@ vim.opt.backup = false
 vim.opt.writebackup = false
 vim.opt.swapfile = false
 
-vim.opt.diffopt = vim.opt.diffopt + 'vertical' 
+vim.opt.diffopt = vim.opt.diffopt + 'vertical'
 vim.opt.mouse = 'n'
 
 -- TODO looks cool from https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/options.lua
@@ -55,3 +55,18 @@ vim.cmd [[autocmd BufWritePre * :%s/\s\+$//e]]
 
 -- better way for this?
 vim.cmd [[autocmd FileType make set noexpandtab]]
+
+require('nvim-treesitter.configs').setup {
+    ensure_installed = "maintained",
+    highlight = {
+        enable = true,
+    },
+    incremental_selection = {
+        enable = true,
+    },
+    rainbow = {
+        enable = true,
+        extended_mode = true,
+        max_file_lines = 1000,
+    },
+}

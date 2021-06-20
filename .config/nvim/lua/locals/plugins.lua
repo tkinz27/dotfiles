@@ -1,7 +1,9 @@
 
 return require('packer').startup(function(use)
 -- Packer can manage itself
-use 'wbthomason/packer.nvim'
+use {
+  'wbthomason/packer.nvim'
+}
 
 ----------------------------------------
 -- Appearance
@@ -62,15 +64,6 @@ use {
 use {
     'p00f/nvim-ts-rainbow',
     requires = 'nvim-treesitter/nvim-treesitter',
-    config = function()
-        require('nvim-treesitter.configs').setup {
-            rainbow = {
-                enable = true,
-                extended_mode = true,
-                max_file_lines = 1000,
-            }
-        }
-    end
 }
 
 use {
@@ -97,7 +90,9 @@ use 'neovim/nvim-lspconfig'
 use 'nvim-lua/lsp_extensions.nvim'
 use 'nvim-lua/completion-nvim'
 use 'norcalli/snippets.nvim'
-use 'ray-x/lsp_signature.nvim'
+
+-- light build for code actions
+use 'kosayoda/nvim-lightbulb'
 
 -- :Bazel build //...
 use { 'bazelbuild/vim-bazel', requires = 'google/vim-maktaba' }
