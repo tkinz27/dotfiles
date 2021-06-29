@@ -83,6 +83,8 @@ use {
 }
 
 use 'f-person/git-blame.nvim'
+
+use 'sindrets/diffview.nvim'
 ----------------------------------------
 -- Languages
 ----------------------------------------

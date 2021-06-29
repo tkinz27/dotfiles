@@ -98,20 +98,19 @@ lspconfig.gopls.setup{
 }
 
 function GoImports(timeoutms)
-    local context = { source = { organizeImports = true } }
-    vim.validate { context = { context, "t", true } }
-
     local params = vim.lsp.util.make_range_params()
-    params.context = context
+    params.context = {only = {"source.organizeImports"}}
 
     local method = "textDocument/codeAction"
-    local resp = vim.lsp.buf_request_sync(0, method, params, timeoutms)
-    if resp and resp[1] then
-      local result = resp[1].result
-      if result and result[1] then
-        local edit = result[1].edit
-        vim.lsp.util.apply_workspace_edit(edit)
-      end
+    local result = vim.lsp.buf_request_sync(0, method, params, timeoutms)
+    for _, res in pairs(result or {}) do
+        for _, r in pairs(res.result or {}) do
+            if r.edit then
+                vim.lsp.util.apply_workspace_edit(r.edit)
+            else
+                vim.lsp.buf.execute_command(r.command)
+            end
+        end
     end
 
     vim.lsp.buf.formatting_sync(nil, timeoutms)
