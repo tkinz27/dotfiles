@@ -60,7 +60,6 @@ local _attach = function(client)
 end
 
 local lsps = {
-    "pyright",
     "tsserver",
     "bashls",
     "terraformls",
@@ -116,6 +115,23 @@ function GoImports(timeoutms)
     vim.lsp.buf.formatting_sync(nil, timeoutms)
 end
 vim.api.nvim_command("au BufWritePre *.go lua GoImports(10000)")
+
+------------------------------------------------------------
+-- python
+------------------------------------------------------------
+lspconfig.pylsp.setup{
+  settings = {
+    pylsp = {
+        plugins = {
+            yapf = {enabled = true};
+            isort = {enabled = true};
+            mypy = {enabled = true};
+        }
+    },
+  },
+  on_attach=_attach,
+  capabilities=updated_capabilities,
+}
 
 ------------------------------------------------------------
 -- lua

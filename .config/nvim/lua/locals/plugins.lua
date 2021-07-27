@@ -19,7 +19,7 @@ use {
   requires = 'kyazdani42/nvim-web-devicons',
 }
 
-use {'lukas-reineke/indent-blankline.nvim', branch='lua'}
+use {'lukas-reineke/indent-blankline.nvim'}
 use 'machakann/vim-highlightedyank'
 
 ----------------------------------------
@@ -59,6 +59,14 @@ use {
 use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+}
+
+use {
+    'romgrk/nvim-treesitter-context',
+    requires = 'nvim-treesitter/nvim-treesitter',
+    config = function()
+        require('treesitter-context.config').setup{enable=true}
+    end,
 }
 
 use {

@@ -42,6 +42,12 @@ vim.api.nvim_set_keymap(
   'n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]], opts
 )
 vim.api.nvim_set_keymap(
+  'n', '<leader>fm', [[<cmd>lua require('telescope.builtin').keymaps{}<CR>]], opts
+)
+vim.api.nvim_set_keymap(
+  'n', '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], opts
+)
+vim.api.nvim_set_keymap(
   'n', '<leader>fpr', [[<cmd>lua require('telescope').extensions.gh.pull_request{}<cr>]], opts
 )
 vim.api.nvim_set_keymap(
