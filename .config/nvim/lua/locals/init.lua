@@ -9,9 +9,9 @@ if fn.empty(fn.glob(install_path)) > 0 then
   execute 'packadd packer.nvim'
 end
 
-require('locals.defaults')
 require('locals.plugins')
-require('locals.appearance')
+require('locals.defaults')
 require('locals.navigation')
 require('locals.lsp')
 require('locals.debug')
+require('locals.appearance')

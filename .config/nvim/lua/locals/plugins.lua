@@ -1,5 +1,5 @@
 
-return require('packer').startup(function(use)
+return require('packer').startup({function(use)
 -- Packer can manage itself
 use {
   'wbthomason/packer.nvim'
@@ -9,6 +9,7 @@ use {
 -- Appearance
 ----------------------------------------
 use 'folke/tokyonight.nvim'
+use 'marko-cerovac/material.nvim'
 
 use {
   'hoob3rt/lualine.nvim',
@@ -59,6 +60,10 @@ use {
 use {
     'nvim-treesitter/nvim-treesitter',
     run = ':TSUpdate',
+}
+
+use {
+    'nvim-treesitter/playground'
 }
 
 use {
@@ -155,4 +160,9 @@ use { 'pedrohdz/vim-yaml-folds', ft = 'yaml' }
 ----------------------------------------
 use 'bfredl/nvim-luadev'
 
-end)
+end,
+config = {
+    display = {
+        open_fn = require('packer.util').float,
+    },
+}})
