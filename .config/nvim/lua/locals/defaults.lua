@@ -1,5 +1,7 @@
 vim.g.mapleader = ','
 
+vim.opt.exrc = true
+
 vim.opt.wildmenu = true
 vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'

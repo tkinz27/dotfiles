@@ -16,14 +16,52 @@ vim.fn.sign_define("LspDiagnosticsWarningSign", {text="⚠", texthl="LspDiagnost
 vim.fn.sign_define("LspDiagnosticsInformationSign", {text="ⓘ", texthl="LspDiagnosticsInformation"})
 vim.fn.sign_define("LspDiagnosticsHintSign", {text="✓", texthl="LspDiagnosticsHint"})
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-updated_capabilities.textDocument.completion.completionItem.snippetSupport = true
+-- icons
+require('lspkind').init({
+    with_text = true,
+    preset = 'default',
+})
 
-local snippets = require 'snippets'
-snippets.use_suggested_mappings()
+-- completion config
+local cmp = require('cmp')
+cmp.setup({
+    snippet = {
+        expand = function(args)
+            require('luasnip').lsp_expand(args.body)
+        end,
+    },
+    mapping = {
+      ['<C-d>'] = cmp.mapping.scroll_docs(-4),
+      ['<C-f>'] = cmp.mapping.scroll_docs(4),
+      ['<C-Space>'] = cmp.mapping.complete(),
+      ['<C-e>'] = cmp.mapping.close(),
+      ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    },
+    sources = {
+      { name = 'nvim_lsp' },
+      { name = 'luasnip' },
+      { name = 'path' },
+      { name = 'buffer' },
+      { name = 'emoji' },
+      { name = 'nvim_lua' },
+    },
+    formatting = {
+        format = function(entry, vim_item)
+            vim_item.kind = require('lspkind').presets.default[vim_item.kind] .. " " .. vim_item.kind
+            return vim_item
+        end,
+    },
+})
+
+vim.cmd[[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]]
+-- local snippets = require 'snippets'
+-- snippets.use_suggested_mappings()
+
+local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
+updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
 
 local _attach = function(client)
-    require'completion'.on_attach(client)
+    -- require'completion'.on_attach(client)
 
     vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
 
@@ -35,10 +73,17 @@ local _attach = function(client)
         local o = {noremap=true, silent=true}
         vim.api.nvim_buf_set_keymap(0, 'i', k, v, o)
     end
-    nmap('ca', '<cmd>lua vim.lsp.buf.code_action()<cr>')
+    local vmap = function(k, v)
+        local o = {noremap=true, silent=true}
+        vim.api.nvim_buf_set_keymap(0, 'v', k, v, o)
+    end
+    nmap('ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]])
+    vmap('ca', [[<cmd>lua require('telescope.builtin').lsp_range_code_actions{}<cr>]])
+    nmap('go', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]])
+    nmap('gw', [[<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>]])
     nmap('gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
     nmap('gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-    nmap('gr', '<cmd>lua vim.lsp.buf.references()<cr>')
+    nmap('gr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]])
     nmap('K', '<cmd>lua vim.lsp.buf.hover()<cr>')
     nmap('<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
     imap('<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
@@ -77,7 +122,7 @@ end
 -- golang
 ------------------------------------------------------------
 lspconfig.gopls.setup{
-  cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
+  -- cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
   settings = {
     gopls = {
       analyses = {
@@ -123,9 +168,10 @@ lspconfig.pylsp.setup{
   settings = {
     pylsp = {
         plugins = {
-            yapf = {enabled = true};
-            isort = {enabled = true};
+            yapf = {enabled = false};
+            isort = {enabled = false};
             mypy = {enabled = true};
+            pylint = {enabled = true};
         }
     },
   },

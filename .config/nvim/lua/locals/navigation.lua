@@ -33,11 +33,17 @@ telescope.load_extension('gh')
 
 local opts = {noremap=true, silent=true}
 vim.api.nvim_set_keymap(
+  'n', '<leader>pick', [[<cmd>lua require('telescope.builtin').builtin{}<CR>]], opts
+)
+
+vim.api.nvim_set_keymap(
   'n', '<leader>ff', [[<cmd>lua require('telescope.builtin').find_files{}<CR>]], opts
 )
 vim.api.nvim_set_keymap(
   'n', '<leader>fg', [[<cmd>lua require('telescope.builtin').live_grep{}<CR>]], opts
 )
+
+-- vim pickers
 vim.api.nvim_set_keymap(
   'n', '<leader>fb', [[<cmd>lua require('telescope.builtin').buffers{show_all_buffers = true }<CR>]], opts
 )
@@ -47,6 +53,8 @@ vim.api.nvim_set_keymap(
 vim.api.nvim_set_keymap(
   'n', '<leader>fc', [[<cmd>lua require('telescope.builtin').commands{}<CR>]], opts
 )
+
+
 vim.api.nvim_set_keymap(
   'n', '<leader>fpr', [[<cmd>lua require('telescope').extensions.gh.pull_request{}<cr>]], opts
 )

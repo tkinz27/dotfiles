@@ -35,6 +35,11 @@ use {
     requires = 'nvim-telescope/telescope.nvim',
 }
 
+use {
+    'nvim-telescope/telescope-media-files.nvim',
+    requires = 'nvim-telescope/telescope.nvim',
+}
+
 -- use 'airblade/vim-rooter'
 -- use 'yssl/QFEnter'
 
@@ -103,8 +108,20 @@ use 'sindrets/diffview.nvim'
 ----------------------------------------
 use 'neovim/nvim-lspconfig'
 use 'nvim-lua/lsp_extensions.nvim'
-use 'nvim-lua/completion-nvim'
-use 'norcalli/snippets.nvim'
+use 'onsails/lspkind-nvim'
+
+use 'hrsh7th/nvim-cmp'
+use { 'hrsh7th/cmp-nvim-lsp', requires = {'hrsh7th/nvim-cmp'}}
+use { 'hrsh7th/cmp-buffer', requires = {'hrsh7th/nvim-cmp'}}
+use { 'hrsh7th/cmp-path', requires = {'hrsh7th/nvim-cmp'}}
+use { 'hrsh7th/cmp-emoji', requires = {'hrsh7th/nvim-cmp'}}
+use { 'hrsh7th/cmp-nvim-lua', requires = {'hrsh7th/nvim-cmp'}}
+
+use 'L3MON4D3/LuaSnip'
+use { 'saadparwaiz1/cmp_luasnip', requires = {'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip'}}
+
+use 'mfussenegger/nvim-dap'
+use {'rcarriga/nvim-dap-ui', requires = {'mfussengger/nvim-dap'}}
 
 -- light build for code actions
 use 'kosayoda/nvim-lightbulb'

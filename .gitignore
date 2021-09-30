@@ -8,3 +8,6 @@ stupid.go
 stupid
 
 .rgignore
+
+.nvimrc
+.nvim

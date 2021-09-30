@@ -3,6 +3,13 @@
 window:
   decorations: none
 
+  # Background opacity
+  #
+  # Window opacity as a floating point number from `0.0` to `1.0`.
+  # The value `0.0` is completely transparent and `1.0` is opaque.
+  opacity: 0.95
+
+
 # Font configuration
 font:
   normal:
@@ -14,196 +21,196 @@ colorschemes:
     # Default colors
     primary:
       # hard contrast: background = '0x1d2021'
-      background: '0x282828'
+      background: '#282828'
       # soft contrast: background = '0x32302f'
-      foreground: '0xebdbb2'
+      foreground: '#ebdbb2'
 
     # Normal colors
     normal:
-      black:   '0x282828'
-      red:     '0xcc241d'
-      green:   '0x98971a'
-      yellow:  '0xd79921'
-      blue:    '0x458588'
-      magenta: '0xb16286'
-      cyan:    '0x689d6a'
-      white:   '0xa89984'
+      black:   '#282828'
+      red:     '#cc241d'
+      green:   '#98971a'
+      yellow:  '#d79921'
+      blue:    '#458588'
+      magenta: '#b16286'
+      cyan:    '#689d6a'
+      white:   '#a89984'
 
     # Bright colors
     bright:
-      black:   '0x928374'
-      red:     '0xfb4934'
-      green:   '0xb8bb26'
-      yellow:  '0xfabd2f'
-      blue:    '0x83a598'
-      magenta: '0xd3869b'
-      cyan:    '0x8ec07c'
-      white:   '0xebdbb2'
+      black:   '#928374'
+      red:     '#fb4934'
+      green:   '#b8bb26'
+      yellow:  '#fabd2f'
+      blue:    '#83a598'
+      magenta: '#d3869b'
+      cyan:    '#8ec07c'
+      white:   '#ebdbb2'
   base_16_dark: &base_16_dark
     # Default colors
     primary:
-      background: '0x181818'
-      foreground: '0xd8d8d8'
+      background: '#181818'
+      foreground: '#d8d8d8'
 
     # Colors the cursor will use if `custom_cursor_colors` is true
     cursor:
-      text: '0xd8d8d8'
-      cursor: '0xd8d8d8'
+      text: '#d8d8d8'
+      cursor: '#d8d8d8'
 
     # Normal colors
     normal:
-      black:   '0x181818'
-      red:     '0xab4642'
-      green:   '0xa1b56c'
-      yellow:  '0xf7ca88'
-      blue:    '0x7cafc2'
-      magenta: '0xba8baf'
-      cyan:    '0x86c1b9'
-      white:   '0xd8d8d8'
+      black:   '##181818'
+      red:     '##ab4642'
+      green:   '##a1b56c'
+      yellow:  '##f7ca88'
+      blue:    '##7cafc2'
+      magenta: '##ba8baf'
+      cyan:    '##86c1b9'
+      white:   '##d8d8d8'
 
     # Bright colors
     bright:
-      black:   '0x585858'
-      red:     '0xab4642'
-      green:   '0xa1b56c'
-      yellow:  '0xf7ca88'
-      blue:    '0x7cafc2'
-      magenta: '0xba8baf'
-      cyan:    '0x86c1b9'
-      white:   '0xf8f8f8'
+      black:   '#585858'
+      red:     '#ab4642'
+      green:   '#a1b56c'
+      yellow:  '#f7ca88'
+      blue:    '#7cafc2'
+      magenta: '#ba8baf'
+      cyan:    '#86c1b9'
+      white:   '#f8f8f8'
   dracula: &dracula
     # Default colors
     primary:
-      background: '0x282a36'
-      foreground: '0xf8f8f2'
+      background: '#282a36'
+      foreground: '#f8f8f2'
 
     # Normal colors
     normal:
-      black:   '0x000000'
-      red:     '0xff5555'
-      green:   '0x50fa7b'
-      yellow:  '0xf1fa8c'
-      blue:    '0xcaa9fa'
-      magenta: '0xff79c6'
-      cyan:    '0x8be9fd'
-      white:   '0xbfbfbf'
+      black:   '#000000'
+      red:     '#ff5555'
+      green:   '#50fa7b'
+      yellow:  '#f1fa8c'
+      blue:    '#caa9fa'
+      magenta: '#ff79c6'
+      cyan:    '#8be9fd'
+      white:   '#bfbfbf'
 
     # Bright colors
     bright:
-      black:   '0x575b70'
-      red:     '0xff6e67'
-      green:   '0x5af78e'
-      yellow:  '0xf4f99d'
-      blue:    '0xcaa9fa'
-      magenta: '0xff92d0'
-      cyan:    '0x9aedfe'
-      white:   '0xe6e6e6'
+      black:   '#575b70'
+      red:     '#ff6e67'
+      green:   '#5af78e'
+      yellow:  '#f4f99d'
+      blue:    '#caa9fa'
+      magenta: '#ff92d0'
+      cyan:    '#9aedfe'
+      white:   '#e6e6e6'
   material: &material
     # Default colors
     primary:
-      background: '0x1e282d'
-      foreground: '0xc4c7d1'
+      background: '#1e282d'
+      foreground: '#c4c7d1'
 
     # Normal colors
     normal:
-      black:   '0x666666'
-      red:     '0xeb606b'
-      green:   '0xc3e88d'
-      yellow:  '0xf7eb95'
-      blue:    '0x80cbc4'
-      magenta: '0xff2f90'
-      cyan:    '0xaeddff'
-      white:   '0xffffff'
+      black:   '#666666'
+      red:     '#eb606b'
+      green:   '#c3e88d'
+      yellow:  '#f7eb95'
+      blue:    '#80cbc4'
+      magenta: '#ff2f90'
+      cyan:    '#aeddff'
+      white:   '#ffffff'
 
     # Bright colors
     bright:
-      black:   '0xff262b'
-      red:     '0xeb606b'
-      green:   '0xc3e88d'
-      yellow:  '0xf7eb95'
-      blue:    '0x7dc6bf'
-      magenta: '0x6c71c4'
-      cyan:    '0x35434d'
-      white:   '0xffffff'
+      black:   '#ff262b'
+      red:     '#eb606b'
+      green:   '#c3e88d'
+      yellow:  '#f7eb95'
+      blue:    '#7dc6bf'
+      magenta: '#6c71c4'
+      cyan:    '#35434d'
+      white:   '#ffffff'
   molokai: &molokai
     # Default colors
     primary:
-      background: '0x1B1D1E'
-      foreground: '0xF8F8F2'
+      background: '#1B1D1E'
+      foreground: '#F8F8F2'
     # Normal colors
     normal:
-      black:   '0x333333'
-      red:     '0xC4265E'
-      green:   '0x86B42B'
-      yellow:  '0xB3B42B'
-      blue:    '0x6A7EC8'
-      magenta: '0x8C6BC8'
-      cyan:    '0x56ADBC'
-      white:   '0xE3E3DD'
+      black:   '#333333'
+      red:     '#C4265E'
+      green:   '#86B42B'
+      yellow:  '#B3B42B'
+      blue:    '#6A7EC8'
+      magenta: '#8C6BC8'
+      cyan:    '#56ADBC'
+      white:   '#E3E3DD'
     # Bright colors
     bright:
-      black:   '0x666666'
-      red:     '0xF92672'
-      green:   '0xA6E22E'
-      yellow:  '0xE2E22E'
-      blue:    '0x819AFF'
-      magenta: '0xAE81FF'
-      cyan:    '0x66D9EF'
-      white:   '0xF8F8F2'
+      black:   '#666666'
+      red:     '#F92672'
+      green:   '#A6E22E'
+      yellow:  '#E2E22E'
+      blue:    '#819AFF'
+      magenta: '#AE81FF'
+      cyan:    '#66D9EF'
+      white:   '#F8F8F2'
   monokai_pro: &monokai_pro
     # Default colors
     primary:
-      background: '0x2D2A2E'
-      foreground: '0xFCFCFA'
+      background: '#2D2A2E'
+      foreground: '#FCFCFA'
 
     # Normal colors
     normal:
-      black:   '0x403E41'
-      red:     '0xFF6188'
-      green:   '0xA9DC76'
-      yellow:  '0xFFD866'
-      blue:    '0xFC9867'
-      magenta: '0xAB9DF2'
-      cyan:    '0x78DCE8'
-      white:   '0xFCFCFA'
+      black:   '#403E41'
+      red:     '#FF6188'
+      green:   '#A9DC76'
+      yellow:  '#FFD866'
+      blue:    '#FC9867'
+      magenta: '#AB9DF2'
+      cyan:    '#78DCE8'
+      white:   '#FCFCFA'
 
     # Bright colors
     bright:
-      black:   '0x727072'
-      red:     '0xFF6188'
-      green:   '0xA9DC76'
-      yellow:  '0xFFD866'
-      blue:    '0xFC9867'
-      magenta: '0xAB9DF2'
-      cyan:    '0x78DCE8'
-      white:   '0xFCFCFA'
+      black:   '#727072'
+      red:     '#FF6188'
+      green:   '#A9DC76'
+      yellow:  '#FFD866'
+      blue:    '#FC9867'
+      magenta: '#AB9DF2'
+      cyan:    '#78DCE8'
+      white:   '#FCFCFA'
   nord: &nord
     # Default colors
     primary:
-      background: '0x2E3440'
-      foreground: '0xD8DEE9'
+      background: '#2E3440'
+      foreground: '#D8DEE9'
 
     # Normal colors
     normal:
-      black:   '0x3B4252'
-      red:     '0xBF616A'
-      green:   '0xA3BE8C'
-      yellow:  '0xEBCB8B'
-      blue:    '0x81A1C1'
-      magenta: '0xB48EAD'
-      cyan:    '0x88C0D0'
-      white:   '0xE5E9F0'
+      black:   '#3B4252'
+      red:     '#BF616A'
+      green:   '#A3BE8C'
+      yellow:  '#EBCB8B'
+      blue:    '#81A1C1'
+      magenta: '#B48EAD'
+      cyan:    '#88C0D0'
+      white:   '#E5E9F0'
 
     # Bright colors
     bright:
-      black:   '0x4C566A'
-      red:     '0xBF616A'
-      green:   '0xA3BE8C'
-      yellow:  '0xEBCB8B'
-      blue:    '0x81A1C1'
-      magenta: '0xB48EAD'
-      cyan:    '0x8FBCBB'
-      white:   '0xECEFF4'
+      black:   '#4C566A'
+      red:     '#BF616A'
+      green:   '#A3BE8C'
+      yellow:  '#EBCB8B'
+      blue:    '#81A1C1'
+      magenta: '#B48EAD'
+      cyan:    '#8FBCBB'
+      white:   '#ECEFF4'
 
   oxide: &oxide
     primary:
@@ -240,43 +247,37 @@ colorschemes:
   tokyonight: &tokyonight_night
     # Default colors
     primary:
-      background: '0x1a1b26'
-      foreground: '0xc0caf5'
+      background: '#1a1b26'
+      foreground: '#c0caf5'
 
     # Normal colors
     normal:
-      black:   '0x15161E'
-      red:     '0xf7768e'
-      green:   '0x9ece6a'
-      yellow:  '0xe0af68'
-      blue:    '0x7aa2f7'
-      magenta: '0xbb9af7'
-      cyan:    '0x7dcfff'
-      white:   '0xa9b1d6'
+      black:   '#15161E'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#bb9af7'
+      cyan:    '#7dcfff'
+      white:   '#a9b1d6'
 
     # Bright colors
     bright:
-      black:   '0x15161E'
-      red:     '0xf7768e'
-      green:   '0x9ece6a'
-      yellow:  '0xe0af68'
-      blue:    '0x7aa2f7'
-      magenta: '0xbb9af7'
-      cyan:    '0x7dcfff'
-      white:   '0xc0caf5'
+      black:   '#15161E'
+      red:     '#f7768e'
+      green:   '#9ece6a'
+      yellow:  '#e0af68'
+      blue:    '#7aa2f7'
+      magenta: '#bb9af7'
+      cyan:    '#7dcfff'
+      white:   '#c0caf5'
 
     indexed_colors:
-      - { index: 16, color: '0xff9e64' }
-      - { index: 17, color: '0xdb4b4b' }
+      - { index: 16, color: '#ff9e64' }
+      - { index: 17, color: '#db4b4b' }
 
 
 colors: *tokyonight_night
-
-# Background opacity
-#
-# Window opacity as a floating point number from `0.0` to `1.0`.
-# The value `0.0` is completely transparent and `1.0` is opaque.
-background_opacity: 0.95
 
 selection:
   #semantic_escape_chars: ",│`|:\"' ()[]{}<>\t"
