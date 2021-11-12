@@ -50,15 +50,9 @@ use 'tpope/vim-surround'
 use 'justinmk/vim-sneak'
 
 use {
-    'terrortylor/nvim-comment',
+    'numToStr/Comment.nvim',
     config = function()
-        require('nvim_comment').setup {
-            marker_padding = true,
-            comment_empty = true,
-            create_mappings = true,
-            line_mapping = "gcc",
-            operator_mapping = "gc",
-        }
+        require('Comment').setup()
     end
 }
 
@@ -83,6 +77,8 @@ use {
     'p00f/nvim-ts-rainbow',
     requires = 'nvim-treesitter/nvim-treesitter',
 }
+
+use 'JoosepAlviste/nvim-ts-context-commentstring'
 
 use {
     'norcalli/nvim-colorizer.lua',
@@ -116,6 +112,7 @@ use { 'hrsh7th/cmp-buffer', requires = {'hrsh7th/nvim-cmp'}}
 use { 'hrsh7th/cmp-path', requires = {'hrsh7th/nvim-cmp'}}
 use { 'hrsh7th/cmp-emoji', requires = {'hrsh7th/nvim-cmp'}}
 use { 'hrsh7th/cmp-nvim-lua', requires = {'hrsh7th/nvim-cmp'}}
+use { 'ray-x/cmp-treesitter', requires = {'hrsh7th/nvim-cmp'}}
 
 use 'L3MON4D3/LuaSnip'
 use { 'saadparwaiz1/cmp_luasnip', requires = {'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip'}}

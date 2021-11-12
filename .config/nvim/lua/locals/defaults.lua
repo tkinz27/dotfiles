@@ -88,5 +88,8 @@ require('nvim-treesitter.configs').setup {
             goto_node = '<cr>',
             show_help = '?',
         },
-    }
+    },
+    context_commentstring = {
+        enable = true
+    },
 }

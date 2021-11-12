@@ -26,3 +26,6 @@ bindkey '^ ' autosuggest-accept
 
 [ -f "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
 fpath=(${ZDOTDIR:-~}/.zsh_functions $fpath)
+
+# add Pulumi to the PATH
+export PATH=$PATH:$HOME/.pulumi/bin

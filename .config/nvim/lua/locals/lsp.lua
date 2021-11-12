@@ -41,7 +41,7 @@ cmp.setup({
       { name = 'nvim_lsp' },
       { name = 'luasnip' },
       { name = 'path' },
-      { name = 'buffer' },
+      { name = 'treesitter' },
       { name = 'emoji' },
       { name = 'nvim_lua' },
     },
@@ -121,6 +121,9 @@ end
 ------------------------------------------------------------
 -- golang
 ------------------------------------------------------------
+-- TODO check if we are in a bazel workspace and envvar
+-- "GOPACKAGESDRIVER": "${workspaceFolder}/tools/gopackagesdriver.sh"
+-- where gopackagesdriver == `exec bazel run -- @io_bazel_rules_go//go/tools/gopackagesdriver "${@}"`
 lspconfig.gopls.setup{
   -- cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
   settings = {
@@ -131,6 +134,9 @@ lspconfig.gopls.setup{
       },
       directoryFilters = {
         "-build",
+        "-bazel-bin",
+        "-bazel-out",
+        "-bazel-testlogs",
       },
       staticcheck = true,
       usePlaceholders = true,
@@ -164,17 +170,7 @@ vim.api.nvim_command("au BufWritePre *.go lua GoImports(10000)")
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------
-lspconfig.pylsp.setup{
-  settings = {
-    pylsp = {
-        plugins = {
-            yapf = {enabled = false};
-            isort = {enabled = false};
-            mypy = {enabled = true};
-            pylint = {enabled = true};
-        }
-    },
-  },
+lspconfig.jedi_language_server.setup{
   on_attach=_attach,
   capabilities=updated_capabilities,
 }
