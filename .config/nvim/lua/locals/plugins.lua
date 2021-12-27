@@ -121,7 +121,7 @@ return require('packer').startup({
     use('L3MON4D3/LuaSnip')
     use({ 'saadparwaiz1/cmp_luasnip', requires = { 'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip' } })
 
-    use({ 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary', 'neovim/nvim-lspconfig' } })
+    use({ 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' } })
 
     use('mfussenegger/nvim-dap')
     use({ 'rcarriga/nvim-dap-ui', requires = { 'mfussengger/nvim-dap' } })

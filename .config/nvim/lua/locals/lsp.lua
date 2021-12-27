@@ -39,27 +39,27 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.close(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    -- ['<Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   elseif has_words_before() then
+    --     cmp.complete()
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
+    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -130,8 +130,8 @@ end
 local lsps = {
   'bashls',
   'terraformls',
-  'cmake',
-  'html',
+  -- 'cmake',
+  -- 'html',
 }
 for _, s in ipairs(lsps) do
   lspconfig[s].setup({
@@ -144,7 +144,7 @@ end
 -- null-ls - miscelaneous
 ------------------------------------------------------------
 local null_ls = require('null-ls')
-null_ls.config({
+null_ls.setup({
   sources = {
     null_ls.builtins.formatting.stylua.with({
       extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
@@ -154,12 +154,7 @@ null_ls.config({
     }),
     null_ls.builtins.formatting.cmake_format,
     null_ls.builtins.formatting.prettier,
-    null_ls.builtins.diagnostics.shellcheck,
   },
-})
-lspconfig['null-ls'].setup({
-  on_attach = _attach,
-  capabilities = update_capabilities,
 })
 ------------------------------------------------------------
 -- golang
@@ -219,9 +214,9 @@ lspconfig.tsserver.setup({
     local ts_utils = require('nvim-lsp-ts-utils')
     ts_utils.setup({
       eslint_bin = 'eslint_d',
-      eslint_enable_diagnostics = true,
-      eslint_enable_code_actions = true,
-      enable_import_on_completion = true,
+      -- eslint_enable_diagnostics = true,
+      -- eslint_enable_code_actions = true,
+      -- enable_import_on_completion = true,
       formatter = 'prettier',
     })
     ts_utils.setup_client(client)
@@ -252,6 +247,10 @@ else
   print('Unsupported system for sumneko')
 end
 
+local runtime_path = vim.split(package.path, ';')
+table.insert(runtime_path, 'lua/?.lua')
+table.insert(runtime_path, 'lua/?/init.lua')
+
 local sumneko_root_path = vim.fn.expand('~/code/github.com/sumneko/lua-language-server')
 local sumneko_binary = sumneko_root_path .. '/bin/' .. system_name .. '/lua-language-server'
 
@@ -261,16 +260,13 @@ lspconfig.sumneko_lua.setup({
     Lua = {
       runtime = {
         version = 'LuaJIT',
-        path = vim.split(package.path, ';'),
+        path = runtime_path,
       },
       diagnostics = {
         globals = { 'vim' },
       },
       workspace = {
-        library = {
-          [vim.fn.expand('$VIMRUNTIME/lua')] = true,
-          [vim.fn.expand('$VIMRUNTIME/lua/vim/lsp')] = true,
-        },
+        library = vim.api.nvim_get_runtime_file('', true),
       },
       telemetry = {
         enable = false,
