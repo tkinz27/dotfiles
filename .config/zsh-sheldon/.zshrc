@@ -1,5 +1,9 @@
 setopt share_history
 
+for file in ~/.config/bash/*; do
+    [ "$file" != "powerline" ] && source ${file}
+done
+
 source <(sheldon source)
 
 #####################################################################
@@ -13,10 +17,6 @@ done
 compinit -C
 
 # eval "$(starship init zsh)"
-
-for file in ~/.config/bash/*; do
-    [ "$file" != "powerline" ] && source ${file}
-done
 
 bindkey -e
 bindkey '^ ' autosuggest-accept

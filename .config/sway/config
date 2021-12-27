@@ -17,7 +17,7 @@ set $right l
 set $term alacritty
 # Your preferred application launcher
 # Note: it's recommended that you pass the final command to sway
-set $menu bash -c "source /etc/profile.d/apps-bin-path.sh; j4-dmenu-desktop"  | xargs swaymsg exec --
+set $menu bash -c "kickoff"  | xargs swaymsg exec --
 
 ### Output configuration
 #
@@ -144,6 +144,8 @@ output * bg ~/Pictures/spiderverse.png fill
     gaps outer 5
     gaps inner 20
     font Roboto:size=11
+    default_border none
+    default_floating_border none
 #
 # Layout stuff:
 #
