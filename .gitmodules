@@ -4,6 +4,3 @@
 [submodule ".zplug"]
 	path = .zplug
 	url = https://github.com/zplug/zplug.git
-[submodule "rofi-themes"]
-	path = rofi-themes
-	url = git@github.com:davatorium/rofi-themes.git
