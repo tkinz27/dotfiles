@@ -23,10 +23,40 @@ return require('packer').startup({
     use({ 'lukas-reineke/indent-blankline.nvim' })
     use('machakann/vim-highlightedyank')
 
+    use({
+        'rcarriga/nvim-notify',
+        config = function()
+            require('notify').setup{
+                background_color = "#000000",
+                background_colour = "#000000",
+            }
+            vim.notify = require('notify')
+        end,
+    })
+
+    use({
+        'folke/which-key.nvim',
+        config = function()
+            require('which-key').setup{}
+        end,
+    })
+
+
     ----------------------------------------
     -- Navigation
     ----------------------------------------
-    use({ 'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons' })
+    use({
+      'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons',
+      config = function()
+        require'nvim-tree'.setup{
+          update_cwd = true,
+          update_to_buf_dir = {
+            enable = true,
+            auto_open = true,
+          }
+        }
+      end
+    })
 
     use({ 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } } })
 
@@ -40,8 +70,21 @@ return require('packer').startup({
       requires = 'nvim-telescope/telescope.nvim',
     })
 
+    use({
+      'nvim-telescope/telescope-ui-select.nvim',
+      requires = 'nvim-telescope/telescope.nvim',
+    })
+
     -- use 'airblade/vim-rooter'
     -- use 'yssl/QFEnter'
+    use({
+      'ahmedkhalf/project.nvim',
+      config = function()
+          require('project_nvim').setup{
+              show_hidden = true,
+          }
+      end
+    })
 
     ----------------------------------------
     -- Text Manipulation
@@ -123,11 +166,14 @@ return require('packer').startup({
 
     use({ 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' } })
 
+    use('b0o/schemastore.nvim')
+
     use('mfussenegger/nvim-dap')
     use({ 'rcarriga/nvim-dap-ui', requires = { 'mfussengger/nvim-dap' } })
 
     -- light build for code actions
     use('kosayoda/nvim-lightbulb')
+    -- use('weilbith/nvim-code-action-menu')
 
     use({ 'jose-elias-alvarez/nvim-lsp-ts-utils', requires = { 'neovim/nvim-lspconfig' } })
 
@@ -180,6 +226,21 @@ return require('packer').startup({
     use({ 'stephpy/vim-yaml', ft = 'yaml' })
     use({ 'pedrohdz/vim-yaml-folds', ft = 'yaml' })
 
+    ----------------------------------------
+    -- Terminal
+    ----------------------------------------
+    use({
+        'akinsho/toggleterm.nvim',
+        config = function()
+            require('toggleterm').setup{
+                open_mapping = [[<c-\>]],
+                direction = 'float',
+                float_opts = {
+                    border = 'curved',
+                },
+            }
+        end,
+    })
     ----------------------------------------
     -- Debug
     ----------------------------------------

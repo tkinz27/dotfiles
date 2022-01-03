@@ -28,38 +28,39 @@ end
 
 -- completion config
 local cmp = require('cmp')
+local luasnip = require('luasnip')
 cmp.setup({
   snippet = {
     expand = function(args)
-      require('luasnip').lsp_expand(args.body)
+      luasnip.lsp_expand(args.body)
     end,
   },
   mapping = {
-    ['<C-d>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.close(),
-    -- ['<CR>'] = cmp.mapping.confirm({ select = true }),
-    -- ['<Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_next_item()
-    --   elseif luasnip.expand_or_jumpable() then
-    --     luasnip.expand_or_jump()
-    --   elseif has_words_before() then
-    --     cmp.complete()
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
-    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item()
-    --   elseif luasnip.jumpable(-1) then
-    --     luasnip.jump(-1)
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), {'i', 'c'}),
+    ['<C-e>'] = cmp.mapping({i = cmp.mapping.close(), c = cmp.mapping.close()}),
+    ['<CR>'] = cmp.mapping.confirm({ select = false }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      elseif has_words_before() then
+        cmp.complete()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
@@ -88,26 +89,28 @@ vim.cmd([[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { ena
 -- local snippets = require 'snippets'
 -- snippets.use_suggested_mappings()
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
+local updated_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
 
 local _attach = function(client, bufnr)
-  -- require'completion'.on_attach(client)
+  local function bopt(...) vim.api.nvim_buf_set_option(bufnr, ...) end
+  bopt('omnifunc', 'v:lua.vim.lsp.omnifunc')
 
-  vim.bo.omnifunc = 'v:lua.vim.lsp.omnifunc'
+  local opts = { noremap=true, silent=true }
+  local function bmap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  bmap('n', 'ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]], opts)
+  bmap('v', 'ca', [[<cmd>lua require('telescope.builtin').lsp_range_code_actions{}<cr>]], opts)
+  bmap('n', 'go', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]], opts)
+  bmap('n', 'gw', [[<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>]], opts)
+  bmap('n', 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], opts)
+  bmap('n', 'gD', [[<cmd>lua vim.lsp.buf.declaration()<cr>]], opts)
+  bmap('n', 'gr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]], opts)
+  bmap('n', 'K', [[<cmd>lua vim.lsp.buf.hover()<cr>]], opts)
+  bmap('n', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
+  bmap('i', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
+  bmap('n', 'dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>', opts)
+  bmap('n', 'dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>', opts)
 
-  common.bmap('n', 'ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]])
-  common.bmap('v', 'ca', [[<cmd>lua require('telescope.builtin').lsp_range_code_actions{}<cr>]])
-  common.bmap('n', 'go', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]])
-  common.bmap('n', 'gw', [[<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>]])
-  common.bmap('n', 'gd', '<cmd>lua vim.lsp.buf.definition()<cr>')
-  common.bmap('n', 'gD', '<cmd>lua vim.lsp.buf.declaration()<cr>')
-  common.bmap('n', 'gr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]])
-  common.bmap('n', 'K', '<cmd>lua vim.lsp.buf.hover()<cr>')
-  common.bmap('n', '<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-  common.bmap('i', '<c-K>', '<cmd>lua vim.lsp.buf.signature_help()<cr>')
-  common.bmap('n', 'dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>')
-  common.bmap('n', 'dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>')
+  vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
 
   -- Set autocommands conditional on server capabilities
   if client.resolved_capabilities.document_highlight then
@@ -120,8 +123,6 @@ local _attach = function(client, bufnr)
         ]])
   end
 
-  vim.api.nvim_set_current_dir(client.config.root_dir)
-
   if client.resolved_capabilities.document_formatting then
     vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]])
   end
@@ -131,7 +132,8 @@ local lsps = {
   'bashls',
   'terraformls',
   -- 'cmake',
-  -- 'html',
+  'html',
+  'cssls',
 }
 for _, s in ipairs(lsps) do
   lspconfig[s].setup({
@@ -227,6 +229,19 @@ lspconfig.tsserver.setup({
   end,
   capabilities = updated_capabilities,
 })
+
+lspconfig.jsonls.setup({
+  on_attach = _attach,
+  capabilities = updated_capabilities,
+  settings = {
+    schemas = require('schemastore').json.schemas(),
+  },
+})
+
+lspconfig.yamlls.setup {
+    on_attach = _attach,
+    capabilities = updated_capabilities,
+}
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------

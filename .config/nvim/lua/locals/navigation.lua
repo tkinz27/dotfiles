@@ -1,7 +1,7 @@
 ----------------------------------------
 -- nvim-tree.lua
 ----------------------------------------
-vim.api.nvim_set_keymap('', '<F6>', [[:NvimTreeToggle<cr>]], { silent = true })
+vim.api.nvim_set_keymap('n', '<F6>', [[:NvimTreeToggle<cr>]], { silent = true })
 
 ----------------------------------------
 -- Telescope
@@ -26,10 +26,18 @@ telescope.setup({
         ['<c-k>'] = actions.move_selection_previous,
       },
     },
+    extensions = {
+      ['ui-select'] = {
+          require('telescope.themes').get_dropdown {
+          }
+      },
+    },
   },
 })
 
 telescope.load_extension('gh')
+telescope.load_extension('projects')
+telescope.load_extension('ui-select')
 
 local opts = { noremap = true, silent = true }
 vim.api.nvim_set_keymap('n', '<leader>pick', [[<cmd>lua require('telescope.builtin').builtin{}<CR>]], opts)
@@ -52,3 +60,4 @@ vim.api.nvim_set_keymap('n', '<leader>fqf', [[<cmd>lua require('telescope.builti
 vim.api.nvim_set_keymap('n', '<leader>fll', [[<cmd>lua require('telescope.builtin').loclist{}<cr>]], opts)
 vim.api.nvim_set_keymap('n', '<leader>lr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]], opts)
 vim.api.nvim_set_keymap('n', '<leader>li', [[<cmd>lua require('telescope.builtin').lsp_implementations{}<cr>]], opts)
+vim.api.nvim_set_keymap('n', '<leader>fp', [[<cmd>lua require('telescope').extensions.projects.projects()<cr>]], opts)
