@@ -24,38 +24,38 @@ return require('packer').startup({
     use('machakann/vim-highlightedyank')
 
     use({
-        'rcarriga/nvim-notify',
-        config = function()
-            require('notify').setup{
-                background_color = "#000000",
-                background_colour = "#000000",
-            }
-            vim.notify = require('notify')
-        end,
+      'rcarriga/nvim-notify',
+      config = function()
+        require('notify').setup({
+          background_color = '#000000',
+          background_colour = '#000000',
+        })
+        vim.notify = require('notify')
+      end,
     })
 
-    use({
-        'folke/which-key.nvim',
-        config = function()
-            require('which-key').setup{}
-        end,
-    })
-
+    -- use({
+    --     'folke/which-key.nvim',
+    --     config = function()
+    --         require('which-key').setup{}
+    --     end,
+    -- })
 
     ----------------------------------------
     -- Navigation
     ----------------------------------------
     use({
-      'kyazdani42/nvim-tree.lua', requires = 'kyazdani42/nvim-web-devicons',
+      'kyazdani42/nvim-tree.lua',
+      requires = 'kyazdani42/nvim-web-devicons',
       config = function()
-        require'nvim-tree'.setup{
+        require('nvim-tree').setup({
           update_cwd = true,
           update_to_buf_dir = {
             enable = true,
             auto_open = true,
-          }
-        }
-      end
+          },
+        })
+      end,
     })
 
     use({ 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } } })
@@ -80,10 +80,10 @@ return require('packer').startup({
     use({
       'ahmedkhalf/project.nvim',
       config = function()
-          require('project_nvim').setup{
-              show_hidden = true,
-          }
-      end
+        require('project_nvim').setup({
+          show_hidden = true,
+        })
+      end,
     })
 
     ----------------------------------------
@@ -146,6 +146,18 @@ return require('packer').startup({
     use('f-person/git-blame.nvim')
 
     use('sindrets/diffview.nvim')
+
+    use({
+      'pwntester/octo.nvim',
+      requires = {
+        'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope.nvim',
+        'kyazdani42/nvim-web-devicons',
+      },
+      config = function()
+        require('octo').setup({})
+      end,
+    })
     ----------------------------------------
     -- Languages
     ----------------------------------------
@@ -155,6 +167,7 @@ return require('packer').startup({
 
     use('hrsh7th/nvim-cmp')
     use({ 'hrsh7th/cmp-nvim-lsp', requires = { 'hrsh7th/nvim-cmp' } })
+    use({ 'hrsh7th/cmp-nvim-lsp-signature-help', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-buffer', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-path', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-emoji', requires = { 'hrsh7th/nvim-cmp' } })
@@ -230,16 +243,16 @@ return require('packer').startup({
     -- Terminal
     ----------------------------------------
     use({
-        'akinsho/toggleterm.nvim',
-        config = function()
-            require('toggleterm').setup{
-                open_mapping = [[<c-\>]],
-                direction = 'float',
-                float_opts = {
-                    border = 'curved',
-                },
-            }
-        end,
+      'akinsho/toggleterm.nvim',
+      config = function()
+        require('toggleterm').setup({
+          open_mapping = [[<c-\>]],
+          direction = 'float',
+          float_opts = {
+            border = 'curved',
+          },
+        })
+      end,
     })
     ----------------------------------------
     -- Debug

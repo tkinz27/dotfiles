@@ -59,7 +59,7 @@ vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
 vim.cmd([[autocmd FileType make set noexpandtab]])
 
 require('nvim-treesitter.configs').setup({
-  ensure_installed = 'maintained',
+  ensure_installed = 'all',
   highlight = {
     enable = true,
   },

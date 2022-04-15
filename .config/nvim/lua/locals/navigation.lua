@@ -11,6 +11,7 @@ local actions = require('telescope.actions')
 
 telescope.setup({
   defaults = {
+    layout_stategy = 'vertical',
     vimgrep_arguments = {
       'rg',
       '--color=never',
@@ -28,8 +29,7 @@ telescope.setup({
     },
     extensions = {
       ['ui-select'] = {
-          require('telescope.themes').get_dropdown {
-          }
+        require('telescope.themes').get_dropdown({}),
       },
     },
   },

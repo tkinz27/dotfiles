@@ -15,12 +15,6 @@ vim.fn.sign_define('LspDiagnosticsWarningSign', { text = '⚠', texthl = 'LspDia
 vim.fn.sign_define('LspDiagnosticsInformationSign', { text = 'ⓘ', texthl = 'LspDiagnosticsInformation' })
 vim.fn.sign_define('LspDiagnosticsHintSign', { text = '✓', texthl = 'LspDiagnosticsHint' })
 
--- icons
-require('lspkind').init({
-  with_text = true,
-  preset = 'default',
-})
-
 local has_words_before = function()
   local line, col = unpack(vim.api.nvim_win_get_cursor(0))
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
@@ -36,67 +30,70 @@ cmp.setup({
     end,
   },
   mapping = {
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), {'i', 'c'}),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), {'i', 'c'}),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), {'i', 'c'}),
-    ['<C-e>'] = cmp.mapping({i = cmp.mapping.close(), c = cmp.mapping.close()}),
+    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
+    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
+    ['<C-e>'] = cmp.mapping({ i = cmp.mapping.close(), c = cmp.mapping.close() }),
+    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
     ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
-      elseif has_words_before() then
-        cmp.complete()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
+    -- ['<Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_next_item()
+    --   elseif luasnip.expand_or_jumpable() then
+    --     luasnip.expand_or_jump()
+    --   elseif has_words_before() then
+    --     cmp.complete()
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
+    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
+    --   if cmp.visible() then
+    --     cmp.select_prev_item()
+    --   elseif luasnip.jumpable(-1) then
+    --     luasnip.jump(-1)
+    --   else
+    --     fallback()
+    --   end
+    -- end, { 'i', 's' }),
   },
   sources = {
     { name = 'nvim_lsp' },
+    { name = 'nvim_lsp_signature_help' },
     { name = 'luasnip' },
     { name = 'path' },
     { name = 'treesitter' },
     { name = 'emoji' },
     { name = 'nvim_lua' },
+    { name = 'buffer', keyword_length = 5 },
   },
   formatting = {
     format = require('lspkind').cmp_format({
-      with_text = true,
+      mode = 'symbol_text',
       menu = {
-        nvim_lsp = '[LSP]',
-        luasnip = '[LuaSnip]',
-        path = '[Path]',
-        treesitter = '[TS]',
+        nvim_lsp = '[lsp]',
+        luasnip = '[snip]',
+        path = '[path]',
+        treesitter = '[tree]',
         emoji = '[emoji]',
-        nvim_lua = '[Lua]',
+        nvim_lua = '[vimapi]',
+        buffer = '[buf]',
       },
     }),
   },
+  experimental = {
+    native_menu = false,
+    ghost_text = true,
+  },
 })
 
-vim.cmd([[autocmd FileType TelescopePrompt lua require('cmp').setup.buffer { enabled = false }]])
--- local snippets = require 'snippets'
--- snippets.use_suggested_mappings()
-
-local updated_capabilities = require('cmp_nvim_lsp').update_capabilities(vim.lsp.protocol.make_client_capabilities())
+local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
+updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
 
 local _attach = function(client, bufnr)
-  local function bopt(...) vim.api.nvim_buf_set_option(bufnr, ...) end
-  bopt('omnifunc', 'v:lua.vim.lsp.omnifunc')
-
-  local opts = { noremap=true, silent=true }
-  local function bmap(...) vim.api.nvim_buf_set_keymap(bufnr, ...) end
+  local opts = { noremap = true, silent = true }
+  local function bmap(...)
+    vim.api.nvim_buf_set_keymap(bufnr, ...)
+  end
   bmap('n', 'ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]], opts)
   bmap('v', 'ca', [[<cmd>lua require('telescope.builtin').lsp_range_code_actions{}<cr>]], opts)
   bmap('n', 'go', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]], opts)
@@ -107,10 +104,10 @@ local _attach = function(client, bufnr)
   bmap('n', 'K', [[<cmd>lua vim.lsp.buf.hover()<cr>]], opts)
   bmap('n', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
   bmap('i', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
-  bmap('n', 'dn', '<cmd>lua vim.lsp.diagnostic.goto_next()<cr>', opts)
-  bmap('n', 'dp', '<cmd>lua vim.lsp.diagnostic.goto_prev()<cr>', opts)
+  bmap('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
+  bmap('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
 
-  vim.cmd [[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]]
+  vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
 
   -- Set autocommands conditional on server capabilities
   if client.resolved_capabilities.document_highlight then
@@ -147,6 +144,7 @@ end
 ------------------------------------------------------------
 local null_ls = require('null-ls')
 null_ls.setup({
+  on_attach = _attach,
   sources = {
     null_ls.builtins.formatting.stylua.with({
       extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
@@ -155,7 +153,9 @@ null_ls.setup({
       filetypes = { 'c', 'cpp', 'proto' },
     }),
     null_ls.builtins.formatting.cmake_format,
-    null_ls.builtins.formatting.prettier,
+    null_ls.builtins.formatting.prettier.with({
+      extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
+    }),
   },
 })
 ------------------------------------------------------------
@@ -165,9 +165,10 @@ null_ls.setup({
 -- "GOPACKAGESDRIVER": "${workspaceFolder}/tools/gopackagesdriver.sh"
 -- where gopackagesdriver == `exec bazel run -- @io_bazel_rules_go//go/tools/gopackagesdriver "${@}"`
 lspconfig.gopls.setup({
-  -- cmd = {"gopls", "-vv", "-rpc.trace", "-logfile", "/tmp/gopls.log"},
+  cmd = { 'gopls', '-vv', '-rpc.trace', '-logfile', '/tmp/gopls.log' },
   settings = {
     gopls = {
+      buildFlags = { '-tags=unit' },
       analyses = {
         unusedParams = true,
         ST1003 = false,
@@ -180,7 +181,7 @@ lspconfig.gopls.setup({
       },
       staticcheck = true,
       usePlaceholders = true,
-      experimentalWorkspaceModule = true,
+      experimentalWorkspaceModule = false,
     },
   },
   on_attach = _attach,
@@ -196,7 +197,7 @@ function GoImports(timeoutms)
   for _, res in pairs(result or {}) do
     for _, r in pairs(res.result or {}) do
       if r.edit then
-        vim.lsp.util.apply_workspace_edit(r.edit)
+        vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
       else
         vim.lsp.buf.execute_command(r.command)
       end
@@ -238,14 +239,14 @@ lspconfig.jsonls.setup({
   },
 })
 
-lspconfig.yamlls.setup {
-    on_attach = _attach,
-    capabilities = updated_capabilities,
-}
+lspconfig.yamlls.setup({
+  on_attach = _attach,
+  capabilities = updated_capabilities,
+})
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------
-lspconfig.jedi_language_server.setup({
+lspconfig.pyright.setup({
   on_attach = _attach,
   capabilities = updated_capabilities,
 })

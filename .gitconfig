@@ -5,10 +5,11 @@
 	default = simple
 [merge]
     tool = nvimdiff
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 [mergetool]
     prompt = false
 [diff]
+    algorithm = histogram
     tool = nvimdiff
 [difftool]
     prompt = false
