@@ -1,24 +1,18 @@
-local common = require('locals.common')
 local lspconfig = require('lspconfig')
 
 -- diagnostic config
-vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
-  underline = false,
-  virtual_text = { spacing = 4, prefix = '■' },
-  signs = true,
-  update_in_insert = false,
-})
+-- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
+--   underline = false,
+--   virtual_text = { spacing = 4, prefix = '■' },
+--   signs = true,
+--   update_in_insert = false,
+-- })
 
 -- signs
 vim.fn.sign_define('LspDiagnosticsErrorSign', { text = '✗', texthl = 'LspDiagnosticsError' })
 vim.fn.sign_define('LspDiagnosticsWarningSign', { text = '⚠', texthl = 'LspDiagnosticsWarning' })
 vim.fn.sign_define('LspDiagnosticsInformationSign', { text = 'ⓘ', texthl = 'LspDiagnosticsInformation' })
 vim.fn.sign_define('LspDiagnosticsHintSign', { text = '✓', texthl = 'LspDiagnosticsHint' })
-
-local has_words_before = function()
-  local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-  return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match('%s') == nil
-end
 
 -- completion config
 local cmp = require('cmp')
@@ -29,43 +23,28 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-  mapping = {
-    ['<C-d>'] = cmp.mapping(cmp.mapping.scroll_docs(-4), { 'i', 'c' }),
-    ['<C-f>'] = cmp.mapping(cmp.mapping.scroll_docs(4), { 'i', 'c' }),
-    ['<C-e>'] = cmp.mapping({ i = cmp.mapping.close(), c = cmp.mapping.close() }),
-    ['<C-Space>'] = cmp.mapping(cmp.mapping.complete(), { 'i', 'c' }),
-    ['<CR>'] = cmp.mapping.confirm({ select = false }),
-    -- ['<Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_next_item()
-    --   elseif luasnip.expand_or_jumpable() then
-    --     luasnip.expand_or_jump()
-    --   elseif has_words_before() then
-    --     cmp.complete()
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
-    -- ['<S-Tab>'] = cmp.mapping(function(fallback)
-    --   if cmp.visible() then
-    --     cmp.select_prev_item()
-    --   elseif luasnip.jumpable(-1) then
-    --     luasnip.jump(-1)
-    --   else
-    --     fallback()
-    --   end
-    -- end, { 'i', 's' }),
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
   },
-  sources = {
+  mapping = {
+    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
+    ['<C-f>'] = cmp.mapping.scroll_docs(4),
+    ['<C-Space>'] = cmp.mapping.complete(),
+    ['<C-e>'] = cmp.mapping.abort(),
+    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+  },
+  sources = cmp.config.sources({
+    { name = 'luasnip' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
-    { name = 'luasnip' },
+  }, {
     { name = 'path' },
-    { name = 'treesitter' },
+    -- { name = 'treesitter' },
     { name = 'emoji' },
     { name = 'nvim_lua' },
     { name = 'buffer', keyword_length = 5 },
-  },
+  }),
   formatting = {
     format = require('lspkind').cmp_format({
       mode = 'symbol_text',
@@ -81,31 +60,54 @@ cmp.setup({
     }),
   },
   experimental = {
-    native_menu = false,
     ghost_text = true,
   },
+})
+
+cmp.setup.filetype('gitcommit', {
+  sources = cmp.config.sources({
+    { name = 'cmp-git' },
+  }, {
+    { name = 'buffer' },
+  }),
+})
+
+cmp.setup.cmdline('/', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+      { name = 'nvim_lsp_document_symbol' },
+  }, {
+    { name = 'buffer' },
+  }),
+})
+
+cmp.setup.cmdline(':', {
+  mapping = cmp.mapping.preset.cmdline(),
+  sources = cmp.config.sources({
+    { name = 'path' },
+  }, {
+    { name = 'cmdline' },
+  }),
 })
 
 local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
 updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
 
 local _attach = function(client, bufnr)
-  local opts = { noremap = true, silent = true }
-  local function bmap(...)
-    vim.api.nvim_buf_set_keymap(bufnr, ...)
-  end
-  bmap('n', 'ca', [[<cmd>lua require('telescope.builtin').lsp_code_actions{}<cr>]], opts)
-  bmap('v', 'ca', [[<cmd>lua require('telescope.builtin').lsp_range_code_actions{}<cr>]], opts)
-  bmap('n', 'go', [[<cmd>lua require('telescope.builtin').lsp_document_symbols()<cr>]], opts)
-  bmap('n', 'gw', [[<cmd>lua require('telescope.builtin').lsp_workspace_symbols()<cr>]], opts)
-  bmap('n', 'gd', [[<cmd>lua vim.lsp.buf.definition()<cr>]], opts)
-  bmap('n', 'gD', [[<cmd>lua vim.lsp.buf.declaration()<cr>]], opts)
-  bmap('n', 'gr', [[<cmd>lua require('telescope.builtin').lsp_references{}<cr>]], opts)
-  bmap('n', 'K', [[<cmd>lua vim.lsp.buf.hover()<cr>]], opts)
-  bmap('n', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
-  bmap('i', '<c-K>', [[<cmd>lua vim.lsp.buf.signature_help()<cr>]], opts)
-  bmap('n', 'dn', '<cmd>lua vim.diagnostic.goto_next()<cr>', opts)
-  bmap('n', 'dp', '<cmd>lua vim.diagnostic.goto_prev()<cr>', opts)
+  local ts = require('telescope.builtin')
+  vim.keymap.set('n', 'ca', ts.lsp_code_actions, { buffer = bufnr })
+  vim.keymap.set('v', 'ca', ts.lsp_range_code_actions, { buffer = bufnr })
+  vim.keymap.set('n', 'go', ts.lsp_document_symbols, { buffer = bufnr })
+  vim.keymap.set('n', 'gw', ts.lsp_workspace_symbols, { buffer = bufnr })
+  vim.keymap.set('n', 'gr', ts.lsp_references, { buffer = bufnr })
+  vim.keymap.set('n', 'gd', vim.lsp.buf.definition, { buffer = bufnr })
+  vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, { buffer = bufnr })
+  vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr })
+  vim.keymap.set('n', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr })
+  vim.keymap.set('i', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr })
+
+  vim.keymap.set('n', 'dn', vim.diagnostic.goto_next, { buffer = bufnr })
+  vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev, { buffer = bufnr })
 
   vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
 
@@ -182,6 +184,7 @@ lspconfig.gopls.setup({
       staticcheck = true,
       usePlaceholders = true,
       experimentalWorkspaceModule = false,
+      experimentalPostfixCompletions = true,
     },
   },
   on_attach = _attach,

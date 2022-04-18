@@ -9,7 +9,6 @@ return require('packer').startup({
     -- Appearance
     ----------------------------------------
     use('folke/tokyonight.nvim')
-    use('marko-cerovac/material.nvim')
 
     use({
       'hoob3rt/lualine.nvim',
@@ -75,15 +74,9 @@ return require('packer').startup({
       requires = 'nvim-telescope/telescope.nvim',
     })
 
-    -- use 'airblade/vim-rooter'
-    -- use 'yssl/QFEnter'
     use({
-      'ahmedkhalf/project.nvim',
-      config = function()
-        require('project_nvim').setup({
-          show_hidden = true,
-        })
-      end,
+      'nvim-telescope/telescope-project.nvim',
+      requires = 'nvim-telescope/telescope.nvim',
     })
 
     ----------------------------------------
@@ -112,7 +105,7 @@ return require('packer').startup({
       'romgrk/nvim-treesitter-context',
       requires = 'nvim-treesitter/nvim-treesitter',
       config = function()
-        require('treesitter-context.config').setup({ enable = true })
+        require('treesitter-context.config').setup({ enable = false })
       end,
     })
 
@@ -168,6 +161,7 @@ return require('packer').startup({
     use('hrsh7th/nvim-cmp')
     use({ 'hrsh7th/cmp-nvim-lsp', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-nvim-lsp-signature-help', requires = { 'hrsh7th/nvim-cmp' } })
+    use({ 'hrsh7th/cmp-nvim-lsp-document-symbol', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-buffer', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-path', requires = { 'hrsh7th/nvim-cmp' } })
     use({ 'hrsh7th/cmp-emoji', requires = { 'hrsh7th/nvim-cmp' } })

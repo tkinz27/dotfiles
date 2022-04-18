@@ -11,7 +11,7 @@ end
 
 require('locals.plugins')
 require('locals.defaults')
-require('locals.navigation')
+require('locals.telescope')
 require('locals.lsp')
 require('locals.debug')
 require('locals.appearance')
