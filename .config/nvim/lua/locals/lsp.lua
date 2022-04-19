@@ -247,7 +247,7 @@ lspconfig.tsserver.setup({
       -- enable_import_on_completion = true,
       formatter = 'prettier',
     })
-    ts_utils.setup_client(client)(client, bufnr)
+    ts_utils.setup_client(client)
 
     client.server_capabilities.documentFormattingProvider = false
     client.server_capabilities.documentRangeFormattingProvider = false
