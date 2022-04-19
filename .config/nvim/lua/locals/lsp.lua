@@ -139,11 +139,14 @@ local on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
+    vim.notify('Formatting enabled for ' .. client.name, 'info')
     vim.api.nvim_create_autocmd('BufWritePre', {
       buffer = bufnr,
       desc = 'LSP format on write',
       callback = function()
-        vim.lsp.buf.formatting_sync()
+        local util = require('vim.lsp.util')
+        local params = util.make_formatting_params({})
+        client.request_sync('textDocument/formatting', params, 10000, bufnr)
       end,
     })
   end

@@ -39,6 +39,7 @@ telescope.setup({
 telescope.load_extension('gh')
 telescope.load_extension('ui-select')
 telescope.load_extension('project')
+telescope.load_extension('notify')
 
 vim.keymap.set('n', '<leader>pick', builtins.builtin, { desc = 'Telescope Pickers' })
 vim.keymap.set('n', '<leader>ff', builtins.find_files, { desc = 'Telescope Find Files' })
