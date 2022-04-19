@@ -146,7 +146,12 @@ local on_attach = function(client, bufnr)
       callback = function()
         local util = require('vim.lsp.util')
         local params = util.make_formatting_params({})
-        client.request_sync('textDocument/formatting', params, 10000, bufnr)
+        local result, err = client.request_sync('textDocument/formatting', params, 10000, bufnr)
+        if result and result.result then
+          util.apply_text_edits(result.result, bufnr, client.offset_encoding)
+        elseif err then
+          vim.notify('lsp formatting: ' .. err, vim.log.levels.WARN)
+        end
       end,
     })
   end
