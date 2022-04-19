@@ -1,13 +1,5 @@
 local lspconfig = require('lspconfig')
 
--- diagnostic config
--- vim.lsp.handlers['textDocument/publishDiagnostics'] = vim.lsp.with(vim.lsp.diagnostic.on_publish_diagnostics, {
---   underline = false,
---   virtual_text = { spacing = 4, prefix = '■' },
---   signs = true,
---   update_in_insert = false,
--- })
-
 -- signs
 vim.fn.sign_define('LspDiagnosticsErrorSign', { text = '✗', texthl = 'LspDiagnosticsError' })
 vim.fn.sign_define('LspDiagnosticsWarningSign', { text = '⚠', texthl = 'LspDiagnosticsWarning' })
@@ -32,12 +24,32 @@ cmp.setup({
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true }),
+    ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+    ['<Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_next_item()
+      elseif luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jumpable()
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      if cmp.visible() then
+        cmp.select_prev_item()
+      elseif luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      else
+        fallback()
+      end
+    end, { 'i', 's' }),
   },
   sources = cmp.config.sources({
     { name = 'luasnip' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'path' },
+    { name = 'nvim_lua' },
   }, {
     { name = 'path' },
     -- { name = 'treesitter' },
@@ -64,18 +76,10 @@ cmp.setup({
   },
 })
 
-cmp.setup.filetype('gitcommit', {
-  sources = cmp.config.sources({
-    { name = 'cmp-git' },
-  }, {
-    { name = 'buffer' },
-  }),
-})
-
 cmp.setup.cmdline('/', {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
-      { name = 'nvim_lsp_document_symbol' },
+    { name = 'nvim_lsp_document_symbol' },
   }, {
     { name = 'buffer' },
   }),
@@ -90,10 +94,15 @@ cmp.setup.cmdline(':', {
   }),
 })
 
-local updated_capabilities = vim.lsp.protocol.make_client_capabilities()
-updated_capabilities = require('cmp_nvim_lsp').update_capabilities(updated_capabilities)
+local capabilities = vim.lsp.protocol.make_client_capabilities()
+capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-local _attach = function(client, bufnr)
+vim.keymap.set('n', 'dn', vim.diagnostic.goto_next)
+vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev)
+vim.keymap.set('n', 'dq', vim.diagnostic.setloclist)
+vim.keymap.set('n', 'de', vim.diagnostic.open_float)
+
+local on_attach = function(client, bufnr)
   local ts = require('telescope.builtin')
   vim.keymap.set('n', 'ca', ts.lsp_code_actions, { buffer = bufnr })
   vim.keymap.set('v', 'ca', ts.lsp_range_code_actions, { buffer = bufnr })
@@ -106,24 +115,28 @@ local _attach = function(client, bufnr)
   vim.keymap.set('n', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr })
   vim.keymap.set('i', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr })
 
-  vim.keymap.set('n', 'dn', vim.diagnostic.goto_next, { buffer = bufnr })
-  vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev, { buffer = bufnr })
-
-  vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
+  -- vim.cmd([[autocmd CursorHold,CursorHoldI * lua require'nvim-lightbulb'.update_lightbulb()]])
 
   -- Set autocommands conditional on server capabilities
   if client.resolved_capabilities.document_highlight then
-    vim.cmd([[
-            augroup lsp_document_highlight
-                autocmd! * <buffer>
-                autocmd CursorHold <buffer> lua vim.lsp.buf.document_highlight()
-                autocmd CursorMoved <buffer> lua vim.lsp.buf.clear_references()
-            augroup END
-        ]])
+    local lsp_doc_highlight = vim.api.nvim_create_augroup('lsp_document_highlight', {})
+    vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+      group = lsp_doc_highlight,
+      buffer = bufnr,
+      callback = vim.lsp.buf.document_highlight,
+    })
+    vim.api.nvim_create_autocmd({ 'CursorMoved' }, {
+      group = lsp_doc_highlight,
+      buffer = bufnr,
+      callback = vim.lsp.buf.clear_references,
+    })
   end
 
   if client.resolved_capabilities.document_formatting then
-    vim.cmd([[autocmd BufWritePre <buffer> lua vim.lsp.buf.formatting_seq_sync()]])
+    vim.api.nvim_create_autocmd({ 'BufWritePre' }, {
+      buffer = bufnr,
+      callback = vim.lsp.buf.formatting_seq_sync,
+    })
   end
 end
 
@@ -136,8 +149,8 @@ local lsps = {
 }
 for _, s in ipairs(lsps) do
   lspconfig[s].setup({
-    on_attach = _attach,
-    capabilities = updated_capabilities,
+    on = on_attach,
+    capabilities = capabilities,
   })
 end
 
@@ -146,7 +159,7 @@ end
 ------------------------------------------------------------
 local null_ls = require('null-ls')
 null_ls.setup({
-  on_attach = _attach,
+  on = on_attach,
   sources = {
     null_ls.builtins.formatting.stylua.with({
       extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
@@ -187,8 +200,8 @@ lspconfig.gopls.setup({
       experimentalPostfixCompletions = true,
     },
   },
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
 })
 
 function GoImports(timeoutms)
@@ -216,7 +229,7 @@ vim.api.nvim_command('au BufWritePre *.go lua GoImports(10000)')
 ------------------------------------------------------------
 lspconfig.tsserver.setup({
   init_options = require('nvim-lsp-ts-utils').init_options,
-  on_attach = function(client, bufnr)
+  on = function(client, bufnr)
     local ts_utils = require('nvim-lsp-ts-utils')
     ts_utils.setup({
       eslint_bin = 'eslint_d',
@@ -225,33 +238,32 @@ lspconfig.tsserver.setup({
       -- enable_import_on_completion = true,
       formatter = 'prettier',
     })
-    ts_utils.setup_client(client)
-    _attach(client, bufnr)
+    ts_utils.setup_client(client)(client, bufnr)
 
     client.resolved_capabilities.document_formatting = false
     client.resolved_capabilities.document_range_formatting = false
   end,
-  capabilities = updated_capabilities,
+  capabilities = capabilities,
 })
 
 lspconfig.jsonls.setup({
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
   settings = {
     schemas = require('schemastore').json.schemas(),
   },
 })
 
 lspconfig.yamlls.setup({
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
 })
 ------------------------------------------------------------
 -- python
 ------------------------------------------------------------
 lspconfig.pyright.setup({
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
 })
 
 ------------------------------------------------------------
@@ -292,16 +304,16 @@ lspconfig.sumneko_lua.setup({
       },
     },
   },
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
 })
 
 ------------------------------------------------------------
 -- rust
 ------------------------------------------------------------
 lspconfig.rust_analyzer.setup({
-  on_attach = _attach,
-  capabilities = updated_capabilities,
+  on = on_attach,
+  capabilities = capabilities,
   settings = {
     ['rust-analyzer'] = {
       assist = {

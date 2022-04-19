@@ -11,6 +11,7 @@ end
 
 require('locals.plugins')
 require('locals.defaults')
+require('locals.treesitter')
 require('locals.telescope')
 require('locals.lsp')
 require('locals.debug')
