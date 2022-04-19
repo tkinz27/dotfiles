@@ -44,16 +44,14 @@ vim.opt.formatoptions = vim.opt.formatoptions
   + 'n' -- indent with text, not with numbers (1. xxx\n  xxx)
   - '2' -- do not use the indent of the second line
 
-local mapopts = { noremap = true, silent = true }
-vim.api.nvim_set_keymap('n', '<leader>erc', ':vsp ~/.config/nvim.opt.vim<cr>', mapopts)
-vim.api.nvim_set_keymap('n', '<leader>path', [[:echo expand('%:p')<cr>]], mapopts)
+vim.keymap.set('n', '<leader>path', [[:echo expand('%:p')<cr>]])
 
-vim.api.nvim_set_keymap('n', '<leader>save', [[:w !sudo dd of=%<cr>]], mapopts)
+vim.keymap.set('n', '<leader>save', [[:w !sudo dd of=%<cr>]])
 
-vim.api.nvim_set_keymap('t', '<Esc>', [[<C-\><C-n>]], { noremap = true, silent = true })
+vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
 
-vim.api.nvim_set_keymap('i', '<C-a>', '<Esc>I', { noremap = true, silent = true })
-vim.api.nvim_set_keymap('i', '<C-e>', '<Esc>A', { noremap = true, silent = true })
+vim.keymap.set('i', '<C-a>', '<Esc>I')
+vim.keymap.set('i', '<C-e>', '<Esc>A')
 
 vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
 
