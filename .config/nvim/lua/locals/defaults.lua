@@ -17,6 +17,8 @@ vim.opt.smartcase = true -- unless there are caps in search
 vim.opt.cursorline = true -- highlight current line
 vim.opt.scrolloff = 10
 
+vim.opt.updatetime = 700 -- time nvim will wait before executing things if cursor is not moving
+
 -- tabs
 vim.opt.wrap = true
 vim.opt.expandtab = true
@@ -57,4 +59,3 @@ vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
 
 -- better way for this?
 vim.cmd([[autocmd FileType make set noexpandtab]])
-

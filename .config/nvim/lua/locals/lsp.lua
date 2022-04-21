@@ -1,10 +1,32 @@
 local lspconfig = require('lspconfig')
 
 -- signs
-vim.fn.sign_define('LspDiagnosticsErrorSign', { text = '✗', texthl = 'LspDiagnosticsError' })
-vim.fn.sign_define('LspDiagnosticsWarningSign', { text = '⚠', texthl = 'LspDiagnosticsWarning' })
-vim.fn.sign_define('LspDiagnosticsInformationSign', { text = 'ⓘ', texthl = 'LspDiagnosticsInformation' })
-vim.fn.sign_define('LspDiagnosticsHintSign', { text = '✓', texthl = 'LspDiagnosticsHint' })
+local signs = { Error = ' ', Warn = ' ', Hint = ' ', Info = ' ' }
+for type, icon in pairs(signs) do
+  local hl = 'DiagnosticSign' .. type
+  vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = hl })
+end
+
+-- diagnostics
+vim.diagnostic.config({
+  -- show signs
+  signs = { active = signs },
+  update_in_insert = true,
+  underline = true,
+  severity_sort = true,
+  float = {
+    focusable = false,
+    style = 'minimal',
+    border = 'rounded',
+    source = 'always',
+    header = '',
+    prefix = '',
+  },
+})
+vim.keymap.set('n', 'dn', vim.diagnostic.goto_next)
+vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev)
+vim.keymap.set('n', 'dq', vim.diagnostic.setloclist)
+vim.keymap.set('n', 'de', vim.diagnostic.open_float)
 
 -- completion config
 local cmp = require('cmp')
@@ -15,16 +37,17 @@ cmp.setup({
       luasnip.lsp_expand(args.body)
     end,
   },
-  window = {
-    completion = cmp.config.window.bordered(),
-    documentation = cmp.config.window.bordered(),
-  },
+  view = { entries = 'native' },
+  -- window = {
+  --   completion = cmp.config.window.bordered(),
+  --   documentation = cmp.config.window.bordered(),
+  -- },
   mapping = {
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
     ['<C-Space>'] = cmp.mapping.complete(),
     ['<C-e>'] = cmp.mapping.abort(),
-    ['<CR>'] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
+    -- ['<CR>'] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
     ['<Tab>'] = cmp.mapping(function(fallback)
       if cmp.visible() then
         cmp.select_next_item()
@@ -97,11 +120,6 @@ cmp.setup.cmdline(':', {
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
-vim.keymap.set('n', 'dn', vim.diagnostic.goto_next)
-vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev)
-vim.keymap.set('n', 'dq', vim.diagnostic.setloclist)
-vim.keymap.set('n', 'de', vim.diagnostic.open_float)
-
 local on_attach = function(client, bufnr)
   local ts = require('telescope.builtin')
   vim.keymap.set('n', 'ca', ts.lsp_code_actions, { buffer = bufnr, desc = 'Find LSP Code Actions' })
@@ -139,7 +157,7 @@ local on_attach = function(client, bufnr)
   end
 
   if client.server_capabilities.documentFormattingProvider then
-    vim.notify('Formatting enabled for ' .. client.name, 'info')
+    -- vim.notify('Formatting enabled for ' .. client.name, 'info')
     vim.api.nvim_create_autocmd('BufWritePre', {
       buffer = bufnr,
       desc = 'LSP format on write',
