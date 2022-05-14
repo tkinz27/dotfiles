@@ -28,102 +28,13 @@ vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev)
 vim.keymap.set('n', 'dq', vim.diagnostic.setloclist)
 vim.keymap.set('n', 'de', vim.diagnostic.open_float)
 
--- completion config
-local cmp = require('cmp')
-local luasnip = require('luasnip')
-cmp.setup({
-  snippet = {
-    expand = function(args)
-      luasnip.lsp_expand(args.body)
-    end,
-  },
-  view = { entries = 'native' },
-  -- window = {
-  --   completion = cmp.config.window.bordered(),
-  --   documentation = cmp.config.window.bordered(),
-  -- },
-  mapping = {
-    ['<C-b>'] = cmp.mapping.scroll_docs(-4),
-    ['<C-f>'] = cmp.mapping.scroll_docs(4),
-    ['<C-Space>'] = cmp.mapping.complete(),
-    ['<C-e>'] = cmp.mapping.abort(),
-    -- ['<CR>'] = cmp.mapping.confirm({ select = false, behavior = cmp.ConfirmBehavior.Replace }),
-    ['<Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_next_item()
-      elseif luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jumpable()
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
-  },
-  sources = cmp.config.sources({
-    { name = 'luasnip' },
-    { name = 'nvim_lsp' },
-    { name = 'nvim_lsp_signature_help' },
-    { name = 'path' },
-    { name = 'nvim_lua' },
-  }, {
-    { name = 'path' },
-    -- { name = 'treesitter' },
-    { name = 'emoji' },
-    { name = 'nvim_lua' },
-    { name = 'buffer', keyword_length = 5 },
-  }),
-  formatting = {
-    format = require('lspkind').cmp_format({
-      mode = 'symbol_text',
-      menu = {
-        nvim_lsp = '[lsp]',
-        luasnip = '[snip]',
-        path = '[path]',
-        treesitter = '[tree]',
-        emoji = '[emoji]',
-        nvim_lua = '[vimapi]',
-        buffer = '[buf]',
-      },
-    }),
-  },
-  experimental = {
-    ghost_text = true,
-  },
-})
-
-cmp.setup.cmdline('/', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'nvim_lsp_document_symbol' },
-  }, {
-    { name = 'buffer' },
-  }),
-})
-
-cmp.setup.cmdline(':', {
-  mapping = cmp.mapping.preset.cmdline(),
-  sources = cmp.config.sources({
-    { name = 'path' },
-  }, {
-    { name = 'cmdline' },
-  }),
-})
-
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
 
 local on_attach = function(client, bufnr)
   local ts = require('telescope.builtin')
-  vim.keymap.set('n', 'ca', ts.lsp_code_actions, { buffer = bufnr, desc = 'Find LSP Code Actions' })
-  vim.keymap.set('v', 'ca', ts.lsp_range_code_actions, { buffer = bufnr, desc = 'Find LSP Code Actions [range]' })
+  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Find LSP Code Actions' })
+  vim.keymap.set('v', 'ca', vim.lsp.buf.range_code_action, { buffer = bufnr, desc = 'Find LSP Code Actions [range]' })
   vim.keymap.set('n', 'go', ts.lsp_document_symbols, { buffer = bufnr, desc = 'Find LSP Document Symbols' })
   vim.keymap.set('n', 'gw', ts.lsp_workspace_symbols, { buffer = bufnr, desc = 'Find LSP Workspace Symbols' })
   vim.keymap.set('n', 'gr', ts.lsp_references, { buffer = bufnr, desc = 'Find LSP References' })
@@ -162,14 +73,7 @@ local on_attach = function(client, bufnr)
       buffer = bufnr,
       desc = 'LSP format on write',
       callback = function()
-        local util = require('vim.lsp.util')
-        local params = util.make_formatting_params({})
-        local result, err = client.request_sync('textDocument/formatting', params, 10000, bufnr)
-        if result and result.result then
-          util.apply_text_edits(result.result, bufnr, client.offset_encoding)
-        elseif err then
-          vim.notify('lsp formatting: ' .. err, vim.log.levels.WARN)
-        end
+        vim.lsp.buf.format({ name = client.name })
       end,
     })
   end
@@ -211,6 +115,8 @@ null_ls.setup({
 ------------------------------------------------------------
 -- golang
 ------------------------------------------------------------
+-- require('go').setup({})
+
 -- TODO check if we are in a bazel workspace and envvar
 -- "GOPACKAGESDRIVER": "${workspaceFolder}/tools/gopackagesdriver.sh"
 -- where gopackagesdriver == `exec bazel run -- @io_bazel_rules_go//go/tools/gopackagesdriver "${@}"`
@@ -255,7 +161,7 @@ function GoImports(timeoutms)
     end
   end
 
-  vim.lsp.buf.formatting_sync(nil, timeoutms)
+  vim.lsp.buf.format()
 end
 vim.api.nvim_command('au BufWritePre *.go lua GoImports(10000)')
 

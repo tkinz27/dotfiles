@@ -8,11 +8,19 @@ return require('packer').startup({
     ----------------------------------------
     -- Appearance
     ----------------------------------------
+    use({
+      'norcalli/nvim-colorizer.lua',
+      config = function()
+        require('colorizer').setup()
+      end,
+    })
+
     use('folke/tokyonight.nvim')
 
     use({
       'hoob3rt/lualine.nvim',
       requires = { 'kyazdani42/nvim-web-devicons', opt = true },
+      -- config = require('plugins.configs.lualine'),
     })
     use({
       'akinsho/nvim-bufferline.lua',
@@ -49,34 +57,20 @@ return require('packer').startup({
       config = function()
         require('nvim-tree').setup({
           update_cwd = true,
-          update_to_buf_dir = {
-            enable = true,
-            auto_open = true,
-          },
         })
       end,
     })
 
-    use({ 'nvim-telescope/telescope.nvim', requires = { { 'nvim-lua/popup.nvim' }, { 'nvim-lua/plenary.nvim' } } })
-
     use({
-      'nvim-telescope/telescope-github.nvim',
-      requires = 'nvim-telescope/telescope.nvim',
-    })
-
-    use({
-      'nvim-telescope/telescope-media-files.nvim',
-      requires = 'nvim-telescope/telescope.nvim',
-    })
-
-    use({
-      'nvim-telescope/telescope-ui-select.nvim',
-      requires = 'nvim-telescope/telescope.nvim',
-    })
-
-    use({
-      'nvim-telescope/telescope-project.nvim',
-      requires = 'nvim-telescope/telescope.nvim',
+      'nvim-telescope/telescope.nvim',
+      requires = {
+        'nvim-lua/popup.nvim',
+        'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope-github.nvim',
+        'nvim-telescope/telescope-media-files.nvim',
+        'nvim-telescope/telescope-project.nvim',
+        'nvim-telescope/telescope-ui-select.nvim',
+      },
     })
 
     ----------------------------------------
@@ -92,38 +86,29 @@ return require('packer').startup({
       end,
     })
 
-    use({
-      'nvim-treesitter/nvim-treesitter',
-      run = ':TSUpdate',
-    })
+    -- use({
+    --   'nvim-treesitter/nvim-treesitter',
+    --   run = ':TSUpdate',
+    --   requires = {
+    --     -- 'romgrk/nvim-treesitter-context',
+    --     'p00f/nvim-ts-rainbow',
+    --     'JoosepAlviste/nvim-ts-context-commentstring',
+    --     'RRethy/nvim-treesitter-textsubjects',
+    --     'windwp/nvim-ts-autotag',
+    --   },
+    --   config = require('plugins.configs.treesitter'),
+    -- })
 
-    use({
-      'nvim-treesitter/playground',
-    })
+    use({ 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' })
+    use({ 'windwp/nvim-ts-autotag', requires = 'nvim-treesitter/nvim-treesitter' })
+    use({ 'romgrk/nvim-treesitter-context', requires = 'nvim-treesitter/nvim-treesitter' })
+    use({ 'RRethy/nvim-treesitter-textsubjects', requires = 'nvim-treesitter/nvim-treesitter' })
+    use({ 'JoosepAlviste/nvim-ts-context-commentstring', requires = 'nvim-treesitter/nvim-treesitter' })
 
-    use({
-      'romgrk/nvim-treesitter-context',
-      requires = 'nvim-treesitter/nvim-treesitter',
-      config = function()
-        require('treesitter-context.config').setup({ enable = false })
-      end,
-    })
-
-    use({
-      'p00f/nvim-ts-rainbow',
-      requires = 'nvim-treesitter/nvim-treesitter',
-    })
-
-    use('JoosepAlviste/nvim-ts-context-commentstring')
-    use('RRethy/nvim-treesitter-textsubjects')
-    use('windwp/nvim-ts-autotag')
-
-    use({
-      'norcalli/nvim-colorizer.lua',
-      config = function()
-        require('colorizer').setup()
-      end,
-    })
+    -- use({
+    --   'nvim-treesitter/playground',
+    --   cmd = 'TSPlaygroundToggle',
+    -- })
 
     ----------------------------------------
     -- Git
@@ -156,33 +141,41 @@ return require('packer').startup({
     ----------------------------------------
     use('neovim/nvim-lspconfig')
     use('nvim-lua/lsp_extensions.nvim')
-    use('onsails/lspkind-nvim')
 
-    use('hrsh7th/nvim-cmp')
-    use({ 'hrsh7th/cmp-nvim-lsp', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-nvim-lsp-signature-help', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-nvim-lsp-document-symbol', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-buffer', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-path', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-emoji', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'hrsh7th/cmp-nvim-lua', requires = { 'hrsh7th/nvim-cmp' } })
-    use({ 'ray-x/cmp-treesitter', requires = { 'hrsh7th/nvim-cmp' } })
-
-    use('L3MON4D3/LuaSnip')
-    use({ 'saadparwaiz1/cmp_luasnip', requires = { 'hrsh7th/nvim-cmp', 'L3MON4D3/LuaSnip' } })
+    use({
+      'hrsh7th/nvim-cmp',
+      requires = {
+        'hrsh7th/cmp-nvim-lsp',
+        'hrsh7th/cmp-nvim-lsp-signature-help',
+        'hrsh7th/cmp-nvim-lsp-document-symbol',
+        'hrsh7th/cmp-buffer',
+        'hrsh7th/cmp-path',
+        'hrsh7th/cmp-emoji',
+        'hrsh7th/cmp-nvim-lua',
+        'ray-x/cmp-treesitter',
+        'onsails/lspkind-nvim',
+        'L3MON4D3/LuaSnip',
+        'saadparwaiz1/cmp_luasnip',
+      },
+      -- config = require('plugins.configs.cmp'),
+    })
 
     use({ 'jose-elias-alvarez/null-ls.nvim', requires = { 'nvim-lua/plenary.nvim', 'neovim/nvim-lspconfig' } })
 
     use('b0o/schemastore.nvim')
 
-    use('mfussenegger/nvim-dap')
-    use({ 'rcarriga/nvim-dap-ui', requires = { 'mfussengger/nvim-dap' } })
+    use({
+      'mfussenegger/nvim-dap',
+      requires = {
+        'rcarriga/nvim-dap-ui',
+      },
+    })
 
     -- light build for code actions
     use('kosayoda/nvim-lightbulb')
-    -- use('weilbith/nvim-code-action-menu')
 
     use({ 'jose-elias-alvarez/nvim-lsp-ts-utils', requires = { 'neovim/nvim-lspconfig' } })
+    use({ 'ray-x/go.nvim' })
 
     -- :Bazel build //...
     use({ 'bazelbuild/vim-bazel', requires = 'google/vim-maktaba' })
@@ -213,25 +206,6 @@ return require('packer').startup({
         vim.cmd([[au BufRead,BufNewFile Dockerfile* set filetype=dockerfile]])
       end,
     })
-
-    -- use {
-    --     'prettier/vim-prettier',
-    --     ft = {'javascript', 'typescript', 'css', 'less', 'scss',
-    --           'json', 'graphql', 'markdown', 'vue', 'yaml', 'html'},
-    --     run = 'yarn install',
-    -- }
-
-    -- use {
-    --      'elzr/vim-json',
-    --      ft = 'json',
-    --      config = function()
-    --          vim.g.vim_json_syntax_conceal = '0'
-    --          vim.cmd [[autocmd FileType json setlocal foldmethod=syntax]]
-    --      end
-    --}
-
-    use({ 'stephpy/vim-yaml', ft = 'yaml' })
-    use({ 'pedrohdz/vim-yaml-folds', ft = 'yaml' })
 
     ----------------------------------------
     -- Terminal
