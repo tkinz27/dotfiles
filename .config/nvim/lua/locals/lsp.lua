@@ -9,6 +9,7 @@ end
 
 -- diagnostics
 vim.diagnostic.config({
+  virtual_text = true,
   -- show signs
   signs = { active = signs },
   update_in_insert = true,
@@ -28,13 +29,12 @@ vim.keymap.set('n', 'dp', vim.diagnostic.goto_prev)
 vim.keymap.set('n', 'dq', vim.diagnostic.setloclist)
 vim.keymap.set('n', 'de', vim.diagnostic.open_float)
 
-local capabilities = vim.lsp.protocol.make_client_capabilities()
-capabilities = require('cmp_nvim_lsp').update_capabilities(capabilities)
+local capabilities = require('cmp_nvim_lsp').default_capabilities()
 
-local on_attach = function(client, bufnr)
+local lsp_keymaps = function(bufnr)
   local ts = require('telescope.builtin')
-  vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Find LSP Code Actions' })
-  vim.keymap.set('v', 'ca', vim.lsp.buf.range_code_action, { buffer = bufnr, desc = 'Find LSP Code Actions [range]' })
+  -- vim.keymap.set('n', 'ca', vim.lsp.buf.code_action, { buffer = bufnr, desc = 'Find LSP Code Actions' })
+  -- vim.keymap.set('v', 'ca', vim.lsp.buf.range_code_action, { buffer = bufnr, desc = 'Find LSP Code Actions [range]' })
   vim.keymap.set('n', 'go', ts.lsp_document_symbols, { buffer = bufnr, desc = 'Find LSP Document Symbols' })
   vim.keymap.set('n', 'gw', ts.lsp_workspace_symbols, { buffer = bufnr, desc = 'Find LSP Workspace Symbols' })
   vim.keymap.set('n', 'gr', ts.lsp_references, { buffer = bufnr, desc = 'Find LSP References' })
@@ -44,6 +44,22 @@ local on_attach = function(client, bufnr)
   vim.keymap.set('n', 'K', vim.lsp.buf.hover, { buffer = bufnr, desc = 'Show LSP Hover' })
   vim.keymap.set('n', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Show LSP Signature Help' })
   vim.keymap.set('i', '<c-K>', vim.lsp.buf.signature_help, { buffer = bufnr, desc = 'Show LSP Signature Help' })
+end
+
+local lsp_formatting_filter = {}
+local lsp_formatting = function(bufnr)
+  vim.lsp.buf.format({
+    filter = function(client)
+      return not lsp_formatting_filter[client.name]
+    end,
+    bufnr = bufnr,
+  })
+end
+
+local lspformatting_augroup = vim.api.nvim_create_augroup('LspFormatting', {})
+
+local on_attach = function(client, bufnr)
+  lsp_keymaps(bufnr)
 
   -- Set autocommands conditional on server capabilities
   if client.server_capabilities.documentHighlightProvider then
@@ -67,13 +83,15 @@ local on_attach = function(client, bufnr)
     })
   end
 
-  if client.server_capabilities.documentFormattingProvider then
+  if client.supports_method('textDocument/formatting') then
     -- vim.notify('Formatting enabled for ' .. client.name, 'info')
+    vim.api.nvim_clear_autocmds({ group = lspformatting_augroup, buffer = bufnr })
     vim.api.nvim_create_autocmd('BufWritePre', {
+      group = lspformatting_augroup,
       buffer = bufnr,
       desc = 'LSP format on write',
       callback = function()
-        vim.lsp.buf.format({ name = client.name })
+        lsp_formatting(bufnr)
       end,
     })
   end
@@ -110,24 +128,42 @@ null_ls.setup({
     null_ls.builtins.formatting.prettier.with({
       extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
     }),
+    null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.black,
+    null_ls.builtins.formatting.sql_formatter.with({
+      extra_args = { '-l', 'bigquery' },
+    }),
   },
 })
 ------------------------------------------------------------
 -- golang
 ------------------------------------------------------------
--- require('go').setup({})
+require('go').setup({
+  lsp_cfg = false,
+  dap_debug = true,
+  luasnip = true,
+})
 
 -- TODO check if we are in a bazel workspace and envvar
 -- "GOPACKAGESDRIVER": "${workspaceFolder}/tools/gopackagesdriver.sh"
 -- where gopackagesdriver == `exec bazel run -- @io_bazel_rules_go//go/tools/gopackagesdriver "${@}"`
 lspconfig.gopls.setup({
-  cmd = { 'gopls', '-vv', '-rpc.trace', '-logfile', '/tmp/gopls.log' },
+  -- cmd = { 'gopls', '-vv', '-rpc.trace', '-logfile', '/tmp/gopls.log' },
   settings = {
     gopls = {
       buildFlags = { '-tags=unit' },
       analyses = {
         unusedParams = true,
         ST1003 = false,
+      },
+      hints = {
+        assignVariableTypes = true,
+        compositeLiteralFields = true,
+        compositeLiteralTypes = true,
+        constantValues = true,
+        functionTypeParameters = true,
+        parameterNames = true,
+        rangeVariableTypes = true,
       },
       directoryFilters = {
         '-build',
@@ -171,6 +207,7 @@ vim.api.nvim_command('au BufWritePre *.go lua GoImports(10000)')
 lspconfig.tsserver.setup({
   init_options = require('nvim-lsp-ts-utils').init_options,
   on_attach = function(client, bufnr)
+    lsp_formatting_filter[client.name] = true
     local ts_utils = require('nvim-lsp-ts-utils')
     ts_utils.setup({
       eslint_bin = 'eslint_d',
@@ -181,8 +218,6 @@ lspconfig.tsserver.setup({
     })
     ts_utils.setup_client(client)
 
-    client.server_capabilities.documentFormattingProvider = false
-    client.server_capabilities.documentRangeFormattingProvider = false
     on_attach(client, bufnr)
   end,
   capabilities = capabilities,
@@ -204,9 +239,27 @@ lspconfig.yamlls.setup({
 -- python
 ------------------------------------------------------------
 lspconfig.pyright.setup({
-  on_attach = on_attach,
+  on_attach = function(client, bufnr)
+    lsp_formatting_filter[client.name] = true
+    on_attach(client, bufnr)
+  end,
   capabilities = capabilities,
+  settings = {
+    python = {
+      analyses = {
+        -- diagnosticMode = 'openFilesOnly',
+      },
+    },
+  },
 })
+
+-- lspconfig.pyre.setup({
+--   on_attach = function(client, bufnr)
+--     lsp_formatting_filter[client.name] = true
+--     on_attach(client, bufnr)
+--   end,
+--   capabilities = capabilities,
+-- })
 
 ------------------------------------------------------------
 -- lua

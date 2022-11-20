@@ -10,10 +10,11 @@ source <(sheldon source)
 # completions
 #####################################################################
 
+fpath=(${ZDOTDIR:-~}/.zsh_functions $fpath)
+zstyle ':completion:*' use-cache on
+zstyle ':completion:*' cache-path ${ZDOTDIR:-~}/cache
+
 autoload -Uz compinit
-for dump in ~/.zcompdump(N.mh+24); do
-    compinit
-done
 compinit -C
 
 # eval "$(starship init zsh)"
@@ -25,7 +26,5 @@ bindkey '^ ' autosuggest-accept
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 [ -f "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
-fpath=(${ZDOTDIR:-~}/.zsh_functions $fpath)
-
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin

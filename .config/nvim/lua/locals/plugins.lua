@@ -66,6 +66,7 @@ return require('packer').startup({
       requires = {
         'nvim-lua/popup.nvim',
         'nvim-lua/plenary.nvim',
+        'nvim-telescope/telescope-file-browser.nvim',
         'nvim-telescope/telescope-github.nvim',
         'nvim-telescope/telescope-media-files.nvim',
         'nvim-telescope/telescope-project.nvim',
@@ -141,6 +142,7 @@ return require('packer').startup({
     ----------------------------------------
     use('neovim/nvim-lspconfig')
     use('nvim-lua/lsp_extensions.nvim')
+    use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
 
     use({
       'hrsh7th/nvim-cmp',
@@ -164,18 +166,16 @@ return require('packer').startup({
 
     use('b0o/schemastore.nvim')
 
-    use({
-      'mfussenegger/nvim-dap',
-      requires = {
-        'rcarriga/nvim-dap-ui',
-      },
-    })
+    use('mfussenegger/nvim-dap')
+    use('rcarriga/nvim-dap-ui')
+    use('theHamsta/nvim-dap-virtual-text')
+    use('nvim-telescope/telescope-dap.nvim')
 
     -- light build for code actions
     use('kosayoda/nvim-lightbulb')
 
     use({ 'jose-elias-alvarez/nvim-lsp-ts-utils', requires = { 'neovim/nvim-lspconfig' } })
-    use({ 'ray-x/go.nvim' })
+    use({ 'ray-x/go.nvim', requires = { 'ray-x/guihua.lua' } })
 
     -- :Bazel build //...
     use({ 'bazelbuild/vim-bazel', requires = 'google/vim-maktaba' })
@@ -204,6 +204,14 @@ return require('packer').startup({
       config = function()
         vim.cmd([[au BufRead,BufNewFile Dockerfile set filetype=dockerfile]])
         vim.cmd([[au BufRead,BufNewFile Dockerfile* set filetype=dockerfile]])
+      end,
+    })
+
+    use({
+      'norcalli/nvim-terminal.lua',
+      ft = 'terminal',
+      config = function()
+        require('terminal').setup()
       end,
     })
 

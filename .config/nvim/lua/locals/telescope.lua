@@ -24,6 +24,9 @@ telescope.setup({
     ['ui-select'] = {
       require('telescope.themes').get_dropdown({}),
     },
+    file_browser = {
+      hijack_netrw = true,
+    },
     project = {
       base_dirs = {
         '~/.config/nvim/',
@@ -36,6 +39,7 @@ telescope.setup({
   },
 })
 
+telescope.load_extension('file_browser')
 telescope.load_extension('gh')
 telescope.load_extension('ui-select')
 telescope.load_extension('project')

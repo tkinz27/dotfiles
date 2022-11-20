@@ -1,8 +1,8 @@
-tags
 .DS_Store
 
 .ropeproject
 .mypy_cache
+pyrightconfig.json
 
 stupid.go
 stupid

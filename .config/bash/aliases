@@ -40,9 +40,5 @@ alias rr="rsync -rvzP"
 alias vg='valgrind --suppressions=$HOME/.vgsup --leak-check=yes'
 
 alias dlogs='syslog -k Sender Docker'
-alias dmachine='eval $(docker-machine env dev)'
-
-alias venv="source ~/code/venv2/bin/activate"
-alias venv3="source ~/code/venv3/bin/activate"
 
 alias view="vim -R"
