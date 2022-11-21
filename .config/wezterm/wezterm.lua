@@ -27,13 +27,24 @@ local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
 --   }
 -- end)
 
+local copy_mode = nil
+if wezterm.gui then
+  copy_mode = wezterm.gui.default_key_tables().copy_mode
+  for _, key_binding in ipairs({
+    { key = 'd', mods = 'CTRL', action = action.CopyMode('PageDown') },
+    { key = 'u', mods = 'CTRL', action = action.CopyMode('PageUp') },
+  }) do
+    table.insert(copy_mode, key_binding)
+  end
+end
+
 return {
   color_scheme = 'tokyonight',
   font = wezterm.font('JetBrainsMono Nerd Font'),
   font_size = 13,
 
   window_background_opacity = 0.9,
-  window_decorations = 'NONE',
+  -- window_decorations = 'NONE',
   inactive_pane_hsb = {
     saturation = 0.9,
     brightness = 0.8,
@@ -55,6 +66,10 @@ return {
     { key = 'l', mods = 'LEADER', action = action.ActivatePaneDirection('Right') },
 
     -- Copy mode
-    -- { key = 'Space', mods = 'CTRL|SHIFT', action = action.ActivateCopyMode },
+    { key = '[', mods = 'LEADER', action = action.ActivateCopyMode },
+  },
+
+  key_tables = {
+    copy_mode = copy_mode,
   },
 }
