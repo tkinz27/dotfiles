@@ -28,7 +28,7 @@ local SOLID_RIGHT_ARROW = utf8.char(0xe0b0)
 -- end)
 
 return {
-  color_scheme = 'Tokyonight',
+  color_scheme = 'tokyonight',
   font = wezterm.font('JetBrainsMono Nerd Font'),
   font_size = 13,
 
