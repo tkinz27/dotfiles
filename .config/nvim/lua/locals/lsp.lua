@@ -130,9 +130,6 @@ null_ls.setup({
     }),
     null_ls.builtins.formatting.isort,
     null_ls.builtins.formatting.black,
-    null_ls.builtins.formatting.sql_formatter.with({
-      extra_args = { '-l', 'bigquery' },
-    }),
   },
 })
 ------------------------------------------------------------
@@ -173,7 +170,6 @@ lspconfig.gopls.setup({
       },
       staticcheck = true,
       usePlaceholders = true,
-      experimentalWorkspaceModule = false,
       experimentalPostfixCompletions = true,
     },
   },

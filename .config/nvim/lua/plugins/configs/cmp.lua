@@ -14,7 +14,7 @@ end
 
 cmp.setup({
   experimental = {
-    ghost_text = true,
+    ghost_text = false,
   },
   snippet = {
     expand = function(args)
@@ -22,10 +22,10 @@ cmp.setup({
     end,
   },
   view = { entries = 'native' },
-  -- window = {
-  --   completion = cmp.config.window.bordered(),
-  --   documentation = cmp.config.window.bordered(),
-  -- },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
   mapping = {
     ['<C-b>'] = cmp.mapping.scroll_docs(-4),
     ['<C-f>'] = cmp.mapping.scroll_docs(4),
@@ -54,9 +54,10 @@ cmp.setup({
     end, { 'i', 's' }),
   },
   sources = cmp.config.sources({
-    { name = 'luasnip' },
+    { name = 'copilot' },
     { name = 'nvim_lsp' },
     { name = 'nvim_lsp_signature_help' },
+    { name = 'luasnip' },
     { name = 'path' },
     { name = 'nvim_lua' },
   }, {
@@ -68,16 +69,20 @@ cmp.setup({
   }),
   formatting = {
     format = require('lspkind').cmp_format({
-      mode = 'symbol_text',
-      menu = {
-        nvim_lsp = '[lsp]',
-        luasnip = '[snip]',
-        path = '[path]',
-        treesitter = '[tree]',
-        emoji = '[emoji]',
-        nvim_lua = '[vimapi]',
-        buffer = '[buf]',
+      mode = 'symbol',
+      max_width = 50,
+      symbol_map = {
+        Copilot = '',
       },
+      -- menu = {
+      --   nvim_lsp = '[lsp]',
+      --   luasnip = '[snip]',
+      --   path = '[path]',
+      --   treesitter = '[tree]',
+      --   emoji = '[emoji]',
+      --   nvim_lua = '[vimapi]',
+      --   buffer = '[buf]',
+      -- },
     }),
   },
 })

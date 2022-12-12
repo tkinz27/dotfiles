@@ -137,12 +137,37 @@ return require('packer').startup({
         require('octo').setup({})
       end,
     })
+
     ----------------------------------------
     -- Languages
     ----------------------------------------
     use('neovim/nvim-lspconfig')
     use('nvim-lua/lsp_extensions.nvim')
     use('https://git.sr.ht/~whynothugo/lsp_lines.nvim')
+
+    use({
+      'zbirenbaum/copilot.lua',
+      event = 'VimEnter',
+      config = function()
+        vim.defer_fn(function()
+          require('copilot').setup({
+            filetypes = {
+              ['*'] = true,
+            },
+          })
+        end, 100)
+      end,
+    })
+
+    use({
+      'zbirenbaum/copilot-cmp',
+      after = { 'copilot.lua' },
+      config = function()
+        require('copilot_cmp').setup({
+          method = 'getCompletionsCycling',
+        })
+      end,
+    })
 
     use({
       'hrsh7th/nvim-cmp',

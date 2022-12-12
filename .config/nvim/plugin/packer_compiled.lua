@@ -145,6 +145,25 @@ _G.packer_plugins = {
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/cmp_luasnip",
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
+  ["copilot-cmp"] = {
+    config = { "\27LJ\2\2]\0\0\2\0\4\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\1K\0\1\0\1\0\1\vmethod\26getCompletionsCycling\nsetup\16copilot_cmp\frequire\0" },
+    load_after = {
+      ["copilot.lua"] = true
+    },
+    loaded = false,
+    needs_bufread = false,
+    path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/copilot-cmp",
+    url = "https://github.com/zbirenbaum/copilot-cmp"
+  },
+  ["copilot.lua"] = {
+    after = { "copilot-cmp" },
+    config = { "\27LJ\2\2T\0\0\3\0\6\0\t6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\4\0005\2\3\0=\2\5\1B\0\2\1K\0\1\0\14filetypes\1\0\0\1\0\1\6*\2\nsetup\fcopilot\frequire-\1\0\3\0\3\0\0066\0\0\0009\0\1\0003\1\2\0)\2d\0B\0\3\1K\0\1\0\0\rdefer_fn\bvim\0" },
+    loaded = false,
+    needs_bufread = false,
+    only_cond = false,
+    path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/copilot.lua",
+    url = "https://github.com/zbirenbaum/copilot.lua"
+  },
   ["diffview.nvim"] = {
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/diffview.nvim",
@@ -512,6 +531,10 @@ vim.cmd [[au FileType jinja ++once lua require("packer.load")({'vim-jinja'}, { f
 vim.cmd [[au FileType Jenkinsfile ++once lua require("packer.load")({'Jenkinsfile-vim-syntax'}, { ft = "Jenkinsfile" }, _G.packer_plugins)]]
 vim.cmd [[au FileType terminal ++once lua require("packer.load")({'nvim-terminal.lua'}, { ft = "terminal" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
+  -- Event lazy-loads
+time([[Defining lazy-load event autocommands]], true)
+vim.cmd [[au VimEnter * ++once lua require("packer.load")({'copilot.lua'}, { event = "VimEnter *" }, _G.packer_plugins)]]
+time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]], true)
@@ -544,12 +567,12 @@ time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pa
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], false)
 vim.cmd("augroup END")
 
 _G._packer.inside_compile = false
