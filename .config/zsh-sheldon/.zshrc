@@ -17,10 +17,16 @@ zstyle ':completion:*' cache-path ${ZDOTDIR:-~}/cache
 autoload -Uz compinit
 compinit -C
 
-# eval "$(starship init zsh)"
+#####################################################################
+# bindings
+#####################################################################
+#
+autoload -U select-word-style
+select-word-style bash
 
 bindkey -e
 bindkey '^ ' autosuggest-accept
+
 
 [ -f ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

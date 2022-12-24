@@ -75,13 +75,13 @@ time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
   ["Comment.nvim"] = {
-    config = { "\27LJ\2\0025\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0" },
+    config = { "\27LJ\2\n5\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/Comment.nvim",
     url = "https://github.com/numToStr/Comment.nvim"
   },
   ["Dockerfile.vim"] = {
-    config = { "\27LJ\2\2¶\1\0\0\2\0\4\0\t6\0\0\0009\0\1\0'\1\2\0B\0\2\0016\0\0\0009\0\1\0'\1\3\0B\0\2\1K\0\1\0>au BufRead,BufNewFile Dockerfile* set filetype=dockerfile=au BufRead,BufNewFile Dockerfile set filetype=dockerfile\bcmd\bvim\0" },
+    config = { "\27LJ\2\n¶\1\0\0\3\0\4\0\t6\0\0\0009\0\1\0'\2\2\0B\0\2\0016\0\0\0009\0\1\0'\2\3\0B\0\2\1K\0\1\0>au BufRead,BufNewFile Dockerfile* set filetype=dockerfile=au BufRead,BufNewFile Dockerfile set filetype=dockerfile\bcmd\bvim\0" },
     loaded = false,
     needs_bufread = true,
     only_cond = false,
@@ -146,7 +146,7 @@ _G.packer_plugins = {
     url = "https://github.com/saadparwaiz1/cmp_luasnip"
   },
   ["copilot-cmp"] = {
-    config = { "\27LJ\2\2]\0\0\2\0\4\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\1K\0\1\0\1\0\1\vmethod\26getCompletionsCycling\nsetup\16copilot_cmp\frequire\0" },
+    config = { "\27LJ\2\n]\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\vmethod\26getCompletionsCycling\nsetup\16copilot_cmp\frequire\0" },
     load_after = {
       ["copilot.lua"] = true
     },
@@ -157,7 +157,7 @@ _G.packer_plugins = {
   },
   ["copilot.lua"] = {
     after = { "copilot-cmp" },
-    config = { "\27LJ\2\2T\0\0\3\0\6\0\t6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\4\0005\2\3\0=\2\5\1B\0\2\1K\0\1\0\14filetypes\1\0\0\1\0\1\6*\2\nsetup\fcopilot\frequire-\1\0\3\0\3\0\0066\0\0\0009\0\1\0003\1\2\0)\2d\0B\0\3\1K\0\1\0\0\rdefer_fn\bvim\0" },
+    config = { "\27LJ\2\nT\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\4\0005\3\3\0=\3\5\2B\0\2\1K\0\1\0\14filetypes\1\0\0\1\0\1\6*\2\nsetup\fcopilot\frequire-\1\0\4\0\3\0\0066\0\0\0009\0\1\0003\2\2\0)\3d\0B\0\3\1K\0\1\0\0\rdefer_fn\bvim\0" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -175,7 +175,7 @@ _G.packer_plugins = {
     url = "https://github.com/f-person/git-blame.nvim"
   },
   ["gitsigns.nvim"] = {
-    config = { "\27LJ\2\0026\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0" },
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/gitsigns.nvim",
     url = "https://github.com/lewis6991/gitsigns.nvim"
@@ -231,7 +231,7 @@ _G.packer_plugins = {
     url = "https://github.com/hrsh7th/nvim-cmp"
   },
   ["nvim-colorizer.lua"] = {
-    config = { "\27LJ\2\0027\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0" },
+    config = { "\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/nvim-colorizer.lua",
     url = "https://github.com/norcalli/nvim-colorizer.lua"
@@ -272,13 +272,13 @@ _G.packer_plugins = {
     url = "https://github.com/bfredl/nvim-luadev"
   },
   ["nvim-notify"] = {
-    config = { "\27LJ\2\2Ü\1\0\0\3\0\5\0\f6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\0016\0\4\0006\1\0\0'\2\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\2\22background_colour\f#000000\21background_color\f#000000\nsetup\vnotify\frequire\0" },
+    config = { "\27LJ\2\nÜ\1\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\2\22background_colour\f#000000\21background_color\f#000000\nsetup\vnotify\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/nvim-notify",
     url = "https://github.com/rcarriga/nvim-notify"
   },
   ["nvim-terminal.lua"] = {
-    config = { "\27LJ\2\0026\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0" },
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rterminal\frequire\0" },
     loaded = false,
     needs_bufread = false,
     only_cond = false,
@@ -286,7 +286,7 @@ _G.packer_plugins = {
     url = "https://github.com/norcalli/nvim-terminal.lua"
   },
   ["nvim-tree.lua"] = {
-    config = { "\27LJ\2\2J\0\0\2\0\4\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\1K\0\1\0\1\0\1\15update_cwd\2\nsetup\14nvim-tree\frequire\0" },
+    config = { "\27LJ\2\nJ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\15update_cwd\2\nsetup\14nvim-tree\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/nvim-tree.lua",
     url = "https://github.com/kyazdani42/nvim-tree.lua"
@@ -323,7 +323,7 @@ _G.packer_plugins = {
     url = "https://github.com/kyazdani42/nvim-web-devicons"
   },
   ["octo.nvim"] = {
-    config = { "\27LJ\2\0026\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0004\1\0\0B\0\2\1K\0\1\0\nsetup\tocto\frequire\0" },
+    config = { "\27LJ\2\n6\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\tocto\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/octo.nvim",
     url = "https://github.com/pwntester/octo.nvim"
@@ -391,7 +391,7 @@ _G.packer_plugins = {
     url = "https://github.com/nvim-telescope/telescope.nvim"
   },
   ["toggleterm.nvim"] = {
-    config = { "\27LJ\2\2Ü\1\0\0\3\0\6\0\t6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0005\2\4\0=\2\5\1B\0\2\1K\0\1\0\15float_opts\1\0\1\vborder\vcurved\1\0\2\17open_mapping\n<c-\\>\14direction\nfloat\nsetup\15toggleterm\frequire\0" },
+    config = { "\27LJ\2\nÜ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\1\vborder\vcurved\1\0\2\17open_mapping\n<c-\\>\14direction\nfloat\nsetup\15toggleterm\frequire\0" },
     loaded = true,
     path = "/home/tony.kinsley/.local/share/nvim/site/pack/packer/start/toggleterm.nvim",
     url = "https://github.com/akinsho/toggleterm.nvim"
@@ -476,7 +476,7 @@ _G.packer_plugins = {
     url = "https://github.com/tpope/vim-surround"
   },
   ["vim-terraform"] = {
-    config = { "\27LJ\2\2Å\1\0\0\2\0\6\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\3\0=\1\4\0006\0\0\0009\0\1\0'\1\3\0=\1\5\0K\0\1\0\20terraform_align\28terraform_fold_sections\0061\26terraform_fmt_on_save\6g\bvim\0" },
+    config = { "\27LJ\2\nÅ\1\0\0\2\0\6\0\r6\0\0\0009\0\1\0'\1\3\0=\1\2\0006\0\0\0009\0\1\0'\1\3\0=\1\4\0006\0\0\0009\0\1\0'\1\3\0=\1\5\0K\0\1\0\20terraform_align\28terraform_fold_sections\0061\26terraform_fmt_on_save\6g\bvim\0" },
     loaded = false,
     needs_bufread = true,
     only_cond = false,
@@ -486,50 +486,50 @@ _G.packer_plugins = {
 }
 
 time([[Defining packer_plugins]], false)
--- Config for: octo.nvim
-time([[Config for octo.nvim]], true)
-try_loadstring("\27LJ\2\0026\0\0\2\0\3\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0004\1\0\0B\0\2\1K\0\1\0\nsetup\tocto\frequire\0", "config", "octo.nvim")
-time([[Config for octo.nvim]], false)
--- Config for: gitsigns.nvim
-time([[Config for gitsigns.nvim]], true)
-try_loadstring("\27LJ\2\0026\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
-time([[Config for gitsigns.nvim]], false)
--- Config for: nvim-tree.lua
-time([[Config for nvim-tree.lua]], true)
-try_loadstring("\27LJ\2\2J\0\0\2\0\4\0\a6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\1K\0\1\0\1\0\1\15update_cwd\2\nsetup\14nvim-tree\frequire\0", "config", "nvim-tree.lua")
-time([[Config for nvim-tree.lua]], false)
 -- Config for: Comment.nvim
 time([[Config for Comment.nvim]], true)
-try_loadstring("\27LJ\2\0025\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0", "config", "Comment.nvim")
+try_loadstring("\27LJ\2\n5\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\fComment\frequire\0", "config", "Comment.nvim")
 time([[Config for Comment.nvim]], false)
 -- Config for: nvim-notify
 time([[Config for nvim-notify]], true)
-try_loadstring("\27LJ\2\2Ü\1\0\0\3\0\5\0\f6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0B\0\2\0016\0\4\0006\1\0\0'\2\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\2\22background_colour\f#000000\21background_color\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
+try_loadstring("\27LJ\2\nÜ\1\0\0\4\0\5\0\f6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\0016\0\4\0006\1\0\0'\3\1\0B\1\2\2=\1\1\0K\0\1\0\bvim\1\0\2\22background_colour\f#000000\21background_color\f#000000\nsetup\vnotify\frequire\0", "config", "nvim-notify")
 time([[Config for nvim-notify]], false)
+-- Config for: gitsigns.nvim
+time([[Config for gitsigns.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\rgitsigns\frequire\0", "config", "gitsigns.nvim")
+time([[Config for gitsigns.nvim]], false)
 -- Config for: nvim-colorizer.lua
 time([[Config for nvim-colorizer.lua]], true)
-try_loadstring("\27LJ\2\0027\0\0\2\0\3\0\0066\0\0\0'\1\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
+try_loadstring("\27LJ\2\n7\0\0\3\0\3\0\0066\0\0\0'\2\1\0B\0\2\0029\0\2\0B\0\1\1K\0\1\0\nsetup\14colorizer\frequire\0", "config", "nvim-colorizer.lua")
 time([[Config for nvim-colorizer.lua]], false)
+-- Config for: octo.nvim
+time([[Config for octo.nvim]], true)
+try_loadstring("\27LJ\2\n6\0\0\3\0\3\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0004\2\0\0B\0\2\1K\0\1\0\nsetup\tocto\frequire\0", "config", "octo.nvim")
+time([[Config for octo.nvim]], false)
 -- Config for: toggleterm.nvim
 time([[Config for toggleterm.nvim]], true)
-try_loadstring("\27LJ\2\2Ü\1\0\0\3\0\6\0\t6\0\0\0'\1\1\0B\0\2\0029\0\2\0005\1\3\0005\2\4\0=\2\5\1B\0\2\1K\0\1\0\15float_opts\1\0\1\vborder\vcurved\1\0\2\17open_mapping\n<c-\\>\14direction\nfloat\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
+try_loadstring("\27LJ\2\nÜ\1\0\0\4\0\6\0\t6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0005\3\4\0=\3\5\2B\0\2\1K\0\1\0\15float_opts\1\0\1\vborder\vcurved\1\0\2\17open_mapping\n<c-\\>\14direction\nfloat\nsetup\15toggleterm\frequire\0", "config", "toggleterm.nvim")
 time([[Config for toggleterm.nvim]], false)
+-- Config for: nvim-tree.lua
+time([[Config for nvim-tree.lua]], true)
+try_loadstring("\27LJ\2\nJ\0\0\3\0\4\0\a6\0\0\0'\2\1\0B\0\2\0029\0\2\0005\2\3\0B\0\2\1K\0\1\0\1\0\1\15update_cwd\2\nsetup\14nvim-tree\frequire\0", "config", "nvim-tree.lua")
+time([[Config for nvim-tree.lua]], false)
 vim.cmd [[augroup packer_load_aucmds]]
 vim.cmd [[au!]]
   -- Filetype lazy-loads
 time([[Defining lazy-load filetype autocommands]], true)
-vim.cmd [[au FileType jsonnet ++once lua require("packer.load")({'vim-jsonnet'}, { ft = "jsonnet" }, _G.packer_plugins)]]
-vim.cmd [[au FileType starlark ++once lua require("packer.load")({'starlark.vim'}, { ft = "starlark" }, _G.packer_plugins)]]
-vim.cmd [[au FileType mustache ++once lua require("packer.load")({'vim-mustache-handlebars'}, { ft = "mustache" }, _G.packer_plugins)]]
-vim.cmd [[au FileType dockerfile ++once lua require("packer.load")({'Dockerfile.vim'}, { ft = "dockerfile" }, _G.packer_plugins)]]
-vim.cmd [[au FileType proto ++once lua require("packer.load")({'vim-protobuf'}, { ft = "proto" }, _G.packer_plugins)]]
-vim.cmd [[au FileType terraform ++once lua require("packer.load")({'vim-terraform'}, { ft = "terraform" }, _G.packer_plugins)]]
 vim.cmd [[au FileType capnp ++once lua require("packer.load")({'vim-capnp'}, { ft = "capnp" }, _G.packer_plugins)]]
-vim.cmd [[au FileType helm ++once lua require("packer.load")({'vim-helm'}, { ft = "helm" }, _G.packer_plugins)]]
-vim.cmd [[au FileType rego ++once lua require("packer.load")({'vim-rego'}, { ft = "rego" }, _G.packer_plugins)]]
 vim.cmd [[au FileType jinja ++once lua require("packer.load")({'vim-jinja'}, { ft = "jinja" }, _G.packer_plugins)]]
-vim.cmd [[au FileType Jenkinsfile ++once lua require("packer.load")({'Jenkinsfile-vim-syntax'}, { ft = "Jenkinsfile" }, _G.packer_plugins)]]
+vim.cmd [[au FileType mustache ++once lua require("packer.load")({'vim-mustache-handlebars'}, { ft = "mustache" }, _G.packer_plugins)]]
+vim.cmd [[au FileType terraform ++once lua require("packer.load")({'vim-terraform'}, { ft = "terraform" }, _G.packer_plugins)]]
+vim.cmd [[au FileType starlark ++once lua require("packer.load")({'starlark.vim'}, { ft = "starlark" }, _G.packer_plugins)]]
 vim.cmd [[au FileType terminal ++once lua require("packer.load")({'nvim-terminal.lua'}, { ft = "terminal" }, _G.packer_plugins)]]
+vim.cmd [[au FileType jsonnet ++once lua require("packer.load")({'vim-jsonnet'}, { ft = "jsonnet" }, _G.packer_plugins)]]
+vim.cmd [[au FileType proto ++once lua require("packer.load")({'vim-protobuf'}, { ft = "proto" }, _G.packer_plugins)]]
+vim.cmd [[au FileType helm ++once lua require("packer.load")({'vim-helm'}, { ft = "helm" }, _G.packer_plugins)]]
+vim.cmd [[au FileType Jenkinsfile ++once lua require("packer.load")({'Jenkinsfile-vim-syntax'}, { ft = "Jenkinsfile" }, _G.packer_plugins)]]
+vim.cmd [[au FileType rego ++once lua require("packer.load")({'vim-rego'}, { ft = "rego" }, _G.packer_plugins)]]
+vim.cmd [[au FileType dockerfile ++once lua require("packer.load")({'Dockerfile.vim'}, { ft = "dockerfile" }, _G.packer_plugins)]]
 time([[Defining lazy-load filetype autocommands]], false)
   -- Event lazy-loads
 time([[Defining lazy-load event autocommands]], true)
@@ -537,42 +537,42 @@ vim.cmd [[au VimEnter * ++once lua require("packer.load")({'copilot.lua'}, { eve
 time([[Defining lazy-load event autocommands]], false)
 vim.cmd("augroup END")
 vim.cmd [[augroup filetypedetect]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/handlebars.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/handlebars.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/handlebars.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/mustache.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/mustache.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-mustache-handlebars/ftdetect/mustache.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/Dockerfile.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/Dockerfile.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/Dockerfile.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/docker-compose.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/docker-compose.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Dockerfile.vim/ftdetect/docker-compose.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-protobuf/ftdetect/proto.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], false)
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], true)
-vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]]
-time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-terraform/ftdetect/hcl.vim]], false)
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], true)
 vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]]
 time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/Jenkinsfile-vim-syntax/ftdetect/Jenkinsfile.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-rego/ftdetect/rego.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-capnp/ftdetect/capnp.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-helm/ftdetect/helm.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/vim-jsonnet/ftdetect/jsonnet.vim]], false)
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]], true)
+vim.cmd [[source /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]]
+time([[Sourcing ftdetect script at: /home/tony.kinsley/.local/share/nvim/site/pack/packer/opt/starlark.vim/ftdetect/starlark.vim]], false)
 vim.cmd("augroup END")
 
 _G._packer.inside_compile = false
