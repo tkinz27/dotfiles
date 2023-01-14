@@ -147,7 +147,6 @@ return require('packer').startup({
 
     use({
       'zbirenbaum/copilot.lua',
-      event = 'VimEnter',
       config = function()
         vim.defer_fn(function()
           require('copilot').setup({
@@ -201,6 +200,7 @@ return require('packer').startup({
 
     use({ 'jose-elias-alvarez/nvim-lsp-ts-utils', requires = { 'neovim/nvim-lspconfig' } })
     use({ 'ray-x/go.nvim', requires = { 'ray-x/guihua.lua' } })
+    use({ 'simrat39/rust-tools.nvim' })
 
     -- :Bazel build //...
     use({ 'bazelbuild/vim-bazel', requires = 'google/vim-maktaba' })

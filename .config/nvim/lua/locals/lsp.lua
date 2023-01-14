@@ -128,7 +128,7 @@ null_ls.setup({
     null_ls.builtins.formatting.prettier.with({
       extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
     }),
-    null_ls.builtins.formatting.isort,
+    null_ls.builtins.formatting.ruff,
     null_ls.builtins.formatting.black,
   },
 })
@@ -302,20 +302,23 @@ lspconfig.sumneko_lua.setup({
 ------------------------------------------------------------
 -- rust
 ------------------------------------------------------------
-lspconfig.rust_analyzer.setup({
-  on_attach = on_attach,
-  capabilities = capabilities,
-  settings = {
-    ['rust-analyzer'] = {
-      assist = {
-        importMergeBehavior = 'last',
-        importPrefix = 'by_self',
-      },
-      cargo = {
-        loadOutDirsFromCheck = true,
-      },
-      procMacro = {
-        enable = true,
+local rust = require('rust-tools')
+rust.setup({
+  server = {
+    on_attach = on_attach,
+    capabilities = capabilities,
+    settings = {
+      ['rust-analyzer'] = {
+        assist = {
+          importMergeBehavior = 'last',
+          importPrefix = 'by_self',
+        },
+        cargo = {
+          loadOutDirsFromCheck = true,
+        },
+        procMacro = {
+          enable = true,
+        },
       },
     },
   },
