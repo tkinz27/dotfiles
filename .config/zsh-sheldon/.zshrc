@@ -1,5 +1,9 @@
 setopt share_history
 
+HISTFILE=~/.zsh_history
+HISTSIZE=10000
+SAVEHIST=10000
+
 for file in ~/.config/bash/*; do
     [ "$file" != "powerline" ] && source ${file}
 done
