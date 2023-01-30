@@ -1,13 +1,12 @@
 vim.g.mapleader = ','
+vim.g.maplocalleader = ','
 
-vim.g.do_filetype_lua = 1
-
-vim.opt.exrc = true
+vim.opt.clipboard = 'unnamedplus'
 
 vim.opt.wildmenu = true
 vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'
-vim.opt.completeopt = 'menuone,noinsert,noselect'
+vim.opt.completeopt = 'menu,menuone,noselect' -- 'menuone,noinsert,noselect'
 vim.opt.shortmess = vim.opt.shortmess + 'c'
 vim.opt.inccommand = 'nosplit'
 
@@ -31,7 +30,7 @@ vim.opt.writebackup = false
 vim.opt.swapfile = false
 
 vim.opt.diffopt = vim.opt.diffopt + 'vertical'
-vim.opt.mouse = 'n'
+vim.opt.mouse = 'a'
 
 -- TODO looks cool from https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/options.lua
 -- TODO check what these do
@@ -45,17 +44,3 @@ vim.opt.formatoptions = vim.opt.formatoptions
   + 'j' -- Auto-remove comments if possible.
   + 'n' -- indent with text, not with numbers (1. xxx\n  xxx)
   - '2' -- do not use the indent of the second line
-
-vim.keymap.set('n', '<leader>path', [[:echo expand('%:p')<cr>]])
-
-vim.keymap.set('n', '<leader>save', [[:w !sudo dd of=%<cr>]])
-
-vim.keymap.set('t', '<Esc>', [[<C-\><C-n>]])
-
-vim.keymap.set('i', '<C-a>', '<Esc>I')
-vim.keymap.set('i', '<C-e>', '<Esc>A')
-
-vim.cmd([[autocmd BufWritePre * :%s/\s\+$//e]])
-
--- better way for this?
-vim.cmd([[autocmd FileType make set noexpandtab]])

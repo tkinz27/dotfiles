@@ -2,19 +2,29 @@
 local execute = vim.api.nvim_command
 local fn = vim.fn
 
-local install_path = fn.stdpath('data') .. '/site/pack/packer/start/packer.nvim'
-
-if fn.empty(fn.glob(install_path)) > 0 then
-  fn.system({ 'git', 'clone', 'https://github.com/wbthomason/packer.nvim', install_path })
-  execute('packadd packer.nvim')
+local lazypath = vim.fn.stdpath('data') .. '/lazy/lazy.nvim'
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    'git',
+    'clone',
+    '--filter=blob:none',
+    'https://github.com/folke/lazy.nvim.git',
+    '--branch=stable',
+    lazypath,
+  })
 end
+vim.opt.runtimepath:prepend(lazypath)
 
-require('locals.plugins')
-require('locals.defaults')
-require('locals.treesitter')
-require('locals.telescope')
-require('locals.lsp')
-require('plugins.configs.cmp')
-require('plugins.configs.lualine')
-require('locals.debug')
-require('locals.appearance')
+require('lazy').setup({
+  spec = {
+    { import = 'plugins' },
+  },
+  defaults = {
+    lazy = true,
+    version = '*',
+  },
+  install = {
+    colorscheme = { 'tokyonight', 'habamax' },
+  },
+  checker = { enabled = true },
+})
