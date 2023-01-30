@@ -4,9 +4,16 @@ return {
     opts = {
       servers = {
         gopls = {
+          cmd = { 'gopls', '-v', '-rpc.trace', '-logfile=/tmp/gopls.log' },
           settings = {
             gopls = {
               buildFlags = { '-tags=unit' },
+              directoryFilters = {
+                '-build',
+                '-bazel-bin',
+                '-bazel-out',
+                '-bazel-testlogs',
+              },
               analyses = {
                 unusedParams = true,
                 ST1003 = false,
@@ -19,12 +26,6 @@ return {
                 functionTypeParameters = true,
                 parameterNames = true,
                 rangeVariableTypes = true,
-              },
-              directoryFilters = {
-                '-build',
-                '-bazel-bin',
-                '-bazel-out',
-                '-bazel-testlogs',
               },
               staticcheck = true,
               usePlaceholders = true,
@@ -52,6 +53,8 @@ return {
 
             vim.lsp.buf.format()
           end
+
+          -- still call lspconfig.gopls.setup
           return false
         end,
       },

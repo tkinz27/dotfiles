@@ -4,7 +4,14 @@ return {
     'neovim/nvim-lspconfig',
     event = 'BufReadPre',
     dependencies = {
-      { 'folke/neoconf.nvim', cmd = 'Neoconf', config = true },
+      {
+        'folke/neoconf.nvim',
+        cmd = 'Neoconf',
+        opts = {
+          import = { vscode = false },
+        },
+        config = true,
+      },
       { 'folke/neodev.nvim', opts = { experimental = { pathStrict = true } } },
       'mason.nvim',
       'williamboman/mason-lspconfig.nvim',
