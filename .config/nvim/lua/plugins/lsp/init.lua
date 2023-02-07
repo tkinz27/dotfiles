@@ -38,6 +38,9 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
+        pyright = {},
+        terraformls = {},
+        bashls = {},
         sumneko_lua = {
           settings = {
             Lua = {
@@ -142,6 +145,10 @@ return {
             extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
           }),
 
+          nls.builtins.formatting.shellharden,
+
+          nls.builtins.formatting.terraform_fmt,
+
           nls.builtins.formatting.ruff,
           nls.builtins.formatting.black,
 
@@ -172,6 +179,7 @@ return {
         'stylua',
         -- sh
         'shellcheck',
+        'shellharden',
         -- typescript/javascript
         'prettier',
         -- others
@@ -180,7 +188,7 @@ return {
       },
     },
     ---@param opts MasonSettings | {ensure_installed: string[]}
-    config = function(plugin, opts)
+    config = function(_, opts)
       require('mason').setup(opts)
       local mr = require('mason-registry')
       for _, tool in ipairs(opts.ensure_installed) do
