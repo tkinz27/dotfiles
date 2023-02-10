@@ -28,8 +28,21 @@ function M.get()
     { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
     { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
     { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
-    { "<leader>cr", M.rename, expr = true, desc = "Rename", has = "rename" },
   }
+  if require('config.util').has('inc-rename.nvim') then
+    M._keys[#M._keys + 1] = {
+      '<leader>cr',
+      function()
+        require('inc_rename')
+        return ':IncRename ' .. vim.fn.expand('<cword>')
+      end,
+      expr = true,
+      desc = 'Rename',
+      has = 'rename',
+    }
+  else
+    M._keys[#M._keys + 1] = { '<leader>cr', vim.lsp.buf.rename, desc = 'Rename', has = 'rename' }
+  end
   return M._keys
 end
 
@@ -55,14 +68,6 @@ function M.on_attach(client, buffer)
       opts.buffer = buffer
       vim.keymap.set(keys.mode or 'n', keys[1], keys[2], opts)
     end
-  end
-end
-
-function M.rename()
-  if pcall(require, 'inc_rename') then
-    return ':IncRename ' .. vim.fn.expand('<cword>')
-  else
-    vim.lsp.buf.rename()
   end
 end
 

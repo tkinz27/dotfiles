@@ -119,6 +119,12 @@ return {
             ['<c-k>'] = function(...)
               return require('telescope.actions').move_selection_previous(...)
             end,
+            ['<c-n>'] = function(...)
+              return require('telescope.actions').preview_scrolling_down(...)
+            end,
+            ['<c-p>'] = function(...)
+              return require('telescope.actions').preview_scrolling_up(...)
+            end,
           },
         },
       },
@@ -174,7 +180,7 @@ return {
   -- git signs
   {
     'lewis6991/gitsigns.nvim',
-    event = 'BufReadPre',
+    event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signs = {
         add = { text = '▎' },
@@ -184,6 +190,8 @@ return {
         changedelete = { text = '▎' },
         untracked = { text = '▎' },
       },
+      current_line_blame = true,
+      current_line_blame_opts = { virt_text = true, virt_text_pos = 'right_align' },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -211,7 +219,7 @@ return {
   -- references
   {
     'RRethy/vim-illuminate',
-    event = 'BufReadPost',
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = { delay = 200 },
     config = function(_, opts)
       require('illuminate').configure(opts)
@@ -248,7 +256,7 @@ return {
   {
     'folke/todo-comments.nvim',
     cmd = { 'TodoTrouble', 'TodoTelescope' },
-    event = 'BufReadPost',
+    event = { 'BufReadPost', 'BufNewFile' },
     config = true,
     -- stylua: ignore
     keys = {

@@ -21,7 +21,7 @@ return {
       max_width = function()
         return math.floor(vim.o.columns * 0.75)
       end,
-      background_colour = "NormalFloat"
+      background_colour = 'NormalFloat',
     },
   },
 
@@ -156,7 +156,7 @@ return {
   -- indent guides for Neovim
   {
     'lukas-reineke/indent-blankline.nvim',
-    event = 'BufReadPre',
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = {
       -- char = "▏",
       char = '│',
@@ -170,7 +170,7 @@ return {
   {
     'echasnovski/mini.indentscope',
     version = false, -- wait till new 0.7.0 release to put it back on semver
-    event = 'BufReadPre',
+    event = { 'BufReadPost', 'BufNewFile' },
     opts = {
       -- symbol = "▏",
       symbol = '│',
