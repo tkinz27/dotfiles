@@ -180,6 +180,7 @@ return {
   -- git signs
   {
     'lewis6991/gitsigns.nvim',
+    branch = 'main',
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signs = {
@@ -191,7 +192,7 @@ return {
         untracked = { text = '▎' },
       },
       current_line_blame = true,
-      current_line_blame_opts = { virt_text = true, virt_text_pos = 'right_align' },
+      current_line_blame_opts = { virt_text = true, virt_text_pos = 'eol' },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 

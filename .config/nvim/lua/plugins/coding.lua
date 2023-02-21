@@ -5,12 +5,14 @@ return {
     'zbirenbaum/copilot.lua',
     lazy = false,
     version = false,
+    event = { 'VimEnter' },
     opts = {
       suggestion = { enabled = false },
       panel = { enabled = true, auto_refresh = true },
       filetypes = {
         ['*'] = true,
       },
+      server_opts_overrides = {},
     },
     keys = {
       {

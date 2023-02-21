@@ -24,7 +24,7 @@ require('lazy').setup({
     version = '*',
   },
   install = {
-    colorscheme = { 'tokyonight', 'habamax' },
+    colorscheme = { 'habamax' },
   },
   checker = { enabled = true },
 })

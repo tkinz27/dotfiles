@@ -2,6 +2,7 @@ return {
   -- lspconfig
   {
     'neovim/nvim-lspconfig',
+    branch = 'master',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
       {
@@ -41,7 +42,7 @@ return {
         pyright = {},
         terraformls = {},
         bashls = {},
-        sumneko_lua = {
+        lua_ls = {
           settings = {
             Lua = {
               workspace = {
