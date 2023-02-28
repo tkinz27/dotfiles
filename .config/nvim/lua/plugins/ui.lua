@@ -109,25 +109,17 @@ return {
             },
             { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
             { 'filename', path = 1, symbols = { modified = '  ', readonly = '', unnamed = '' } },
-            -- stylua: ignore
             {
-              function() return require("nvim-navic").get_location() end,
-              cond = function() return package.loaded["nvim-navic"] and require("nvim-navic").is_available() end,
+              function()
+                return require('nvim-navic').get_location()
+              end,
+              cond = function()
+                return package.loaded['nvim-navic'] and require('nvim-navic').is_available()
+              end,
             },
+            -- stylua: ignore
           },
           lualine_x = {
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.command.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
-              color = fg("Statement")
-            },
-            -- stylua: ignore
-            {
-              function() return require("noice").api.status.mode.get() end,
-              cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
-              color = fg("Constant") ,
-            },
             { require('lazy.status').updates, cond = require('lazy.status').has_updates, color = fg('Special') },
             {
               'diff',
@@ -188,32 +180,32 @@ return {
   },
 
   -- noicer ui
-  {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
-    opts = {
-      lsp = {
-        override = {
-          ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-          ['vim.lsp.util.stylize_markdown'] = true,
-        },
-      },
-      presets = {
-        bottom_search = true,
-        command_palette = true,
-        long_message_to_split = true,
-      },
-    },
-    -- stylua: ignore
-    keys = {
-      { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
-      { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
-      { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
-      { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
-      { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward" },
-      { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward"},
-    },
-  },
+  -- {
+  --   'folke/noice.nvim',
+  --   event = 'VeryLazy',
+  --   opts = {
+  --     lsp = {
+  --       override = {
+  --         ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
+  --         ['vim.lsp.util.stylize_markdown'] = true,
+  --       },
+  --     },
+  --     presets = {
+  --       bottom_search = true,
+  --       command_palette = true,
+  --       long_message_to_split = true,
+  --     },
+  --   },
+  --   -- stylua: ignore
+  --   keys = {
+  --     { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
+  --     { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+  --     { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+  --     { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+  --     { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll forward" },
+  --     { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll backward"},
+  --   },
+  -- },
 
   -- dashboard
   {

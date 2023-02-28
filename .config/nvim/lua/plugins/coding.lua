@@ -7,7 +7,7 @@ return {
     version = false,
     event = { 'VimEnter' },
     opts = {
-      suggestion = { enabled = false },
+      suggestion = { enabled = true },
       panel = { enabled = true, auto_refresh = true },
       filetypes = {
         ['*'] = true,
@@ -51,6 +51,7 @@ return {
   -- auto completion
   {
     'hrsh7th/nvim-cmp',
+    version = 'main',
     event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
@@ -132,7 +133,6 @@ return {
           priority_weight = 2,
           comparators = {
             require('copilot_cmp.comparators').prioritize,
-            require('copilot_cmp.comparators').score,
 
             -- Below is the default comparitor list and order for nvim-cmp
             cmp.config.compare.offset,
@@ -158,23 +158,8 @@ return {
 
   -- surround
   {
-    'echasnovski/mini.surround',
-    keys = { 'gz' },
-    opts = {
-      mappings = {
-        add = 'gza', -- Add surrounding in Normal and Visual modes
-        delete = 'gzd', -- Delete surrounding
-        find = 'gzf', -- Find surrounding (to the right)
-        find_left = 'gzF', -- Find surrounding (to the left)
-        highlight = 'gzh', -- Highlight surrounding
-        replace = 'gzr', -- Replace surrounding
-        update_n_lines = 'gzn', -- Update `n_lines`
-      },
-    },
-    config = function(_, opts)
-      -- use gz mappings instead of s to prevent conflict with leap
-      require('mini.surround').setup(opts)
-    end,
+    'kylechui/nvim-surround',
+    config = true,
   },
 
   -- comments
