@@ -51,7 +51,7 @@ return {
   -- auto completion
   {
     'hrsh7th/nvim-cmp',
-    version = 'main',
+    version = false,
     event = 'InsertEnter',
     dependencies = {
       'hrsh7th/cmp-nvim-lsp',
