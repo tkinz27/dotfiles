@@ -22,7 +22,9 @@ return {
     opts = {
       -- make sure mason installs the server
       servers = {
-        clangd = {},
+        clangd = {
+          filetypes = { 'c', 'cpp' },
+        },
       },
       setup = {
         clangd = function(_, opts)

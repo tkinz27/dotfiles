@@ -11,7 +11,7 @@ function M.get()
   M._keys = M._keys or {
     { "<leader>cd", vim.diagnostic.open_float, desc = "Line Diagnostics" },
     { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-    { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition" },
+    { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition", has = "definition" },
     { "gr", "<cmd>Telescope lsp_references<cr>", desc = "References" },
     { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
     { "gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
@@ -25,16 +25,16 @@ function M.get()
     { "[e", M.diagnostic_goto(false, "ERROR"), desc = "Prev Error" },
     { "]w", M.diagnostic_goto(true, "WARN"), desc = "Next Warning" },
     { "[w", M.diagnostic_goto(false, "WARN"), desc = "Prev Warning" },
-    { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
     { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
     { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
+    { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
   }
   if require('config.util').has('inc-rename.nvim') then
     M._keys[#M._keys + 1] = {
       '<leader>cr',
       function()
-        require('inc_rename')
-        return ':IncRename ' .. vim.fn.expand('<cword>')
+        local inc_rename = require('inc_rename')
+        return ':' .. inc_rename.config.cmd_name .. ' ' .. vim.fn.expand('<cword>')
       end,
       expr = true,
       desc = 'Rename',

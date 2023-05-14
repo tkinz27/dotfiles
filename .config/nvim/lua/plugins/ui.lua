@@ -1,5 +1,3 @@
-local icons = require('config.icons')
-
 return {
   -- better vim.notify
   {
@@ -78,7 +76,7 @@ return {
   {
     'nvim-lualine/lualine.nvim',
     event = 'VeryLazy',
-    opts = function(plugin)
+    opts = function()
       local icons = require('config.icons')
 
       local function fg(name)

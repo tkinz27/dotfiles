@@ -7,7 +7,7 @@ return {
           cmd = { 'gopls', '-v', '-rpc.trace', '-logfile=/tmp/gopls.log' },
           settings = {
             gopls = {
-              buildFlags = { '-tags=unit' },
+              buildFlags = { '-tags=unit,lz4' },
               directoryFilters = {
                 '-build',
                 '-bazel-bin',

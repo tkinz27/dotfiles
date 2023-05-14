@@ -98,7 +98,7 @@ return {
         selection_caret = ' ',
         mappings = {
           i = {
-            ['<c-t>'] = function(...)
+            ['<c-r>'] = function(...)
               return require('trouble.providers.telescope').open_with_trouble(...)
             end,
             ['<C-i>'] = function()

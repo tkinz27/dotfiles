@@ -24,7 +24,7 @@ return {
       diagnostics = {
         underline = true,
         update_in_insert = false,
-        virtual_text = { spacing = 4, prefix = '●' },
+        virtual_text = { spacing = 4, source = 'if_many', prefix = '●' },
         severity_sort = true,
       },
       -- Automatically format on save
@@ -146,10 +146,14 @@ return {
             extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
           }),
 
+          -- nls.builtins.formatting.buf,
+          nls.builtins.diagnostics.buf,
+
           nls.builtins.formatting.shellharden,
 
           nls.builtins.formatting.terraform_fmt,
 
+          -- nls.builtins.diagnostics.ruff,
           nls.builtins.formatting.ruff,
           nls.builtins.formatting.black,
 

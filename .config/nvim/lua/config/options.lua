@@ -1,8 +1,6 @@
 vim.g.mapleader = ','
 vim.g.maplocalleader = ','
 
-vim.opt.clipboard = 'unnamedplus'
-
 vim.opt.wildmenu = true
 vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'

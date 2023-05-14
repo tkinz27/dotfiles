@@ -19,3 +19,14 @@ vim.keymap.set('v', '>', '>gv')
 
 -- lazy
 vim.keymap.set('n', '<leader>l', '<cmd>:Lazy<cr>', { desc = 'Lazy' })
+
+-- profiling
+vim.keymap.set('n', '<F2>', function()
+  if vim.g.profiler_running then
+    require('plenary.profile').stop()
+    vim.g.profile_running = false
+  else
+    require('plenary.profile').start('nvim-profile.log', { flame = true })
+    vim.g.profiler_running = true
+  end
+end, { desc = 'Start profiling' })
