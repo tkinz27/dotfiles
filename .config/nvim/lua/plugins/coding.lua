@@ -5,12 +5,13 @@ return {
     'zbirenbaum/copilot.lua',
     lazy = false,
     version = false,
-    event = { 'VimEnter' },
+    event = { 'InsertEnter' },
     opts = {
-      suggestion = { enabled = true },
-      panel = { enabled = true, auto_refresh = true },
       filetypes = {
         ['*'] = true,
+      },
+      panel = {
+        auto_refresh = true,
       },
       server_opts_overrides = {},
     },
@@ -21,6 +22,7 @@ return {
           require('copilot.panel').open({ position = 'bottom', ratio = 0.4 })
         end,
         mode = 'n',
+        desc = 'Open Copilot panel',
       },
     },
     config = true,

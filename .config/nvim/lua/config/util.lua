@@ -53,6 +53,7 @@ function M.get_root()
         return vim.uri_to_fname(ws.uri)
       end, workspace) or client.config.root_dir and { client.config.root_dir } or {}
       for _, p in ipairs(paths) do
+        vim.print(p)
         local r = vim.loop.fs_realpath(p)
         if path:find(r, 1, true) then
           roots[#roots + 1] = r

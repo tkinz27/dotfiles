@@ -1,3 +1,11 @@
+-- HACK: https://github.com/neovim/neovim/pull/23500
+local ok, wf = pcall(require, 'vim.lsp._watchfiles')
+if ok then
+  wf._watchfunc = function()
+    return function() end
+  end
+end
+
 return {
   -- lspconfig
   {
@@ -29,6 +37,10 @@ return {
       },
       -- Automatically format on save
       autoformat = true,
+      inlay_hints = {
+        enabled = true,
+      },
+      capabilities = {},
       -- options for vim.lsp.buf.format
       -- `bufnr` and `filter` is handled by the LazyVim formatter,
       -- but can be also overriden when specified
@@ -39,7 +51,9 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
-        pyright = {},
+        pyright = {
+          cmd = { 'pyright-langserver', '--stdio' },
+        },
         terraformls = {},
         bashls = {},
         lua_ls = {
@@ -70,11 +84,11 @@ return {
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
+      local util = require('config.util')
       -- setup autoformat
-      require('plugins.lsp.format').autoformat = opts.autoformat
+      require('plugins.lsp.format').setup(opts)
       -- setup formatting and keymaps
-      require('config.util').on_attach(function(client, buffer)
-        require('plugins.lsp.format').on_attach(client, buffer)
+      util.on_attach(function(client, buffer)
         require('plugins.lsp.keymaps').on_attach(client, buffer)
       end)
 
@@ -83,10 +97,34 @@ return {
         name = 'DiagnosticSign' .. name
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
       end
-      vim.diagnostic.config(opts.diagnostics)
+      if opts.inlay_hints.enabled and vim.lsp.buf.inlay_hint then
+        util.on_attach(function(client, buffer)
+          if client.server_capabilities.inlayHintProvider then
+            vim.lsp.buf.inlay_hint(buffer, true)
+          end
+        end)
+      end
+      if type(opts.diagnostics.virtaul_text) == 'table' and opts.diagnostics.virtual_text.prefix == 'icons' then
+        opts.diagnostics.virtual_text.prefix = vim.fn.has('nvim-0.10.0') == 0 and '● '
+          or function(diagnostic)
+            local icons = require('config.icons').diagnostics
+            for d, icon in pairs(icons) do
+              if diagnostic.serverity == vim.diagnostic.severity[d:upper()] then
+                return icon
+              end
+            end
+          end
+      end
+      vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       local servers = opts.servers
-      local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
+      local capabilities = vim.tbl_deep_extend(
+        'force',
+        {},
+        vim.lsp.protocol.make_client_capabilities(),
+        require('cmp_nvim_lsp').default_capabilities(),
+        opts.capabilities or {}
+      )
 
       local function setup(server)
         local server_opts = servers[server] or {}
@@ -146,10 +184,12 @@ return {
             extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
           }),
 
+          nls.builtins.formatting.goimports,
+
           -- nls.builtins.formatting.buf,
           nls.builtins.diagnostics.buf,
 
-          nls.builtins.formatting.shellharden,
+          nls.builtins.diagnostics.shellcheck,
 
           nls.builtins.formatting.terraform_fmt,
 
@@ -178,6 +218,7 @@ return {
         -- golang
         'delve',
         'gomodifytags',
+        'goimports',
         -- rust
         'rustfmt',
         -- lua
@@ -196,11 +237,18 @@ return {
     config = function(_, opts)
       require('mason').setup(opts)
       local mr = require('mason-registry')
-      for _, tool in ipairs(opts.ensure_installed) do
-        local p = mr.get_package(tool)
-        if not p:is_installed() then
-          p:install()
+      local function ensure_installed()
+        for _, tool in ipairs(opts.ensure_installed) do
+          local p = mr.get_package(tool)
+          if not p:is_installed() then
+            p:install()
+          end
         end
+      end
+      if mr.refresh then
+        mr.refresh(ensure_installed)
+      else
+        ensure_installed()
       end
     end,
   },

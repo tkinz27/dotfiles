@@ -29,33 +29,45 @@ return {
               },
               staticcheck = true,
               usePlaceholders = true,
-              experimentalPostfixCompletions = true,
+              semanticTokens = true,
             },
           },
         },
       },
       setup = {
         gopls = function(_, _)
-          require('plugins.lsp.format').lsp_custom_format['gopls'] = function(buffer)
-            local params = vim.lsp.util.make_range_params()
-            params.context = { only = { 'source.organizeImports' } }
-            local method = 'textDocument/codeAction'
-            local result = vim.lsp.buf_request_sync(buffer, method, params, 10000)
-            for _, res in pairs(result or {}) do
-              for _, r in pairs(res.result or {}) do
-                if r.edit then
-                  vim.lsp.util.apply_workspace_edit(r.edit, 'utf-8')
-                else
-                  vim.lsp.buf.execute_command(r.command)
-                end
+          -- workaround for gopls not support semanticTokensProvider
+          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
+          require('config.util').on_attach(function(client, _)
+            if client.name == 'gopls' then
+              if not client.server_capabilities.semanticTokensProvider then
+                local semantic = client.config.capabilities.textDocument.semanticTokens
+                client.server_capabilities.semanticTokensProvider = {
+                  full = true,
+                  legend = {
+                    tokenType = semantic.tokenType,
+                    tokenModifies = semantic.tokenModifiers,
+                  },
+                  range = true,
+                }
               end
             end
-
-            vim.lsp.buf.format()
-          end
-
+          end)
           -- still call lspconfig.gopls.setup
           return false
+        end,
+      },
+    },
+  },
+  {
+    'mfussenegger/nvim-dap',
+    optional = true,
+    dependencies = {
+      {
+        'mason.nvim',
+        opts = function(_, opts)
+          opts.ensure_installed = opts.ensure_installed or {}
+          table.insert(opts.ensure_installed, 'delve')
         end,
       },
     },
