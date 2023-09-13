@@ -1,11 +1,3 @@
--- HACK: https://github.com/neovim/neovim/pull/23500
-local ok, wf = pcall(require, 'vim.lsp._watchfiles')
-if ok then
-  wf._watchfunc = function()
-    return function() end
-  end
-end
-
 return {
   -- lspconfig
   {
@@ -40,7 +32,13 @@ return {
       inlay_hints = {
         enabled = true,
       },
-      capabilities = {},
+      capabilities = {
+        workspace = {
+          didChangeWatchedFiles = {
+            dynamicRegistration = false,
+          },
+        },
+      },
       -- options for vim.lsp.buf.format
       -- `bufnr` and `filter` is handled by the LazyVim formatter,
       -- but can be also overriden when specified
@@ -193,8 +191,8 @@ return {
 
           nls.builtins.formatting.terraform_fmt,
 
-          -- nls.builtins.diagnostics.ruff,
-          nls.builtins.formatting.ruff,
+          nls.builtins.diagnostics.ruff,
+          -- nls.builtins.formatting.ruff,
           nls.builtins.formatting.black,
 
           nls.builtins.formatting.buildifier,

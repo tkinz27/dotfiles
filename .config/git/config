@@ -16,6 +16,7 @@
 [difftool "nvimdiff"]
     cmd = "nvim -d \"$LOCAL\" \"$REMOTE\""
 [alias]
+    ca = commit --amend --no-edit
     su = submodule update --init --recursive
     mt = mergetool
     s = status --porcelain
