@@ -12,7 +12,7 @@ end
 function M.on_attach(on_attach)
   vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
-      local buffer = args.buf
+      local buffer = args.buf ---@type number
       local client = vim.lsp.get_client_by_id(args.data.client_id)
       on_attach(client, buffer)
     end,
@@ -20,7 +20,7 @@ function M.on_attach(on_attach)
 end
 
 function M.has(plugin)
-  return require('lazy.core.config').plugins[plugin] ~= nil
+  return require('lazy.core.config').spec.plugins[plugin] ~= nil
 end
 
 -- returns a function that calls telescope.
@@ -50,7 +50,7 @@ function M.get_root()
   ---@type string[]
   local roots = {}
   if path then
-    for _, client in pairs(vim.lsp.get_active_clients({ bufnr = 0 })) do
+    for _, client in pairs(vim.lsp.get_clients({ bufnr = 0 })) do
       local workspace = client.config.workspace_folders
       local paths = workspace and vim.tbl_map(function(ws)
         return vim.uri_to_fname(ws.uri)
