@@ -3,10 +3,6 @@
 if [ $(uname -s) = "Linux" ]; then
     PATH=/usr/local/go/bin:$PATH
 fi
-if [ $(uname -s) = "Darwin" ]; then
-    PATH=/usr/local/opt/python/libexec/bin:$PATH
-    PATH=~/Library/Python/3.6/bin:$PATH
-fi
 PATH=~/bin:$PATH
 PATH=/usr/local/bin:$PATH
 PATH=/usr/local/sbin:$PATH
