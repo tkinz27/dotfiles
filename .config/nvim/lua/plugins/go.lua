@@ -14,6 +14,16 @@ return {
                 '-bazel-out',
                 '-bazel-testlogs',
               },
+              codelenses = {
+                gc_details = false,
+                generate = true,
+                regenerate_cgo = true,
+                run_govulncheck = true,
+                test = true,
+                tidy = true,
+                upgrade_dependency = true,
+                vendor = true,
+              },
               analyses = {
                 unusedParams = true,
                 ST1003 = false,
@@ -27,8 +37,9 @@ return {
                 parameterNames = true,
                 rangeVariableTypes = true,
               },
-              staticcheck = true,
               usePlaceholders = true,
+              completeUnimported = true,
+              staticcheck = true,
               semanticTokens = true,
             },
           },
@@ -56,6 +67,14 @@ return {
           -- still call lspconfig.gopls.setup
           return false
         end,
+      },
+    },
+  },
+  {
+    'stevearc/conform.nvim',
+    opts = {
+      formatters_by_ft = {
+        go = { 'goimports', 'gofmt' },
       },
     },
   },

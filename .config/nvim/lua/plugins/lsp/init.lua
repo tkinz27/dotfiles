@@ -1,3 +1,5 @@
+local Util = require('config.util')
+
 return {
   -- lspconfig
   {
@@ -49,9 +51,6 @@ return {
       -- LSP Server Settings
       ---@type lspconfig.options
       servers = {
-        pyright = {
-          cmd = { 'pyright-langserver', '--stdio' },
-        },
         terraformls = {},
         bashls = {},
         lua_ls = {
@@ -82,11 +81,13 @@ return {
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
-      local util = require('config.util')
-      -- setup autoformat
-      require('plugins.lsp.format').setup(opts)
-      -- setup formatting and keymaps
-      util.on_attach(function(client, buffer)
+      -- load vscode options if available
+      if Util.has('neoconf.nvim') then
+        local plugin = require('lazy.core.config').spec.plugins['neoconf.nvim']
+        require('neoconf').setup(require('lazy.core.plugin').values(plugin, 'opts', false))
+      end
+
+      Util.on_attach(function(client, buffer)
         require('plugins.lsp.keymaps').on_attach(client, buffer)
       end)
 
@@ -95,14 +96,17 @@ return {
         name = 'DiagnosticSign' .. name
         vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
       end
-      if opts.inlay_hints.enabled and vim.lsp.buf.inlay_hint then
-        util.on_attach(function(client, buffer)
+
+      local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
+      if opts.inlay_hints.enabled and inlay_hint then
+        Util.on_attach(function(client, buffer)
           if client.server_capabilities.inlayHintProvider then
-            vim.lsp.buf.inlay_hint(buffer, true)
+            inlay_hint(buffer, true)
           end
         end)
       end
-      if type(opts.diagnostics.virtaul_text) == 'table' and opts.diagnostics.virtual_text.prefix == 'icons' then
+
+      if type(opts.diagnostics.virtual_text) == 'table' and opts.diagnostics.virtual_text.prefix == 'icons' then
         opts.diagnostics.virtual_text.prefix = vim.fn.has('nvim-0.10.0') == 0 and '● '
           or function(diagnostic)
             local icons = require('config.icons').diagnostics
@@ -125,8 +129,10 @@ return {
       )
 
       local function setup(server)
-        local server_opts = servers[server] or {}
-        server_opts.capabilities = capabilities
+        local server_opts = vim.tbl_deep_extend('force', {
+          capabilities = vim.deepcopy(capabilities),
+        }, servers[server] or {})
+
         if opts.setup[server] then
           if opts.setup[server](server, server_opts) then
             return
@@ -140,14 +146,14 @@ return {
       end
 
       local mlsp = require('mason-lspconfig')
-      local available = mlsp.get_available_servers()
+      local all_mslp_servers = vim.tbl_keys(require('mason-lspconfig.mappings.server').lspconfig_to_package)
 
       local ensure_installed = {} ---@type string[]
       for server, server_opts in pairs(servers) do
         if server_opts then
           server_opts = server_opts == true and {} or server_opts
           -- run manual setup if mason=false or if this is a server that cannot be installed with mason-lspconfig
-          if server_opts.mason == false or not vim.tbl_contains(available, server) then
+          if server_opts.mason == false or not vim.tbl_contains(all_mslp_servers, server) then
             setup(server)
           else
             ensure_installed[#ensure_installed + 1] = server
@@ -155,52 +161,51 @@ return {
         end
       end
 
-      require('mason-lspconfig').setup({ ensure_installed = ensure_installed })
-      require('mason-lspconfig').setup_handlers({ setup })
+      mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
     end,
   },
 
-  -- formatters
-  {
-    'nvimtools/none-ls.nvim',
-    event = 'BufReadPre',
-    dependencies = { 'mason.nvim' },
-    opts = function()
-      local nls = require('null-ls')
-      return {
-        sources = {
-          nls.builtins.formatting.stylua.with({
-            extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
-          }),
-
-          nls.builtins.formatting.clang_format.with({
-            filetypes = { 'c', 'cpp', 'proto' },
-          }),
-          nls.builtins.formatting.cmake_format,
-
-          nls.builtins.formatting.prettier.with({
-            extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
-          }),
-
-          nls.builtins.formatting.goimports,
-
-          -- nls.builtins.formatting.buf,
-          nls.builtins.diagnostics.buf,
-
-          nls.builtins.diagnostics.shellcheck,
-
-          nls.builtins.formatting.terraform_fmt,
-
-          nls.builtins.diagnostics.ruff,
-          nls.builtins.formatting.ruff,
-          -- nls.builtins.formatting.black,
-
-          nls.builtins.formatting.buildifier,
-          nls.builtins.diagnostics.buildifier,
-        },
-      }
-    end,
-  },
+  -- -- formatters
+  -- {
+  --   'nvimtools/none-ls.nvim',
+  --   event = 'BufReadPre',
+  --   dependencies = { 'mason.nvim' },
+  --   opts = function()
+  --     local nls = require('null-ls')
+  --     return {
+  --       sources = {
+  --         nls.builtins.formatting.stylua.with({
+  --           extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
+  --         }),
+  --
+  --         nls.builtins.formatting.clang_format.with({
+  --           filetypes = { 'c', 'cpp', 'proto' },
+  --         }),
+  --         nls.builtins.formatting.cmake_format,
+  --
+  --         nls.builtins.formatting.prettier.with({
+  --           extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
+  --         }),
+  --
+  --         nls.builtins.formatting.goimports,
+  --
+  --         -- nls.builtins.formatting.buf,
+  --         nls.builtins.diagnostics.buf,
+  --
+  --         nls.builtins.diagnostics.shellcheck,
+  --
+  --         nls.builtins.formatting.terraform_fmt,
+  --
+  --         nls.builtins.diagnostics.ruff,
+  --         nls.builtins.formatting.ruff,
+  --         -- nls.builtins.formatting.black,
+  --
+  --         nls.builtins.formatting.buildifier,
+  --         nls.builtins.diagnostics.buildifier,
+  --       },
+  --     }
+  --   end,
+  -- },
 
   -- cmdline tools and lsp servers
   {
@@ -208,6 +213,7 @@ return {
     'williamboman/mason.nvim',
     cmd = 'Mason',
     keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
+    build = ':MasonUpdate',
     opts = {
       ensure_installed = {
         -- python
@@ -217,8 +223,6 @@ return {
         'delve',
         'gomodifytags',
         'goimports',
-        -- rust
-        'rustfmt',
         -- lua
         'stylua',
         -- sh
@@ -235,6 +239,14 @@ return {
     config = function(_, opts)
       require('mason').setup(opts)
       local mr = require('mason-registry')
+      mr:on('package:install:success', function()
+        vim.defer_fn(function()
+          require('lazy.core.handler.event').trigger({
+            event = 'FileType',
+            buf = vim.api.nvim_get_current_buf(),
+          })
+        end, 100)
+      end)
       local function ensure_installed()
         for _, tool in ipairs(opts.ensure_installed) do
           local p = mr.get_package(tool)
