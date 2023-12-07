@@ -45,29 +45,6 @@ return {
           },
         },
       },
-      setup = {
-        gopls = function(_, _)
-          -- workaround for gopls not support semanticTokensProvider
-          -- https://github.com/golang/go/issues/54531#issuecomment-1464982242
-          require('config.util').on_attach(function(client, _)
-            if client.name == 'gopls' then
-              if not client.server_capabilities.semanticTokensProvider then
-                local semantic = client.config.capabilities.textDocument.semanticTokens
-                client.server_capabilities.semanticTokensProvider = {
-                  full = true,
-                  legend = {
-                    tokenType = semantic.tokenType,
-                    tokenModifies = semantic.tokenModifiers,
-                  },
-                  range = true,
-                }
-              end
-            end
-          end)
-          -- still call lspconfig.gopls.setup
-          return false
-        end,
-      },
     },
   },
   {
