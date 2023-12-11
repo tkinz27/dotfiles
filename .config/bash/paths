@@ -7,6 +7,7 @@ PATH=~/bin:$PATH
 PATH=/usr/local/bin:$PATH
 PATH=/usr/local/sbin:$PATH
 PATH=~/go/bin:$PATH
+PATH=~/.krew/bin/:$PATH
 PATH=~/.cargo/bin:$PATH
 PATH=~/.npm-packages/bin:$PATH
 PATH=~/.local/bin:$PATH
