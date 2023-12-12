@@ -30,7 +30,6 @@ return {
         'gowork',
         'gosum',
         'bash',
-        'help',
         'html',
         'javascript',
         'json',
