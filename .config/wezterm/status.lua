@@ -37,9 +37,9 @@ M.status_func = function(window, pane)
       end
       -- and extract the cwd from the uri
       cwd = cwd_uri:sub(slash)
-      local contracted_cwd = contract_path(cwd)
+      -- local contracted_cwd = contract_path(cwd)
 
-      table.insert(cells, contracted_cwd)
+      -- table.insert(cells, contracted_cwd)
       if hostname ~= '' then
         table.insert(cells, hostname)
       end
