@@ -15,8 +15,8 @@ return {
         desc = 'Explorer NeoTree (root dir)',
       },
       { '<leader>fE', '<cmd>Neotree toggle<CR>', desc = 'Explorer NeoTree (cwd)' },
-      { '<leader>e', '<leader>fe', desc = 'Explorer NeoTree (root dir)', remap = true },
-      { '<leader>E', '<leader>fE', desc = 'Explorer NeoTree (cwd)', remap = true },
+      { '<leader>e',  '<leader>fe',              desc = 'Explorer NeoTree (root dir)', remap = true },
+      { '<leader>E',  '<leader>fE',              desc = 'Explorer NeoTree (cwd)',      remap = true },
     },
     deactivate = function()
       vim.cmd([[Neotree close]])
@@ -87,31 +87,31 @@ return {
     cmd = 'Telescope',
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
-      { '<leader>erc', Util.telescope('find_files', { cwd = '~/.config/nvim' }), desc = 'Edit configuration' },
-      { '<leader>,', '<cmd>Telescope buffers show_all_buffers=true<cr>', desc = 'Switch Buffer' },
-      { '<leader>/', Util.telescope('live_grep'), desc = 'Find in Files (Grep)' },
-      { '<leader>:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
-      { '<leader><space>', Util.telescope('find_files'), desc = 'Find Files (root dir)' },
-      { '<leader>fF', Util.telescope('find_files', { cwd = false }), desc = 'Find Files (cwd)' },
-      { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = 'Buffers' },
-      { '<leader>ff', Util.telescope('find_files'), desc = 'Find Files (root dir)' },
-      { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = 'Recent' },
-      { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = 'commits' },
-      { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = 'status' },
-      { '<leader>sC', '<cmd>Telescope commands<cr>', desc = 'Commands' },
-      { '<leader>sG', Util.telescope('live_grep', { cwd = false }), desc = 'Grep (cwd)' },
-      { '<leader>sM', '<cmd>Telescope man_pages<cr>', desc = 'Man Pages' },
-      { '<leader>sa', '<cmd>Telescope autocommands<cr>', desc = 'Auto Commands' },
-      { '<leader>sb', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = 'Buffer' },
-      { '<leader>sc', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
-      { '<leader>sg', Util.telescope('live_grep'), desc = 'Grep (root dir)' },
-      { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = 'Help Pages' },
-      { '<leader>sH', '<cmd>Telescope highlights<cr>', desc = 'Search Highlight Groups' },
-      { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = 'Key Maps' },
-      { '<leader>sm', '<cmd>Telescope marks<cr>', desc = 'Jump to Mark' },
-      { '<leader>so', '<cmd>Telescope vim_options<cr>', desc = 'Options' },
-      { '<leader>st', '<cmd>Telescope builtin<cr>', desc = 'Telescope' },
-      { '<leader>sw', '<cmd>Telescope grep_string<cr>', desc = 'Grep word' },
+      { '<leader>erc',     Util.telescope('find_files', { cwd = '~/.config/nvim' }), desc = 'Edit configuration' },
+      { '<leader>,',       '<cmd>Telescope buffers show_all_buffers=true<cr>',       desc = 'Switch Buffer' },
+      { '<leader>/',       Util.telescope('live_grep'),                              desc = 'Find in Files (Grep)' },
+      { '<leader>:',       '<cmd>Telescope command_history<cr>',                     desc = 'Command History' },
+      { '<leader><space>', Util.telescope('find_files'),                             desc = 'Find Files (root dir)' },
+      { '<leader>fF',      Util.telescope('find_files', { cwd = false }),            desc = 'Find Files (cwd)' },
+      { '<leader>fb',      '<cmd>Telescope buffers<cr>',                             desc = 'Buffers' },
+      { '<leader>ff',      Util.telescope('find_files'),                             desc = 'Find Files (root dir)' },
+      { '<leader>fr',      '<cmd>Telescope oldfiles<cr>',                            desc = 'Recent' },
+      { '<leader>gc',      '<cmd>Telescope git_commits<CR>',                         desc = 'commits' },
+      { '<leader>gs',      '<cmd>Telescope git_status<CR>',                          desc = 'status' },
+      { '<leader>sC',      '<cmd>Telescope commands<cr>',                            desc = 'Commands' },
+      { '<leader>sG',      Util.telescope('live_grep', { cwd = false }),             desc = 'Grep (cwd)' },
+      { '<leader>sM',      '<cmd>Telescope man_pages<cr>',                           desc = 'Man Pages' },
+      { '<leader>sa',      '<cmd>Telescope autocommands<cr>',                        desc = 'Auto Commands' },
+      { '<leader>sb',      '<cmd>Telescope current_buffer_fuzzy_find<cr>',           desc = 'Buffer' },
+      { '<leader>sc',      '<cmd>Telescope command_history<cr>',                     desc = 'Command History' },
+      { '<leader>sg',      Util.telescope('live_grep'),                              desc = 'Grep (root dir)' },
+      { '<leader>sh',      '<cmd>Telescope help_tags<cr>',                           desc = 'Help Pages' },
+      { '<leader>sH',      '<cmd>Telescope highlights<cr>',                          desc = 'Search Highlight Groups' },
+      { '<leader>sk',      '<cmd>Telescope keymaps<cr>',                             desc = 'Key Maps' },
+      { '<leader>sm',      '<cmd>Telescope marks<cr>',                               desc = 'Jump to Mark' },
+      { '<leader>so',      '<cmd>Telescope vim_options<cr>',                         desc = 'Options' },
+      { '<leader>st',      '<cmd>Telescope builtin<cr>',                             desc = 'Telescope' },
+      { '<leader>sw',      '<cmd>Telescope grep_string<cr>',                         desc = 'Grep word' },
       {
         '<leader>ss',
         Util.telescope('lsp_document_symbols', {
@@ -230,8 +230,8 @@ return {
         changedelete = { text = '▎' },
         untracked = { text = '▎' },
       },
-      current_line_blame = false,
-      current_line_blame_opts = { virt_text = true, virt_text_pos = 'eol' },
+      current_line_blame = true,
+      current_line_blame_opts = { delay = 1000, virt_text_priority = 100, virt_text = true, virt_text_pos = 'eol' },
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -278,7 +278,7 @@ return {
     -- stylua: ignore
     keys = {
       { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end, desc = "Delete Buffer (Force)" },
+      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
     },
   },
 
@@ -288,7 +288,7 @@ return {
     cmd = { 'TroubleToggle', 'Trouble' },
     opts = { use_diagnostic_signs = true },
     keys = {
-      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>', desc = 'Document Diagnostics (Trouble)' },
+      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>',  desc = 'Document Diagnostics (Trouble)' },
       { '<leader>xX', '<cmd>TroubleToggle workspace_diagnostics<cr>', desc = 'Workspace Diagnostics (Trouble)' },
     },
   },
@@ -301,11 +301,11 @@ return {
     config = true,
     -- stylua: ignore
     keys = {
-      { "]t", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>xt", "<cmd>TodoTrouble<cr>", desc = "Todo Trouble" },
-      { "<leader>xtt", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>", desc = "Todo Trouble" },
-      { "<leader>xT", "<cmd>TodoTelescope<cr>", desc = "Todo Telescope" },
+      { "]t",          function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+      { "[t",          function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+      { "<leader>xt",  "<cmd>TodoTrouble<cr>",                              desc = "Todo Trouble" },
+      { "<leader>xtt", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo Trouble" },
+      { "<leader>xT",  "<cmd>TodoTelescope<cr>",                            desc = "Todo Telescope" },
     },
   },
 }
