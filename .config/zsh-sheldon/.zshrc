@@ -8,6 +8,15 @@ for file in ~/.config/bash/*; do
     [ "$file" != "powerline" ] && source ${file}
 done
 
+[ "$(uname -s)" = "Darwin" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# if test -n "$KITTY_INSTALLATION_DIR"; then
+#     export KITTY_SHELL_INTEGRATION="enabled"
+#     autoload -Uz -- "$KITTY_INSTALLATION_DIR"/shell-integration/zsh/kitty-integration
+#     kitty-integration
+#     unfunction kitty-integration
+# fi
+
 source <(sheldon source)
 
 #####################################################################
@@ -31,11 +40,9 @@ select-word-style bash
 bindkey -e
 bindkey '^ ' autosuggest-accept
 
-[ "$(uname -s)" = "Darwin" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
 
 [ -f ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-[ -f "${HOME}/.iterm2_shell_integration.zsh" ] && source "${HOME}/.iterm2_shell_integration.zsh"
 # add Pulumi to the PATH
 export PATH=$PATH:$HOME/.pulumi/bin

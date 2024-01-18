@@ -4,3 +4,4 @@ export ANDROID_SDK=/home/tony.kinsley/Android/Sdk
 export ANDROID_SDK=/home/tony.kinsley/Android/Sdk
 export ANDROID_SDK=/home/tony.kinsley/Android/Sdk
 export ANDROID_SDK=/home/tony.kinsley/Android/Sdk
+. "$HOME/.cargo/env"
