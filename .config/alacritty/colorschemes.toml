@@ -1,0 +1,264 @@
+[[colors.indexed_colors]]
+color = "#ff9e64"
+index = 16
+
+[[colors.indexed_colors]]
+color = "#db4b4b"
+index = 17
+
+[colors.bright]
+black = "#15161E"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+red = "#f7768e"
+white = "#c0caf5"
+yellow = "#e0af68"
+
+[colors.normal]
+black = "#15161E"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+red = "#f7768e"
+white = "#a9b1d6"
+yellow = "#e0af68"
+
+[colors.primary]
+background = "#1a1b26"
+foreground = "#c0caf5"
+
+[colorschemes.base_16_dark.bright]
+black = "#585858"
+blue = "#7cafc2"
+cyan = "#86c1b9"
+green = "#a1b56c"
+magenta = "#ba8baf"
+red = "#ab4642"
+white = "#f8f8f8"
+yellow = "#f7ca88"
+
+[colorschemes.base_16_dark.cursor]
+cursor = "#d8d8d8"
+text = "#d8d8d8"
+
+[colorschemes.base_16_dark.normal]
+black = "##181818"
+blue = "##7cafc2"
+cyan = "##86c1b9"
+green = "##a1b56c"
+magenta = "##ba8baf"
+red = "##ab4642"
+white = "##d8d8d8"
+yellow = "##f7ca88"
+
+[colorschemes.base_16_dark.primary]
+background = "#181818"
+foreground = "#d8d8d8"
+
+[colorschemes.dracula.bright]
+black = "#575b70"
+blue = "#caa9fa"
+cyan = "#9aedfe"
+green = "#5af78e"
+magenta = "#ff92d0"
+red = "#ff6e67"
+white = "#e6e6e6"
+yellow = "#f4f99d"
+
+[colorschemes.dracula.normal]
+black = "#000000"
+blue = "#caa9fa"
+cyan = "#8be9fd"
+green = "#50fa7b"
+magenta = "#ff79c6"
+red = "#ff5555"
+white = "#bfbfbf"
+yellow = "#f1fa8c"
+
+[colorschemes.dracula.primary]
+background = "#282a36"
+foreground = "#f8f8f2"
+
+[colorschemes.gruvbox_dark.bright]
+black = "#928374"
+blue = "#83a598"
+cyan = "#8ec07c"
+green = "#b8bb26"
+magenta = "#d3869b"
+red = "#fb4934"
+white = "#ebdbb2"
+yellow = "#fabd2f"
+
+[colorschemes.gruvbox_dark.normal]
+black = "#282828"
+blue = "#458588"
+cyan = "#689d6a"
+green = "#98971a"
+magenta = "#b16286"
+red = "#cc241d"
+white = "#a89984"
+yellow = "#d79921"
+
+[colorschemes.gruvbox_dark.primary]
+background = "#282828"
+foreground = "#ebdbb2"
+
+[colorschemes.material.bright]
+black = "#ff262b"
+blue = "#7dc6bf"
+cyan = "#35434d"
+green = "#c3e88d"
+magenta = "#6c71c4"
+red = "#eb606b"
+white = "#ffffff"
+yellow = "#f7eb95"
+
+[colorschemes.material.normal]
+black = "#666666"
+blue = "#80cbc4"
+cyan = "#aeddff"
+green = "#c3e88d"
+magenta = "#ff2f90"
+red = "#eb606b"
+white = "#ffffff"
+yellow = "#f7eb95"
+
+[colorschemes.material.primary]
+background = "#1e282d"
+foreground = "#c4c7d1"
+
+[colorschemes.molokai.bright]
+black = "#666666"
+blue = "#819AFF"
+cyan = "#66D9EF"
+green = "#A6E22E"
+magenta = "#AE81FF"
+red = "#F92672"
+white = "#F8F8F2"
+yellow = "#E2E22E"
+
+[colorschemes.molokai.normal]
+black = "#333333"
+blue = "#6A7EC8"
+cyan = "#56ADBC"
+green = "#86B42B"
+magenta = "#8C6BC8"
+red = "#C4265E"
+white = "#E3E3DD"
+yellow = "#B3B42B"
+
+[colorschemes.molokai.primary]
+background = "#1B1D1E"
+foreground = "#F8F8F2"
+
+[colorschemes.monokai_pro.bright]
+black = "#727072"
+blue = "#FC9867"
+cyan = "#78DCE8"
+green = "#A9DC76"
+magenta = "#AB9DF2"
+red = "#FF6188"
+white = "#FCFCFA"
+yellow = "#FFD866"
+
+[colorschemes.monokai_pro.normal]
+black = "#403E41"
+blue = "#FC9867"
+cyan = "#78DCE8"
+green = "#A9DC76"
+magenta = "#AB9DF2"
+red = "#FF6188"
+white = "#FCFCFA"
+yellow = "#FFD866"
+
+[colorschemes.monokai_pro.primary]
+background = "#2D2A2E"
+foreground = "#FCFCFA"
+
+[colorschemes.nord.bright]
+black = "#4C566A"
+blue = "#81A1C1"
+cyan = "#8FBCBB"
+green = "#A3BE8C"
+magenta = "#B48EAD"
+red = "#BF616A"
+white = "#ECEFF4"
+yellow = "#EBCB8B"
+
+[colorschemes.nord.normal]
+black = "#3B4252"
+blue = "#81A1C1"
+cyan = "#88C0D0"
+green = "#A3BE8C"
+magenta = "#B48EAD"
+red = "#BF616A"
+white = "#E5E9F0"
+yellow = "#EBCB8B"
+
+[colorschemes.nord.primary]
+background = "#2E3440"
+foreground = "#D8DEE9"
+
+[colorschemes.oxide.bright]
+black = "#5c5c5c"
+blue = "#6699cc"
+cyan = "#5fb3b3"
+green = "#a6bc69"
+magenta = "#c594c5"
+red = "#e57373"
+white = "#f3f4f5"
+yellow = "#fac863"
+
+[colorschemes.oxide.cursor]
+cursor = "#c0c5ce"
+text = "#212121"
+
+[colorschemes.oxide.normal]
+black = "#212121"
+blue = "#6699cc"
+cyan = "#5fb3b3"
+green = "#a6bc69"
+magenta = "#c594c5"
+red = "#e57373"
+white = "#c0c5ce"
+yellow = "#fac863"
+
+[colorschemes.oxide.primary]
+background = "#212121"
+bright_foreground = "#f3f4f5"
+foreground = "#c0c5ce"
+
+[[colorschemes.tokyonight.indexed_colors]]
+color = "#ff9e64"
+index = 16
+
+[[colorschemes.tokyonight.indexed_colors]]
+color = "#db4b4b"
+index = 17
+
+[colorschemes.tokyonight.bright]
+black = "#15161E"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+red = "#f7768e"
+white = "#c0caf5"
+yellow = "#e0af68"
+
+[colorschemes.tokyonight.normal]
+black = "#15161E"
+blue = "#7aa2f7"
+cyan = "#7dcfff"
+green = "#9ece6a"
+magenta = "#bb9af7"
+red = "#f7768e"
+white = "#a9b1d6"
+yellow = "#e0af68"
+
+[colorschemes.tokyonight.primary]
+background = "#1a1b26"
+foreground = "#c0caf5"

@@ -1,0 +1,17 @@
+import = [".config/alacritty/colorschemes.toml"]
+
+[font.normal]
+family = "BlexMono Nerd Font"
+style = "Regular"
+
+[[keyboard.bindings]]
+action = "SpawnNewInstance"
+key = "Return"
+mods = "Control|Shift"
+
+[selection]
+save_to_clipboard = true
+
+[window]
+decorations = "none"
+opacity = 0.95
