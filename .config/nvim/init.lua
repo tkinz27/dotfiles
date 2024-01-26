@@ -1,4 +1,7 @@
--- setup packer
+if vim.g.vscode then
+
+else
+
 local execute = vim.api.nvim_command
 local fn = vim.fn
 
@@ -28,3 +31,5 @@ require('lazy').setup({
   },
   checker = { enabled = true },
 })
+
+end

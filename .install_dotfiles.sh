@@ -8,17 +8,16 @@
 # curl -sL https://api.github.com/repos/tkinz27/dotfiles/contents/.install_dotfiles.sh \
 #   | jq -r .content | base64 -d | sh -
 
+function install_rustup {
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -q -y
+}
+
 function install_ubuntu {
     sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo add-apt-repository -y ppa:git-core/ppa
 
-    curl -sSL https://deb.nodesource.com/setup_12.x | sudo -E bash -
-    curl -sS https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-    echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-
     sudo apt update
-
-    sudo apt install -y git neovim zsh nodejs yarn
+    sudo apt install -y git neovim zsh 
 }
 
 function install_mac {
@@ -33,7 +32,7 @@ if [[ ! -d ~/.files ]]; then
     }
 
     # first lets backup any existing dotfiles
-    mkdir -p $HOME/.files.bak
+    mkdir -p "${HOME}/.files.bak"
     dotfiles checkout 2>&1 > /dev/null
     if [ $? = 0 ]; then
         echo "Checked out dotfiles.";
@@ -49,6 +48,8 @@ else
     echo "dotfiles already installed? skipping..."
 fi
 
+install_rustup
+
 if [[ $(uname -s) == "Linux" ]]; then
     id=$(cat /etc/os-release | grep ^ID= | cut -d'=' -f 2)
     if [[ "$id" == "ubuntu" ]]; then
@@ -58,6 +59,4 @@ elif [[ $(uname -s) == "Darwin" ]]; then
     install_mac
 fi
 
-[ -n "$(which zsh)" ] && [ "$SHELL" != "$(which zsh)" ] && chsh -s $(which zsh) $(whoami)
-
-mkdir -p ~/.npm-packages
+[ -n "$(which zsh)" ] && [ "$SHELL" != "$(which zsh)" ] && chsh -s $(which zsh) ${USER}
