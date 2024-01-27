@@ -1,8 +1,9 @@
-import = [".config/alacritty/colorschemes.toml"]
+import = [".config/alacritty/tokyonight_night.toml"]
 
-[font.normal]
-family = "BlexMono Nerd Font"
-style = "Regular"
+[font]
+size = 12
+normal.family = "BlexMono Nerd Font"
+normal.style = "Regular"
 
 [[keyboard.bindings]]
 action = "SpawnNewInstance"
