@@ -50,3 +50,5 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+[includeIf "gitdir:~/code/github.com/braincorp/"]
+    path = ~/.config/git/braincorp

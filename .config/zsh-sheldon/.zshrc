@@ -5,6 +5,7 @@ HISTSIZE=10000
 SAVEHIST=10000
 
 [ "$(uname -s)" = "Darwin" ] && eval "$(/opt/homebrew/bin/brew shellenv)"
+[ "$(uname -s)" = "Darwin" ] && FPATH="$(brew --prefix)/share/zsh/site-functions:${FPATH}"
 
 for file in ~/.config/bash/*; do
     [ "$file" != "powerline" ] && source ${file}
