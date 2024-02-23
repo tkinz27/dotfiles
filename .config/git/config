@@ -3,14 +3,24 @@
 	name = Tony Kinsley
 [init]
 	defaultBranch = main
+[core]
+    pager = delta
+[credential]
+	helper = store
 [push]
 	default = simple
 	autoSetupRemote = true
 [pull]
 	rebase = true
+[rebase]
+    autostash = true
+[rerere]
+    enabled = true
+[commit]
+    verbose = true
 [merge]
     tool = nvimdiff
-    # conflictstyle = zdiff3
+    conflictstyle = zdiff3
 [mergetool]
     prompt = false
 [diff]
@@ -37,10 +47,6 @@
     hist = log --graph --abbrev-commit --decorate --format=format:'%C(bold blue)%h%C(reset) - %C(bold green)(%ar)%C(reset) %s%C(reset) %C(dim white)- %an%C(reset)%C(bold yellow)%d%C(reset)' --all
     lg = !"git lg1"
     sc = show --pretty="" --name-only
-[core]
-	excludesfile = ~/.gitignore
-[credential]
-	helper = store
 [fetch]
 	prune = true
 [url "git@github.com:"]
@@ -50,5 +56,19 @@
 	process = git-lfs filter-process
 	required = true
 	clean = git-lfs clean -- %f
+
+[delta]
+    features = decorations
+[delta "interactive"]
+    keep-plus-minus-markers = false
+[delta "decorations"]
+    commit-decoration-style = blue ol
+    commit-style = raw
+    file-style = omit
+    hunk-header-decoration-style = blue box
+    hunk-header-file-style = red
+    hunk-header-line-number-style = "#067a00"
+    hunk-header-style = file line-number syntax
+
 [includeIf "gitdir:~/code/github.com/braincorp/"]
     path = ~/.config/git/braincorp
