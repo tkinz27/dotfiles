@@ -68,7 +68,9 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     opts = function()
+      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
       local cmp = require('cmp')
+      local defaults = require('cmp.config.default')()
       local luasnip = require('luasnip')
 
       local has_words_before = function()
@@ -156,7 +158,7 @@ return {
         },
         experimental = {
           ghost_text = {
-            hl_group = 'LspCodeLens',
+            hl_group = 'CmpGhostText',
           },
         },
       }
