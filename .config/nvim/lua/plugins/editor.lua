@@ -232,6 +232,7 @@ return {
       },
       current_line_blame = true,
       current_line_blame_opts = { delay = 1000, virt_text_priority = 100, virt_text = true, virt_text_pos = 'eol' },
+      debug_mode = true,
       on_attach = function(buffer)
         local gs = package.loaded.gitsigns
 
@@ -269,16 +270,6 @@ return {
     keys = {
       { "]]", function() require("illuminate").goto_next_reference(false) end, desc = "Next Reference", },
       { "[[", function() require("illuminate").goto_prev_reference(false) end, desc = "Prev Reference" },
-    },
-  },
-
-  -- buffer remove
-  {
-    'echasnovski/mini.bufremove',
-    -- stylua: ignore
-    keys = {
-      { "<leader>bd", function() require("mini.bufremove").delete(0, false) end, desc = "Delete Buffer" },
-      { "<leader>bD", function() require("mini.bufremove").delete(0, true) end,  desc = "Delete Buffer (Force)" },
     },
   },
 

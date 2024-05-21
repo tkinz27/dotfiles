@@ -42,7 +42,8 @@ return {
 
   -- bufferline
   {
-    'akinsho/nvim-bufferline.lua',
+    'akinsho/bufferline.nvim',
+    version = "*",
     event = 'VeryLazy',
     init = function()
       vim.keymap.set('n', '<s-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
