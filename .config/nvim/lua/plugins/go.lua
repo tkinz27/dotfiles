@@ -4,7 +4,7 @@ return {
     opts = {
       servers = {
         gopls = {
-          cmd = { 'gopls', '-v', '-rpc.trace', '-logfile=/tmp/gopls.log' },
+          -- cmd = { 'gopls', '-v', '-rpc.trace', '-logfile=/tmp/gopls.log' },
           settings = {
             gopls = {
               buildFlags = { '-tags=unit,lz4' },
