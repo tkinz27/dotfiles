@@ -38,24 +38,41 @@ return {
   -- correctly setup lspconfig
   {
     'neovim/nvim-lspconfig',
-    dependencies = { 'jose-elias-alvarez/typescript.nvim' },
     opts = {
       -- make sure mason installs the server
       servers = {
-        tsserver = {},
+        vtsls = {
+          settings = {
+            complete_function_calls = true,
+            vtsls = {
+              enableMoveToFileCodeAction = true,
+              autoUseWorkspaceTsdk = true,
+              experimental = {
+                completion = {
+                  enableServerSideFuzzyMatch = true,
+                },
+              },
+            },
+            typescript = {
+              updateImportsOnFileMove = { enabled = "always" },
+              suggest = {
+                completeFunctionCalls = true,
+              },
+              inlayHints = {
+                enumMemberValues = { enabled = true },
+                functionLikeReturnTypes = { enabled = true },
+                parameterNames = { enabled = "literals" },
+                parameterTypes = { enabled = true },
+                propertyDeclarationTypes = { enabled = true },
+                variableTypes = { enabled = false },
+              },
+            },
+          },
+        },
       },
       setup = {
-        tsserver = function(_, opts)
-          require('config.util').on_attach(function(client, buffer)
-            if client.name == 'tsserver' then
-              -- stylua: ignore
-              vim.keymap.set("n", "<leader>co", "TypescriptOrganizeImports",
-                { buffer = buffer, desc = "Organize Imports" })
-              vim.keymap.set('n', '<leader>cR', 'TypescriptRenameFile', { desc = 'Rename File', buffer = buffer })
-            end
-          end)
-          require('typescript').setup({ server = opts })
-          return true
+        vtsls = function(_, opts)
+          opts.settings.javascript = vim.tbl_deep_extend("force", {}, opts.settings.typescript, opts.settings.javasrfipt or {})
         end,
       },
     },
