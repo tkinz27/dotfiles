@@ -1,5 +1,7 @@
 local M = {}
 
+M.lsp = {}
+
 function M.opts(name)
   local plugin = require('lazy.core.config').plugins[name]
   if not plugin then
@@ -9,14 +11,47 @@ function M.opts(name)
   return Plugin.values(plugin, 'opts', false)
 end
 
-function M.on_attach(on_attach)
-  vim.api.nvim_create_autocmd('LspAttach', {
+---@param on_attach fun(client:vim.lsp.Client, buffer)
+---@param name? string
+function M.lsp.on_attach(on_attach, name)
+  return vim.api.nvim_create_autocmd('LspAttach', {
     callback = function(args)
       local buffer = args.buf ---@type number
       local client = vim.lsp.get_client_by_id(args.data.client_id)
-      on_attach(client, buffer)
+      if client and (not name or client.name == name) then
+        return on_attach(client, buffer)
+      end
     end,
   })
+end
+
+M.lsp._supports_method = {}
+
+---@param method string
+---@param fn fun(client:vim.lsp.Client, buffer)
+function M.lsp.on_supports_method(method, fn)
+  M.lsp._supports_method[method] = M.lsp._supports_method[method] or setmetatable({}, { __mode = 'k' })
+  return vim.api.nvim_create_autocmd('User', {
+    pattern = 'LspSupportsMethod',
+    callback = function(args)
+      local client = vim.lsp.get_client_by_id(args.data.client_id)
+      local buffer = args.data.buffer ---@type number
+      if client and method == args.data.method then
+        return fn(client, buffer)
+      end
+    end,
+  })
+end
+
+---@return _.lspconfig.options
+function M.lsp.get_config(server)
+  local configs = require('lspconfig.configs')
+  return rawget(configs, server)
+end
+
+function M.lsp.is_enabled(server)
+  local c = M.lsp.get_config(server)
+  return c and c.enabled ~= false
 end
 
 function M.has(plugin)
@@ -81,12 +116,12 @@ end
 ---@param name string
 ---@param fn fun(name:string)
 function M.on_load(name, fn)
-  local Config = require("lazy.core.config")
+  local Config = require('lazy.core.config')
   if Config.plugins[name] and Config.plugins[name]._.loaded then
     fn(name)
   else
-    vim.api.nvim_create_autocmd("User", {
-      pattern = "LazyLoad",
+    vim.api.nvim_create_autocmd('User', {
+      pattern = 'LazyLoad',
       callback = function(event)
         if event.data == name then
           fn(name)

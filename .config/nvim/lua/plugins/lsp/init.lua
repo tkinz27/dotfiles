@@ -1,3 +1,4 @@
+local icons = require('config.icons')
 local Util = require('config.util')
 
 return {
@@ -7,19 +8,8 @@ return {
     branch = 'master',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      {
-        'folke/neoconf.nvim',
-        branch = 'main',
-        cmd = 'Neoconf',
-        opts = {
-          import = { vscode = false },
-        },
-        config = true,
-      },
-      { 'folke/neodev.nvim', opts = {} },
       'mason.nvim',
       'williamboman/mason-lspconfig.nvim',
-      'hrsh7th/cmp-nvim-lsp',
     },
     ---@class PluginLspOpts
     opts = {
@@ -29,25 +19,36 @@ return {
         update_in_insert = false,
         virtual_text = { spacing = 4, source = 'if_many', prefix = '●' },
         severity_sort = true,
-      },
-      -- Automatically format on save
-      autoformat = true,
-      inlay_hints = {
-        enabled = false,
-      },
-      capabilities = {
-        workspace = {
-          didChangeWatchedFiles = {
-            dynamicRegistration = false,
+        signs = {
+          text = {
+            [vim.diagnostic.severity.ERROR] = icons.diagnostics.Error,
+            [vim.diagnostic.severity.WARN] = icons.diagnostics.Warn,
+            [vim.diagnostic.severity.HINT] = icons.diagnostics.Hint,
+            [vim.diagnostic.severity.INFO] = icons.diagnostics.Info,
           },
         },
       },
-      -- options for vim.lsp.buf.format
-      -- `bufnr` and `filter` is handled by the LazyVim formatter,
-      -- but can be also overriden when specified
-      format = {
-        formatting_options = nil,
-        timeout_ms = nil,
+      inlay_hints = {
+        enabled = true,
+        exclue = { 'vue' },
+      },
+
+      codelens = {
+        enabled = true,
+      },
+      document_highlight = {
+        enabled = true,
+      },
+      capabilities = {
+        workspace = {
+          fileOperations = {
+            didRename = true,
+            willRename = true,
+          },
+          -- didChangeWatchedFiles = {
+          --   dynamicRegistration = false,
+          -- },
+        },
       },
       -- LSP Server Settings
       ---@type lspconfig.options
@@ -58,54 +59,38 @@ return {
       -- you can do any additional lsp server setup here
       -- return true if you don't want this server to be  lspconfig
       ---@type table<string, fun(server:string, opts:_.lspconfig.options):boolean?>
-      setup = {
-        -- example to setup with typescript.nvim
-        -- tsserver = function(_, opts)
-        --   require("typescript").setup({ server = opts })
-        --   return true
-        -- end,
-        -- Specify * to use this function as a fallback for any server
-        -- ["*"] = function(server, opts) end,
-      },
+      setup = {},
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
-      -- load vscode options if available
-      if Util.has('neoconf.nvim') then
-        local plugin = require('lazy.core.config').spec.plugins['neoconf.nvim']
-        require('neoconf').setup(require('lazy.core.plugin').values(plugin, 'opts', false))
-      end
-
-      Util.on_attach(function(client, buffer)
+      Util.lsp.on_attach(function(client, buffer)
         require('plugins.lsp.keymaps').on_attach(client, buffer)
       end)
 
-      -- diagnostics
-      for name, icon in pairs(require('config.icons').diagnostics) do
-        name = 'DiagnosticSign' .. name
-        vim.fn.sign_define(name, { text = icon, texthl = name, numhl = '' })
-      end
-
-      local inlay_hint = vim.lsp.buf.inlay_hint or vim.lsp.inlay_hint
-      if opts.inlay_hints.enabled and inlay_hint then
-        Util.on_attach(function(client, buffer)
-          if client.server_capabilities.inlayHintProvider then
-            inlay_hint(buffer, true)
+      -- inlay hints
+      if opts.inlay_hints.enabled then
+        Util.lsp.on_supports_method('textDocument/inlayHint', function(client, buffer)
+          if
+            vim.api.nvim_buf_is_valid(buffer)
+            and vim.bo[buffer].buftype == ''
+            and not vim.tbl_contains(opts.inlay_hints.exclude, vim.bo[buffer].filetype)
+          then
+            vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
           end
         end)
       end
 
-      if type(opts.diagnostics.virtual_text) == 'table' and opts.diagnostics.virtual_text.prefix == 'icons' then
-        opts.diagnostics.virtual_text.prefix = vim.fn.has('nvim-0.10.0') == 0 and '● '
-            or function(diagnostic)
-              local icons = require('config.icons').diagnostics
-              for d, icon in pairs(icons) do
-                if diagnostic.serverity == vim.diagnostic.severity[d:upper()] then
-                  return icon
-                end
-              end
-            end
+      -- code lens
+      if opts.codelens.enabled and vim.lsp.codelens then
+        Util.lsp.on_supports_method('textDocument/codeLens', function(client, buffer)
+          vim.lsp.codelens.refresh()
+          vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
+            buffer = buffer,
+            callback = vim.lsp.codelens.refresh,
+          })
+        end)
       end
+
       vim.diagnostic.config(vim.deepcopy(opts.diagnostics))
 
       local servers = opts.servers
@@ -153,48 +138,6 @@ return {
       mlsp.setup({ ensure_installed = ensure_installed, handlers = { setup } })
     end,
   },
-
-  -- -- formatters
-  -- {
-  --   'nvimtools/none-ls.nvim',
-  --   event = 'BufReadPre',
-  --   dependencies = { 'mason.nvim' },
-  --   opts = function()
-  --     local nls = require('null-ls')
-  --     return {
-  --       sources = {
-  --         nls.builtins.formatting.stylua.with({
-  --           extra_args = { '--config-path', vim.fn.expand('~/.config/stylua/stylua.toml') },
-  --         }),
-  --
-  --         nls.builtins.formatting.clang_format.with({
-  --           filetypes = { 'c', 'cpp', 'proto' },
-  --         }),
-  --         nls.builtins.formatting.cmake_format,
-  --
-  --         nls.builtins.formatting.prettier.with({
-  --           extra_args = { '--ignore-path', vim.fn.expand('~/.prettierignore') },
-  --         }),
-  --
-  --         nls.builtins.formatting.goimports,
-  --
-  --         -- nls.builtins.formatting.buf,
-  --         nls.builtins.diagnostics.buf,
-  --
-  --         nls.builtins.diagnostics.shellcheck,
-  --
-  --         nls.builtins.formatting.terraform_fmt,
-  --
-  --         nls.builtins.diagnostics.ruff,
-  --         nls.builtins.formatting.ruff,
-  --         -- nls.builtins.formatting.black,
-  --
-  --         nls.builtins.formatting.buildifier,
-  --         nls.builtins.diagnostics.buildifier,
-  --       },
-  --     }
-  --   end,
-  -- },
 
   -- cmdline tools and lsp servers
   {

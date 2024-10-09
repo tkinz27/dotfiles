@@ -38,10 +38,9 @@ return {
   -- snippets
   {
     'L3MON4D3/LuaSnip',
-    build = (not jit.os:find("Windows"))
+    build = (not jit.os:find('Windows'))
         and "echo 'NOTE: jsregexp is optional, so not a big deal if it fails to build'; make install_jsregexp"
-        or
-        nil,
+      or nil,
     dependencies = {
       'rafamadriz/friendly-snippets',
       config = function()
@@ -68,7 +67,7 @@ return {
       'zbirenbaum/copilot-cmp',
     },
     opts = function()
-      vim.api.nvim_set_hl(0, "CmpGhostText", { link = "Comment", default = true })
+      vim.api.nvim_set_hl(0, 'CmpGhostText', { link = 'Comment', default = true })
       local cmp = require('cmp')
       local defaults = require('cmp.config.default')()
       local luasnip = require('luasnip')
@@ -168,6 +167,7 @@ return {
   -- surround
   {
     'kylechui/nvim-surround',
+    event = 'VeryLazy',
     config = true,
   },
 

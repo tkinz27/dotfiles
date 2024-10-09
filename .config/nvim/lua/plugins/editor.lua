@@ -14,18 +14,19 @@ return {
         desc = 'Explorer NeoTree (root dir)',
       },
       { '<leader>E', '<cmd>Neotree toggle<CR>', desc = 'Explorer NeoTree (cwd)' },
-      { '<leader>eg', 
-        function() 
-          require("neo-tree.command").execute({ source = "git_status", toggle = true})
+      {
+        '<leader>eg',
+        function()
+          require('neo-tree.command').execute({ source = 'git_status', toggle = true })
         end,
-        desc = "Git Explorer",
+        desc = 'Git Explorer',
       },
       {
-        "<leader>eb",
-        function() 
-          require("neo-tree.command").execute({ source = "buffers", toggle = true})
+        '<leader>eb',
+        function()
+          require('neo-tree.command').execute({ source = 'buffers', toggle = true })
         end,
-        desc = "Buffer Explorer",
+        desc = 'Buffer Explorer',
       },
     },
     deactivate = function()
@@ -57,16 +58,6 @@ return {
           expander_expanded = '',
           expander_highlight = 'NeoTreeExpander',
         },
-        icon = {
-          folder_empty = '󰜌',
-          folder_empty_open = '󰜌',
-        },
-        git_status = {
-          symbols = {
-            renamed = '󰁕',
-            unstaged = '󰄱',
-          },
-        },
       },
     },
     config = function(_, opts)
@@ -84,10 +75,25 @@ return {
 
   -- search/replace in multiple files
   {
-    'windwp/nvim-spectre',
-    -- stylua: ignore
+    'MagicDuck/grug-far.nvim',
+    opts = { headerMaxWidth = 80 },
+    cmd = 'GrugFar',
     keys = {
-      { "<leader>sr", function() require("spectre").open() end, desc = "Replace in files (Spectre)" },
+      {
+        '<leader>sr',
+        function()
+          local grug = require('grug-far')
+          local ext = vim.bo.buftype == '' and vim.fn.expand('%:e')
+          grug.open({
+            transient = true,
+            prefills = {
+              filesFilter = ext and ext ~= '' and '*.' .. ext or nil,
+            },
+          })
+        end,
+        mode = { 'n', 'v' },
+        desc = 'Search and Replace',
+      },
     },
   },
 
@@ -97,31 +103,31 @@ return {
     cmd = 'Telescope',
     version = false, -- telescope did only one release, so use HEAD for now
     keys = {
-      { '<leader>erc',     Util.telescope('find_files', { cwd = '~/.config/nvim' }), desc = 'Edit configuration' },
-      { '<leader>,',       '<cmd>Telescope buffers show_all_buffers=true<cr>',       desc = 'Switch Buffer' },
-      { '<leader>/',       Util.telescope('live_grep'),                              desc = 'Find in Files (Grep)' },
-      { '<leader>:',       '<cmd>Telescope command_history<cr>',                     desc = 'Command History' },
-      { '<leader><space>', Util.telescope('find_files'),                             desc = 'Find Files (root dir)' },
-      { '<leader>fF',      Util.telescope('find_files', { cwd = false }),            desc = 'Find Files (cwd)' },
-      { '<leader>fb',      '<cmd>Telescope buffers<cr>',                             desc = 'Buffers' },
-      { '<leader>ff',      Util.telescope('find_files'),                             desc = 'Find Files (root dir)' },
-      { '<leader>fr',      '<cmd>Telescope oldfiles<cr>',                            desc = 'Recent' },
-      { '<leader>gc',      '<cmd>Telescope git_commits<CR>',                         desc = 'commits' },
-      { '<leader>gs',      '<cmd>Telescope git_status<CR>',                          desc = 'status' },
-      { '<leader>sC',      '<cmd>Telescope commands<cr>',                            desc = 'Commands' },
-      { '<leader>sG',      Util.telescope('live_grep', { cwd = false }),             desc = 'Grep (cwd)' },
-      { '<leader>sM',      '<cmd>Telescope man_pages<cr>',                           desc = 'Man Pages' },
-      { '<leader>sa',      '<cmd>Telescope autocommands<cr>',                        desc = 'Auto Commands' },
-      { '<leader>sb',      '<cmd>Telescope current_buffer_fuzzy_find<cr>',           desc = 'Buffer' },
-      { '<leader>sc',      '<cmd>Telescope command_history<cr>',                     desc = 'Command History' },
-      { '<leader>sg',      Util.telescope('live_grep'),                              desc = 'Grep (root dir)' },
-      { '<leader>sh',      '<cmd>Telescope help_tags<cr>',                           desc = 'Help Pages' },
-      { '<leader>sH',      '<cmd>Telescope highlights<cr>',                          desc = 'Search Highlight Groups' },
-      { '<leader>sk',      '<cmd>Telescope keymaps<cr>',                             desc = 'Key Maps' },
-      { '<leader>sm',      '<cmd>Telescope marks<cr>',                               desc = 'Jump to Mark' },
-      { '<leader>so',      '<cmd>Telescope vim_options<cr>',                         desc = 'Options' },
-      { '<leader>st',      '<cmd>Telescope builtin<cr>',                             desc = 'Telescope' },
-      { '<leader>sw',      '<cmd>Telescope grep_string<cr>',                         desc = 'Grep word' },
+      { '<leader>erc', Util.telescope('find_files', { cwd = '~/.config/nvim' }), desc = 'Edit configuration' },
+      { '<leader>,', '<cmd>Telescope buffers show_all_buffers=true<cr>', desc = 'Switch Buffer' },
+      { '<leader>/', Util.telescope('live_grep'), desc = 'Find in Files (Grep)' },
+      { '<leader>:', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
+      { '<leader><space>', Util.telescope('find_files'), desc = 'Find Files (root dir)' },
+      { '<leader>fF', Util.telescope('find_files', { cwd = false }), desc = 'Find Files (cwd)' },
+      { '<leader>fb', '<cmd>Telescope buffers<cr>', desc = 'Buffers' },
+      { '<leader>ff', Util.telescope('find_files'), desc = 'Find Files (root dir)' },
+      { '<leader>fr', '<cmd>Telescope oldfiles<cr>', desc = 'Recent' },
+      { '<leader>gc', '<cmd>Telescope git_commits<CR>', desc = 'commits' },
+      { '<leader>gs', '<cmd>Telescope git_status<CR>', desc = 'status' },
+      { '<leader>sC', '<cmd>Telescope commands<cr>', desc = 'Commands' },
+      { '<leader>sG', Util.telescope('live_grep', { cwd = false }), desc = 'Grep (cwd)' },
+      { '<leader>sM', '<cmd>Telescope man_pages<cr>', desc = 'Man Pages' },
+      { '<leader>sa', '<cmd>Telescope autocommands<cr>', desc = 'Auto Commands' },
+      { '<leader>sb', '<cmd>Telescope current_buffer_fuzzy_find<cr>', desc = 'Buffer' },
+      { '<leader>sc', '<cmd>Telescope command_history<cr>', desc = 'Command History' },
+      { '<leader>sg', Util.telescope('live_grep'), desc = 'Grep (root dir)' },
+      { '<leader>sh', '<cmd>Telescope help_tags<cr>', desc = 'Help Pages' },
+      { '<leader>sH', '<cmd>Telescope highlights<cr>', desc = 'Search Highlight Groups' },
+      { '<leader>sk', '<cmd>Telescope keymaps<cr>', desc = 'Key Maps' },
+      { '<leader>sm', '<cmd>Telescope marks<cr>', desc = 'Jump to Mark' },
+      { '<leader>so', '<cmd>Telescope vim_options<cr>', desc = 'Options' },
+      { '<leader>st', '<cmd>Telescope builtin<cr>', desc = 'Telescope' },
+      { '<leader>sw', '<cmd>Telescope grep_string<cr>', desc = 'Grep word' },
       {
         '<leader>ss',
         Util.telescope('lsp_document_symbols', {
@@ -198,48 +204,60 @@ return {
   {
     'folke/which-key.nvim',
     event = 'VeryLazy',
-    opts_extend = { "spec" },
+    opts_extend = { 'spec' },
     opts = {
       spec = {
         {
-          mode = {'n', "v"},
-          { "<leader><tab>", group = "tabs" },
-          { "<leader>c", group = "code" },
-          { "<leader>f", group = "file/find" },
-          { "<leader>g", group = "git" },
-          { "<leader>gh", group = "hunks" },
-          { "<leader>q", group = "quit/session" },
-          { "<leader>s", group = "search" },
-          { "<leader>u", group = "ui", icon = { icon = "󰙵 ", color = "cyan" } },
-          { "<leader>x", group = "diagnostics/quickfix", icon = { icon = "󱖫 ", color = "green" } },
-          { "[", group = "prev" },
-          { "]", group = "next" },
-          { "g", group = "goto" },
-          { "gs", group = "surround" },
-          { "z", group = "fold" },
+          mode = { 'n', 'v' },
+          { '<leader><tab>', group = 'tabs' },
+          { '<leader>c', group = 'code' },
+          { '<leader>f', group = 'file/find' },
+          { '<leader>g', group = 'git' },
+          { '<leader>gh', group = 'hunks' },
+          { '<leader>q', group = 'quit/session' },
+          { '<leader>s', group = 'search' },
+          { '<leader>u', group = 'ui', icon = { icon = '󰙵 ', color = 'cyan' } },
+          { '<leader>x', group = 'diagnostics/quickfix', icon = { icon = '󱖫 ', color = 'green' } },
+          { '[', group = 'prev' },
+          { ']', group = 'next' },
+          { 'g', group = 'goto' },
+          { 'gs', group = 'surround' },
+          { 'z', group = 'fold' },
           {
-            "<leader>b",
-            group = "buffer",
+            '<leader>b',
+            group = 'buffer',
             expand = function()
-              return require("which-key.extras").expand.buf()
+              return require('which-key.extras').expand.buf()
             end,
           },
           {
-            "<leader>w",
-            group = "windows",
-            proxy = "<c-w>",
+            '<leader>w',
+            group = 'windows',
+            proxy = '<c-w>',
             expand = function()
-              return require("which-key.extras").expand.win()
+              return require('which-key.extras').expand.win()
             end,
           },
           -- better descriptions
-          { "gx", desc = "Open with system app" },
-        }
+          { 'gx', desc = 'Open with system app' },
+        },
       },
     },
     keys = {
-      { '<leader>?', function() require("which-key").show({ global = false }) end, desc = "Buffer Keymaps (which-key)" },
-      { '<c-w><space>', function() require("which-key").show({ kyes = "<c-w>", loop = true}) end, desc = "Window Hydra Mode (which-key)" },
+      {
+        '<leader>?',
+        function()
+          require('which-key').show({ global = false })
+        end,
+        desc = 'Buffer Keymaps (which-key)',
+      },
+      {
+        '<c-w><space>',
+        function()
+          require('which-key').show({ kyes = '<c-w>', loop = true })
+        end,
+        desc = 'Window Hydra Mode (which-key)',
+      },
     },
   },
 
@@ -250,12 +268,12 @@ return {
     event = { 'BufReadPre', 'BufNewFile' },
     opts = {
       signs = {
-        add = { text = "▎" },
-        change = { text = "▎" },
-        delete = { text = "" },
-        topdelete = { text = "" },
-        changedelete = { text = "▎" },
-        untracked = { text = "▎" },
+        add = { text = '▎' },
+        change = { text = '▎' },
+        delete = { text = '' },
+        topdelete = { text = '' },
+        changedelete = { text = '▎' },
+        untracked = { text = '▎' },
       },
       current_line_blame = true,
       current_line_blame_opts = { delay = 1000, virt_text_priority = 100, virt_text = true, virt_text_pos = 'eol' },
@@ -285,29 +303,52 @@ return {
     },
   },
 
-  -- references
-  {
-    'RRethy/vim-illuminate',
-    event = { 'BufReadPost', 'BufNewFile' },
-    opts = { delay = 200 },
-    config = function(_, opts)
-      require('illuminate').configure(opts)
-    end,
-    -- stylua: ignore
-    keys = {
-      { "]]", function() require("illuminate").goto_next_reference(false) end, desc = "Next Reference", },
-      { "[[", function() require("illuminate").goto_prev_reference(false) end, desc = "Prev Reference" },
-    },
-  },
-
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',
-    cmd = { 'TroubleToggle', 'Trouble' },
-    opts = { use_diagnostic_signs = true },
+    cmd = { 'Trouble' },
+    opts = {
+      modes = {
+        lsp = {
+          win = { position = 'right' },
+        },
+      },
+    },
     keys = {
-      { '<leader>xx', '<cmd>TroubleToggle document_diagnostics<cr>',  desc = 'Document Diagnostics (Trouble)' },
-      { '<leader>xX', '<cmd>TroubleToggle workspace_diagnostics<cr>', desc = 'Workspace Diagnostics (Trouble)' },
+      { '<leader>xx', '<cmd>Trouble diagnostics toggle<cr>', desc = 'Diagnostics (Trouble)' },
+      { '<leader>xX', '<cmd>Trouble diagnostics toggle filter.buf=0<cr>', desc = 'Buffer Diagnostics (Trouble)' },
+      { '<leader>cs', '<cmd>Trouble symbols toggle<cr>', desc = 'Symbols (Trouble)' },
+      { '<leader>cS', '<cmd>Trouble lsp toggle<cr>', desc = 'LSP references/definitions/... (Trouble)' },
+      { '<leader>xL', '<cmd>Trouble loclist toggle<cr>', desc = 'Location List (Trouble)' },
+      { '<leader>xQ', '<cmd>Trouble qflist toggle<cr>', desc = 'Quickfix List (Trouble)' },
+      {
+        '[q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').prev({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cprev)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = 'Previous Trouble/Quickfix Item',
+      },
+      {
+        ']q',
+        function()
+          if require('trouble').is_open() then
+            require('trouble').next({ skip_groups = true, jump = true })
+          else
+            local ok, err = pcall(vim.cmd.cnext)
+            if not ok then
+              vim.notify(err, vim.log.levels.ERROR)
+            end
+          end
+        end,
+        desc = 'Next Trouble/Quickfix Item',
+      },
     },
   },
 

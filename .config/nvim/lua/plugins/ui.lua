@@ -43,7 +43,7 @@ return {
   -- bufferline
   {
     'akinsho/bufferline.nvim',
-    version = "*",
+    version = '*',
     event = 'VeryLazy',
     init = function()
       vim.keymap.set('n', '<s-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
@@ -287,7 +287,7 @@ return {
     'SmiteshP/nvim-navic',
     init = function()
       vim.g.navic_silence = true
-      require('config.util').on_attach(function(client, buffer)
+      require('config.util').lsp.on_attach(function(client, buffer)
         if client.server_capabilities.documentSymbolProvider then
           require('nvim-navic').attach(client, buffer)
         end
