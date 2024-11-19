@@ -1,3 +1,6 @@
+local gemini_api_key = os.getenv('GOOGLE_AI_API_KEY')
+local provider = gemini_api_key and 'gemini' or 'copilot'
+
 return {
   {
     'yetone/avante.nvim',
