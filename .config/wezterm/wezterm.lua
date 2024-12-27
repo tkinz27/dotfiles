@@ -8,6 +8,8 @@ end
 
 config.color_scheme = 'tokyonight'
 
+config.font = wezterm.font('BlexMono Nerd Font')
+
 wezterm.on('update-status', function(window, pane)
   require('status').status_func(window, pane)
 end)
