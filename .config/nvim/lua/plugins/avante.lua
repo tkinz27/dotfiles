@@ -8,7 +8,10 @@ return {
     lazy = false,
     version = false, -- set this if you want to always pull the latest change
     opts = {
-      provider = 'copilot',
+      provider = 'gemini',
+      gemini = {
+        model = 'gemini-2.0-flash-exp',
+      },
       vendors = {
         ---@type AvanteProvider
         ollama = {
