@@ -1,33 +1,4 @@
 return {
-
-  -- github copilot
-  {
-    'zbirenbaum/copilot.lua',
-    lazy = false,
-    version = false,
-    event = { 'InsertEnter' },
-    opts = {
-      filetypes = {
-        ['*'] = true,
-      },
-      panel = {
-        auto_refresh = true,
-      },
-      server_opts_overrides = {},
-    },
-    keys = {
-      {
-        '<leader>cc',
-        function()
-          require('copilot.panel').open({ position = 'bottom', ratio = 0.4 })
-        end,
-        mode = 'n',
-        desc = 'Open Copilot panel',
-      },
-    },
-    config = true,
-  },
-
   -- auto completion
   {
     'saghen/blink.cmp',
@@ -35,16 +6,92 @@ return {
     event = 'InsertEnter',
     dependencies = {
       'rafamadriz/friendly-snippets',
+      'giuxtaposition/blink-cmp-copilot',
+      'moyiz/blink-emoji.nvim',
+      'Kaiser-Yang/blink-cmp-dictionary',
     },
     ---@module 'blink.cmp'
     ---@type blink.cmp.Config
     opts = {
       keymap = { preset = 'default' },
       appearance = {
-        use_nvim_cmp_as_default = true,
         nerd_font_variant = 'mono',
       },
+      completion = {
+        menu = {
+          draw = {
+            columns = {
+              { 'label', 'label_description', gap = 1 },
+              { 'kind_icon', 'kind', gap = 1 },
+            },
+          },
+        },
+        ghost_text = { enabled = true },
+      },
       signature = { enabled = true },
+      sources = {
+        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'emoji', 'dictionary' },
+        providers = {
+          copilot = {
+            name = 'Copilot',
+            module = 'blink-cmp-copilot',
+            async = true,
+            transform_items = function(_, items)
+              local CompletionItemKind = require('blink.cmp.types').CompletionItemKind
+              local kind_idx = #CompletionItemKind + 1
+              CompletionItemKind[kind_idx] = 'Copilot'
+              for _, item in ipairs(items) do
+                item.kind = kind_idx
+              end
+              return items
+            end,
+          },
+          emoji = {
+            module = 'blink-emoji',
+            name = 'Emoji',
+            opts = { insert = true },
+          },
+          -- https://github.com/Kaiser-Yang/blink-cmp-dictionary
+          -- In macOS to get started with a dictionary:
+          -- cp /usr/share/dict/words ~/github/dotfiles-latest/dictionaries
+          dictionary = {
+            module = 'blink-cmp-dictionary',
+            name = 'Dict',
+            score_offset = 20, -- the higher the number, the higher the priority
+            enabled = true,
+            max_items = 8,
+            min_keyword_length = 3,
+            opts = {
+              get_command = {
+                'rg', -- make sure this command is available in your system
+                '--color=never',
+                '--no-line-number',
+                '--no-messages',
+                '--no-filename',
+                '--ignore-case',
+                '--',
+                '${prefix}', -- this will be replaced by the result of 'get_prefix' function
+                vim.fn.expand('/usr/share/dict/words'), -- where you dictionary is
+              },
+              documentation = {
+                enable = true, -- enable documentation to show the definition of the word
+                get_command = {
+                  -- For the word definitions feature
+                  -- make sure "wn" is available in your system
+                  -- brew install wordnet
+                  'wn',
+                  '${word}', -- this will be replaced by the word to search
+                  '-over',
+                },
+              },
+            },
+          },
+        },
+      },
+    },
+    opts_extend = {
+      'sources.default',
+      'appearance.kind_icons',
     },
   },
 
@@ -56,20 +103,10 @@ return {
   },
 
   -- comments
-  { 'JoosepAlviste/nvim-ts-context-commentstring', lazy = true },
   {
-    'echasnovski/mini.comment',
+    'folke/ts-comments.nvim',
     event = 'VeryLazy',
-    opts = {
-      hooks = {
-        pre = function()
-          require('ts_context_commentstring.internal').update_commentstring({})
-        end,
-      },
-    },
-    config = function(_, opts)
-      require('mini.comment').setup(opts)
-    end,
+    opts = {},
   },
 
   -- better text-objects

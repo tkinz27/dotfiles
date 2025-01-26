@@ -2,6 +2,36 @@ local gemini_api_key = os.getenv('GOOGLE_AI_API_KEY')
 local provider = gemini_api_key and 'gemini' or 'copilot'
 
 return {
+  -- github copilot
+  {
+    'zbirenbaum/copilot.lua',
+    lazy = false,
+    version = false,
+    event = { 'InsertEnter' },
+    opts = {
+      filetypes = {
+        ['*'] = true,
+      },
+      suggestion = {
+        enabled = false,
+      },
+      panel = {
+        enabled = false,
+      },
+      server_opts_overrides = {},
+    },
+    keys = {
+      {
+        '<leader>cc',
+        function()
+          require('copilot.panel').open({ position = 'bottom', ratio = 0.4 })
+        end,
+        mode = 'n',
+        desc = 'Open Copilot panel',
+      },
+    },
+    config = true,
+  },
   {
     'yetone/avante.nvim',
     event = 'VeryLazy',
