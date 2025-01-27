@@ -1,4 +1,13 @@
 return {
+  {
+    'folke/lazydev.nvim',
+    ft = 'lua',
+    opts = {
+      library = {
+        { path = '${3rd/luv/library', words = { 'wim%.uv' } },
+      },
+    },
+  },
   -- auto completion
   {
     'saghen/blink.cmp',
@@ -30,8 +39,13 @@ return {
       },
       signature = { enabled = true },
       sources = {
-        default = { 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'emoji', 'dictionary' },
+        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'emoji', 'dictionary' },
         providers = {
+          lazydev = {
+            name = 'LazyDev',
+            module = 'lazydev.integrations.blink',
+            score_offset = 100,
+          },
           copilot = {
             name = 'Copilot',
             module = 'blink-cmp-copilot',

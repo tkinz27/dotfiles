@@ -1,7 +1,13 @@
 return {
+  {
+    'j-hui/fidget.nvim',
+    event = 'VeryLazy',
+    opts = {},
+  },
   -- better vim.notify
   {
     'rcarriga/nvim-notify',
+    enabled = false,
     keys = {
       {
         '<leader>un',
