@@ -1,71 +1,51 @@
 local M = {}
 
----@type PluginLspKeys
-M._keys = nil
+local function set_km(opts)
+  local mode = opts.mode or 'n'
+  local bufnr = opts.bufnr or 0
+  local expr = opts.expr or false
 
----@return (LazyKeys|{has?:string})[]
-function M.get()
-  local format = require('plugins.lsp.format').format
-  ---@class PluginLspKeys
-  -- stylua: ignore
-  M._keys = M._keys or {
-    { "gd", "<cmd>Telescope lsp_definitions<cr>", desc = "Goto Definition", has = "definition" },
-    { "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
-    { "gy", "<cmd>Telescope lsp_type_definitions<cr>", desc = "Goto Type Definition" },
-    { "gI", "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation" },
-    { "gA", "<cmd>Telescope lsp_references<cr>", desc = "References" },
-    { "<leader>cd", vim.diagnostic.open_float, desc = "Line Diagnostics" },
-    { "<leader>cl", "<cmd>LspInfo<cr>", desc = "Lsp Info" },
-    { "K", vim.lsp.buf.hover, desc = "Hover" },
-    { "gK", vim.lsp.buf.signature_help, desc = "Signature Help", has = "signatureHelp" },
-    { "<c-k>", vim.lsp.buf.signature_help, mode = "i", desc = "Signature Help", has = "signatureHelp" },
-    { "<leader>cf", format, desc = "Format Document", has = "documentFormatting" },
-    { "<leader>cf", format, desc = "Format Range", mode = "v", has = "documentRangeFormatting" },
-    { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "v" }, has = "codeAction" },
-  }
-  return M._keys
+  if opts.cmd == nil then
+    vim.notify('LSP: No command provided for keymap: ' .. opts.key, vim.log.levels.WARN)
+  end
+
+  vim.keymap.set(mode, opts.key, opts.cmd, {
+    expr = expr,
+    buffer = bufnr,
+    noremap = true,
+    silent = true,
+    desc = opts.desc,
+  })
 end
 
-function M.has(buffer, method)
-  method = method:find('/') and method or 'textDocument/' .. method
-  local clients = vim.lsp.get_clients({ bufnr = buffer })
-  for _, client in ipairs(clients) do
-    if client.supports_method(method) then
-      return true
-    end
+local function set_global_keymaps(client, bufnr)
+  set_km({
+    key = '<leader>cl',
+    cmd = function()
+      Snacks.picker.lsp_config()
+    end,
+    desc = 'Lsp Info',
+    bufnr = bufnr,
+  })
+
+  if client:supports_method('textDocument/declaration') then
+    set_km({ key = 'gd', cmd = vim.lsp.buf.definition, desc = 'Goto Definition', bufnr = bufnr })
   end
-  return false
+
+  set_km({ key = 'gy', cmd = vim.lsp.buf.type_definition, desc = 'Goto T[y]pe Definition', bufnr = bufnr })
+  set_km({ key = 'gD', cmd = vim.lsp.buf.declaration, desc = 'Goto Declaration', bufnr = bufnr })
+
+  -- set_km({key =  { key = "gri", cmd = "<cmd>Telescope lsp_implementations<cr>", desc = "Goto Implementation", bufnr = bufnr })
+  -- set_km({key =  { key = "grr", cmd = "<cmd>Telescope lsp_references<cr>", desc = "References", bufnr = bufnr })
+  set_km({ key = 'K', cmd = vim.lsp.buf.hover, desc = 'Hover', bufnr = bufnr })
+  if client:supports_method('textDocument/signatureHelp') then
+    set_km({ key = 'gK', cmd = vim.lsp.buf.signature_help, desc = 'Signature Help', bufnr = bufnr })
+    set_km({ key = '<c-s>', cmd = vim.lsp.buf.signature_help, mode = 'i', desc = 'Signature Help', bufnr = bufnr })
+  end
 end
 
----@return (LazyKeys|{has?:string})[]
-function M.resolve(buffer)
-  local Keys = require('lazy.core.handler.keys')
-  if not Keys.resolve then
-    return {}
-  end
-  local spec = M.get()
-  local opts = require('config.util').opts('nvim-lspconfig')
-  local clients = vim.lsp.get_clients({ bufnr = buffer })
-  for _, client in ipairs(clients) do
-    local maps = opts.servers[client.name] and opts.servers[client.name].keys or {}
-    vim.list_extend(spec, maps)
-  end
-  return Keys.resolve(spec)
-end
-
-function M.on_attach(_, buffer)
-  local Keys = require('lazy.core.handler.keys')
-  local keymaps = M.resolve(buffer)
-
-  for _, keys in pairs(keymaps) do
-    if not keys.has or M.has(buffer, keys.has) then
-      local opts = Keys.opts(keys)
-      opts.has = nil
-      opts.silent = opts.silent ~= false
-      opts.buffer = buffer
-      vim.keymap.set(keys.mode or 'n', keys.lhs, keys.rhs, opts)
-    end
-  end
+function M.on_attach(client, bufnr)
+  set_global_keymaps(client, bufnr)
 end
 
 return M

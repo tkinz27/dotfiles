@@ -60,6 +60,10 @@ return {
     },
     ---@param opts PluginLspOpts
     config = function(_, opts)
+      Util.lsp.on_attach(function(client, buffer)
+        require('plugins.lsp.keymaps').on_attach(client, buffer)
+      end)
+
       -- inlay hints
       if opts.inlay_hints.enabled then
         Util.lsp.on_supports_method('textDocument/inlayHint', function(client, buffer)
