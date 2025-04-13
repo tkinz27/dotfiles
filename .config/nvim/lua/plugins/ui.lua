@@ -114,15 +114,6 @@ return {
             },
             { 'filetype', icon_only = true, separator = '', padding = { left = 1, right = 0 } },
             { 'filename', path = 1, symbols = { modified = '  ', readonly = '', unnamed = '' } },
-            {
-              function()
-                return require('nvim-navic').get_location()
-              end,
-              cond = function()
-                return package.loaded['nvim-navic'] and require('nvim-navic').is_available()
-              end,
-            },
-            -- stylua: ignore
           },
           lualine_x = {
             { require('lazy.status').updates, cond = require('lazy.status').has_updates, color = fg('Special') },
@@ -286,20 +277,6 @@ return {
         end,
       })
     end,
-  },
-
-  -- lsp symbol navigation for lualine
-  {
-    'SmiteshP/nvim-navic',
-    init = function()
-      vim.g.navic_silence = true
-      require('config.util').lsp.on_attach(function(client, buffer)
-        if client.server_capabilities.documentSymbolProvider then
-          require('nvim-navic').attach(client, buffer)
-        end
-      end)
-    end,
-    opts = { separator = ' ', highlight = true, depth_limit = 5 },
   },
 
   -- icons

@@ -303,6 +303,11 @@ return {
     },
   },
 
+  {
+    'sindrets/diffview.nvim',
+    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewToggleFiles' },
+  },
+
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',

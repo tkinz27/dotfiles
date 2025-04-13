@@ -4,6 +4,8 @@
 .mypy_cache
 pyrightconfig.json
 
+.goosehints
+
 stupid.go
 stupid
 

@@ -39,7 +39,7 @@ return {
       },
       signature = { enabled = true },
       sources = {
-        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'emoji', 'dictionary' },
+        default = { 'lazydev', 'lsp', 'path', 'snippets', 'buffer', 'copilot', 'emoji' },
         providers = {
           lazydev = {
             name = 'LazyDev',
@@ -68,40 +68,41 @@ return {
           -- https://github.com/Kaiser-Yang/blink-cmp-dictionary
           -- In macOS to get started with a dictionary:
           -- cp /usr/share/dict/words ~/github/dotfiles-latest/dictionaries
-          dictionary = {
-            module = 'blink-cmp-dictionary',
-            name = 'Dict',
-            score_offset = 20, -- the higher the number, the higher the priority
-            enabled = true,
-            max_items = 8,
-            min_keyword_length = 3,
-            opts = {
-              get_command = {
-                'rg', -- make sure this command is available in your system
-                '--color=never',
-                '--no-line-number',
-                '--no-messages',
-                '--no-filename',
-                '--ignore-case',
-                '--',
-                '${prefix}', -- this will be replaced by the result of 'get_prefix' function
-                vim.fn.expand('/usr/share/dict/words'), -- where you dictionary is
-              },
-              documentation = {
-                enable = true, -- enable documentation to show the definition of the word
-                get_command = {
-                  -- For the word definitions feature
-                  -- make sure "wn" is available in your system
-                  -- brew install wordnet
-                  'wn',
-                  '${word}', -- this will be replaced by the word to search
-                  '-over',
-                },
-              },
-            },
-          },
+          -- dictionary = {
+          --   module = 'blink-cmp-dictionary',
+          --   name = 'Dict',
+          --   score_offset = 20, -- the higher the number, the higher the priority
+          --   enabled = true,
+          --   max_items = 8,
+          --   min_keyword_length = 3,
+          --   opts = {
+          --     get_command = {
+          --       'rg', -- make sure this command is available in your system
+          --       '--color=never',
+          --       '--no-line-number',
+          --       '--no-messages',
+          --       '--no-filename',
+          --       '--ignore-case',
+          --       '--',
+          --       '${prefix}', -- this will be replaced by the result of 'get_prefix' function
+          --       vim.fn.expand('/usr/share/dict/words'), -- where you dictionary is
+          --     },
+          --     documentation = {
+          --       enable = true, -- enable documentation to show the definition of the word
+          --       get_command = {
+          --         -- For the word definitions feature
+          --         -- make sure "wn" is available in your system
+          --         -- brew install wordnet
+          --         'wn',
+          --         '${word}', -- this will be replaced by the word to search
+          --         '-over',
+          --       },
+          --     },
+          --   },
+          -- },
         },
       },
+      fuzzy = { implementation = 'prefer_rust_with_warning' },
     },
     opts_extend = {
       'sources.default',
