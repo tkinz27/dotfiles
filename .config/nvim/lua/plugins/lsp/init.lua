@@ -30,13 +30,10 @@ return {
       },
       inlay_hints = {
         enabled = true,
-        exclue = { 'vue' },
+        exclude = { 'vue' },
       },
 
       codelens = {
-        enabled = true,
-      },
-      document_highlight = {
         enabled = true,
       },
       capabilities = {
