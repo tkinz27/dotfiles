@@ -8,8 +8,8 @@ return {
     branch = 'master',
     event = { 'BufReadPre', 'BufNewFile' },
     dependencies = {
-      'mason.nvim',
-      'williamboman/mason-lspconfig.nvim',
+      'mason-org/mason.nvim',
+      'mason-org/mason-lspconfig.nvim',
     },
     ---@class PluginLspOpts
     opts = {
@@ -132,9 +132,11 @@ return {
   },
 
   -- cmdline tools and lsp servers
+  { 'mason-org/mason-lspconfig.nvim', version = '^1.0.0' },
   {
 
-    'williamboman/mason.nvim',
+    'mason-org/mason.nvim',
+    version = '^1.0.0',
     cmd = 'Mason',
     keys = { { '<leader>cm', '<cmd>Mason<cr>', desc = 'Mason' } },
     build = ':MasonUpdate',
