@@ -1,6 +1,6 @@
 [user]
-    name = "Tony Kinsley"
-    email = tkinsley.9@gmail.com
+	name = Brain CICD Bot
+	email = brain-cicd-bot@braincorp.com
 [init]
 	defaultBranch = main
 [core]

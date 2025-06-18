@@ -1,17 +1,36 @@
-#!/bin/sh
+# This file is sourced by Zsh, so Zsh syntax is appropriate.
+# Using typeset -U path to ensure unique path entries.
 
-if [ $(uname -s) = "Linux" ]; then
-    PATH=/usr/local/go/bin:$PATH
+typeset -U path # links to $PATH and ensures uniqueness in Zsh
+
+# Add paths in desired order.
+# These will be prepended to any existing system paths if they aren't already present.
+# Paths are normalized (e.g., trailing slashes removed implicitly by assignment).
+local -a custom_paths
+custom_paths=(
+    "$HOME/bin"
+    "/usr/local/bin"
+    "/usr/local/sbin"
+    "$HOME/go/bin"
+    "$HOME/.krew/bin"
+    "$HOME/.cargo/bin" # typeset -U handles if ~/.cargo/env also adds it
+    "$HOME/.npm-packages/bin"
+    "$HOME/.local/bin"
+)
+
+# For the Linux-specific Go path (prepended if on Linux)
+if [[ "$(uname -s)" == "Linux" && -d "/usr/local/go/bin" ]]; then
+    custom_paths=("/usr/local/go/bin" "${custom_paths[@]}")
 fi
-PATH=~/bin:$PATH
-PATH=/usr/local/bin:$PATH
-PATH=/usr/local/sbin:$PATH
-PATH=~/go/bin:$PATH
-PATH=~/.krew/bin/:$PATH
-PATH=~/.cargo/bin:$PATH
-PATH=~/.npm-packages/bin:$PATH
-PATH=~/.local/bin:$PATH
-export PATH
 
-unset MANPATH
-export MANPATH=~/.npm-packages/share/man:$(manpath)
+# Combine custom paths with existing paths.
+# The `typeset -U path` ensures that when we assign to `path`,
+# duplicates from either custom_paths or the existing $PATH are removed.
+# Order is generally: new custom paths first, then existing unique paths.
+path=("${custom_paths[@]}" "${path[@]}")
+
+# MANPATH setup (this was in your original file)
+# If MANPATH needs deduplication, a similar typeset -U manpath could be used.
+export MANPATH="$HOME/.npm-packages/share/man:$(manpath)"
+
+# PATH is automatically exported and kept in sync with the 'path' array by Zsh.

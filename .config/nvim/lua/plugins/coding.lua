@@ -6,7 +6,7 @@ return {
     event = 'InsertEnter',
     dependencies = {
       'rafamadriz/friendly-snippets',
-      'giuxtaposition/blink-cmp-copilot',
+      'fang2hou/blink-copilot',
       'moyiz/blink-emoji.nvim',
       'Kaiser-Yang/blink-cmp-dictionary',
     },
@@ -18,7 +18,11 @@ return {
         nerd_font_variant = 'mono',
       },
       completion = {
+        keyword = {
+          range = 'full',
+        },
         menu = {
+          auto_show = false,
           draw = {
             columns = {
               { 'label', 'label_description', gap = 1 },
@@ -39,62 +43,37 @@ return {
           },
           copilot = {
             name = 'Copilot',
-            module = 'blink-cmp-copilot',
+            module = 'blink-copilot',
             async = true,
-            transform_items = function(_, items)
-              local CompletionItemKind = require('blink.cmp.types').CompletionItemKind
-              local kind_idx = #CompletionItemKind + 1
-              CompletionItemKind[kind_idx] = 'Copilot'
-              for _, item in ipairs(items) do
-                item.kind = kind_idx
-              end
-              return items
-            end,
+            score_offset = 100,
           },
           emoji = {
             module = 'blink-emoji',
             name = 'Emoji',
             opts = { insert = true },
           },
-          -- https://github.com/Kaiser-Yang/blink-cmp-dictionary
-          -- In macOS to get started with a dictionary:
-          -- cp /usr/share/dict/words ~/github/dotfiles-latest/dictionaries
-          -- dictionary = {
-          --   module = 'blink-cmp-dictionary',
-          --   name = 'Dict',
-          --   score_offset = 20, -- the higher the number, the higher the priority
-          --   enabled = true,
-          --   max_items = 8,
-          --   min_keyword_length = 3,
-          --   opts = {
-          --     get_command = {
-          --       'rg', -- make sure this command is available in your system
-          --       '--color=never',
-          --       '--no-line-number',
-          --       '--no-messages',
-          --       '--no-filename',
-          --       '--ignore-case',
-          --       '--',
-          --       '${prefix}', -- this will be replaced by the result of 'get_prefix' function
-          --       vim.fn.expand('/usr/share/dict/words'), -- where you dictionary is
-          --     },
-          --     documentation = {
-          --       enable = true, -- enable documentation to show the definition of the word
-          --       get_command = {
-          --         -- For the word definitions feature
-          --         -- make sure "wn" is available in your system
-          --         -- brew install wordnet
-          --         'wn',
-          --         '${word}', -- this will be replaced by the word to search
-          --         '-over',
-          --       },
-          --     },
-          --   },
-          -- },
         },
       },
       fuzzy = { implementation = 'prefer_rust_with_warning' },
     },
+    config = function(_, opts)
+      require('blink.cmp').setup(opts)
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuOpen',
+        callback = function()
+          require('copilot.suggestion').dismiss()
+          vim.b.copilot_suggestion_hidden = true
+        end,
+      })
+
+      vim.api.nvim_create_autocmd('User', {
+        pattern = 'BlinkCmpMenuClose',
+        callback = function()
+          vim.b.copilot_suggestion_hidden = false
+        end,
+      })
+    end,
     opts_extend = {
       'sources.default',
       'appearance.kind_icons',

@@ -39,4 +39,13 @@ bindkey '^ ' autosuggest-accept
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
 # add Pulumi to the PATH
-export PATH=$PATH:$HOME/.pulumi/bin
+if [[ -d "$HOME/.pulumi/bin" && ":$PATH:" != *":$HOME/.pulumi/bin:"* ]]; then
+  export PATH="$PATH:$HOME/.pulumi/bin"
+fi
+
+# --- Enforce PATH uniqueness as a final step ---
+# The 'path' array is tied to $PATH in Zsh.
+# Declaring it as unique (-U) processes the current $PATH, removes duplicates,
+# and maintains this uniqueness.
+typeset -U path
+# --- End of PATH uniqueness enforcement ---
