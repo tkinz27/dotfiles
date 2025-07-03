@@ -19,7 +19,7 @@ return {
     'neovim/nvim-lspconfig',
     opts = {
       servers = {
-        pyright = {},
+        ty = {},
         ruff = {
           keys = {
             {
