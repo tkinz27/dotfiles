@@ -1,32 +1,20 @@
+# vim: ft=zsh
+
 function tab_title {
     echo -e "\033]1;\"$*\"\007"
 }
 
+function find-up {
+  path=$(pwd)
+  while [[ "$path" != "" && ! -e "$path/$1" ]]; do
+    path=${path%/*}
+  done
+  echo "$path"
+}
+
+
 function win_title {
     echo -e "\033]2;\"$*\"\077"
-}
-
-function findit {
-    find . -exec grep -nHi $1 {} \; -maxdepth $2;
-}
-
-function replaceit {
-    EXT=$1
-    FIND=$2
-    REPLACE=$3
-    for i in `find . -name "$EXT"`
-    do
-        echo "Processing $i"
-        chmod +w $i
-        sed "s/$FIND/$REPLACE/g" $i > TEMPFILE
-        mv TEMPFILE $i
-    done
-}
-
-function ggo {
-    dir=$(find $SRC -maxdepth 3 -type d -name ${1})
-    [[ -n "$dir" ]] && cd $dir
-    unset dir
 }
 
 # Docker
@@ -42,7 +30,6 @@ function google {
     open "https://google.com/search?q=${*}"
 }
 
-
 function ccert {
     echo | openssl s_client -showcerts -connect $1 2>/dev/null | openssl x509 -inform pem -noout -text
 }
@@ -51,38 +38,7 @@ function certbundle {
     openssl crl2pkcs7 -nocrl -certfile $1 | openssl pkcs7 -print_certs -text -noout
 }
 
-function sync_repos {
-    {
-        tmpfile=$(mktemp /tmp/sync_repos.XXX)
-        echo ${tmpfile}
-        for repo in $(find . -type dir -name ".git"); do
-            (
-                cd $repo/..;
-                out=$(git pull 2>&1)
-                if [ $? -ne 0 ]; then
-                    echo -e "${repo} failed to sync...\n$out\n" >> ${tmpfile}
-                else
-                    echo "${repo} good" >> ${tmpfile}
-                fi
-            )& 2>&1 > /dev/null
-        done
-        wait
-    } &> /dev/null
-    cat ${tmpfile}
-    rm -f ${tmpfile}
-}
-
-function screengif {
-    docker run -t -i \
-        -v $(pwd)/srv/screengif \
-        dergachev/screengif \
-        /bin/bash -c "umask 002; /bin/screengif ${@}"
-}
-
 function reset_host {
     sed -i '' ${1}d ~/.ssh/known_hosts
 }
 
-function dotfiles_push {
-    pushd ~/.files && git push && popd
-}

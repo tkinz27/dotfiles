@@ -1,0 +1,9 @@
+'$schema' = 'https://jj-vcs.github.io/jj/latest/config-schema.json'
+
+[user]
+name = "Tony Kinsley"
+email = "tkinsley.9@gmail.com"
+username = "tkinz27"
+
+[ui]
+editor = 'nvim'

@@ -41,54 +41,6 @@ return {
     config = true,
   },
   {
-    'azorng/goose.nvim',
-    event = 'VeryLazy',
-    lazy = false,
-    keys = {
-      {
-        '<leader>GG',
-        function()
-          require('goose.api').toggle()
-        end,
-        desc = 'Toggle Goose',
-      },
-      {
-        '<leader>Gi',
-        function()
-          require('goose.api').open_input()
-        end,
-        desc = 'Goose open',
-      },
-      {
-        '<leader>GI',
-        function()
-          require('goose.api').open_input_new_session()
-        end,
-        desc = 'Goose open new with new session',
-      },
-      {
-        '<leader>Gt',
-        function()
-          require('goose.api').toggle_focus()
-        end,
-        desc = 'Goose toggle focus',
-      },
-    },
-    dependencies = {
-      'nvim-lua/plenary.nvim',
-      {
-        'MeanderingProgrammer/render-markdown.nvim',
-        opts = {
-          anti_conceal = { enabled = false },
-        },
-      },
-      opts = {},
-      config = function(_, opts)
-        require('goose').setup(opts)
-      end,
-    },
-  },
-  {
     'yetone/avante.nvim',
     event = 'VeryLazy',
     lazy = false,
