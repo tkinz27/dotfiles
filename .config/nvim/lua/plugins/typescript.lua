@@ -41,9 +41,6 @@ return {
     opts = {
       -- make sure mason installs the server
       servers = {
-        ts_ls = {
-          enabled = false,
-        },
         vtsls = {
           settings = {
             complete_function_calls = true,

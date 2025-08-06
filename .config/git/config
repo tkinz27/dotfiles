@@ -5,6 +5,7 @@
 	defaultBranch = main
 [core]
     pager = delta
+	autocrlf = input
 [credential]
 	helper = store
 [push]

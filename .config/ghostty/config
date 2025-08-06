@@ -1,4 +1,28 @@
 theme = tokyonight
+
+shell-integration = zsh
+
 # macos
 macos-titlebar-style = tabs
 
+# tmux
+
+keybind = ctrl+a>a=text:"\x01" 
+
+# Move between tabs
+keybind = ctrl+a>c=new_tab
+keybind = ctrl+a>p=previous_tab
+keybind = ctrl+a>n=next_tab
+keybind = ctrl+a>l=last_tab
+ 
+# Focus splits
+keybind = ctrl+a>k=goto_split:up
+keybind = ctrl+a>j=goto_split:down
+keybind = ctrl+a>h=goto_split:left
+keybind = ctrl+a>l=goto_split:right
+ 
+# Toggle zoom on the current split (tmux's 'resize-pane -Z')
+keybind = ctrl+a>z=toggle_split_zoom
+
+keybind = ctrl+a>\=new_split:right
+keybind = ctrl+a>-=new_split:down
