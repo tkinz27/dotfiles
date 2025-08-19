@@ -97,7 +97,7 @@ return {
             },
           },
         },
-        taplo = {
+        tombi = {
           keys = {
             {
               'K',
