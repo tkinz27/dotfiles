@@ -41,29 +41,55 @@ return {
     config = true,
   },
   {
-    'yetone/avante.nvim',
-    event = 'VeryLazy',
-    lazy = false,
-    version = false, -- set this if you want to always pull the latest change
-    enabled = false,
-    opts = {
-      provider = 'gemini',
-      gemini = {
-        model = 'gemini-2.0-flash-thinking-exp-01-21',
+    'olimorris/codecompanion.nvim',
+    dependencies = {
+      'nvim-lua/plenary.nvim',
+      'nvim-treesitter/nvim-treesitter',
+    },
+    keys = {
+      {
+        '<C-a>',
+        '<cmd>CodeCompanionActions<cr>',
+        mode = { 'n', 'v' },
+        desc = 'CodeCompanionActions',
       },
-      vendors = {
-        ---@type AvanteProvider
+      {
+        '<leader>a',
+        '<cmd>CodeCompanionChat Toggle<cr>',
+        mode = { 'n', 'v' },
+        desc = 'CodeCompanionChat Toggle',
+      },
+      {
+        'ga',
+        '<cmd>CodeCompanionChat Add<cr>',
+        mode = { 'v' },
+        desc = 'CodeCompanionChat Add',
       },
     },
-    -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`
-    build = 'make',
-    dependencies = {
-      'nvim-treesitter/nvim-treesitter',
-      'stevearc/dressing.nvim',
-      'nvim-lua/plenary.nvim',
-      'MunifTanjim/nui.nvim',
-      'nvim-tree/nvim-web-devicons', -- or echasnovski/mini.icons
-      'zbirenbaum/copilot.lua',
+    opts = {
+      strategies = {
+        chat = {
+          adapter = 'gemini_cli',
+        },
+        inline = {
+          adapter = 'gemini_cli',
+        },
+        cmd = {
+          adapter = 'gemini_cli',
+        },
+      },
+      adapters = {
+        acp = {
+          gemini_cli = function()
+            return require('codecompanion.adapters').extend('gemini_cli', {
+              defaults = {
+                auth_method = '',
+              },
+              env = {},
+            })
+          end,
+        },
+      },
     },
   },
 }
