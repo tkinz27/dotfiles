@@ -25,6 +25,7 @@ return {
     opts = {
       renderer_options = {
         mermaid = {
+          background = 'transparent',
           theme = 'dark',
         },
       },

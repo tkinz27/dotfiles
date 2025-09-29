@@ -1,6 +1,3 @@
-local gemini_api_key = os.getenv('GOOGLE_AI_API_KEY')
-local provider = gemini_api_key and 'gemini' or 'copilot'
-
 return {
   {
     'ggml-org/llama.vim',
@@ -73,6 +70,17 @@ return {
         },
         inline = {
           adapter = 'gemini_cli',
+          keymaps = {
+            accept_change = {
+              modes = { n = 'ga' },
+              description = 'Accept the suggested change',
+            },
+            reject_change = {
+              modes = { n = 'gr' },
+              opts = { nowait = true },
+              description = 'Reject the suggested change',
+            },
+          },
         },
         cmd = {
           adapter = 'gemini_cli',
@@ -83,7 +91,7 @@ return {
           gemini_cli = function()
             return require('codecompanion.adapters').extend('gemini_cli', {
               defaults = {
-                auth_method = '',
+                auth_method = 'vertex-ai',
               },
               env = {},
             })
