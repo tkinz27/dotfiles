@@ -11,7 +11,15 @@ return {
     'stevearc/conform.nvim',
     opts = {
       formatters_by_ft = {
-        ['python'] = { 'ruff_organize_imports', 'ruff_format' },
+        ['python'] = function(bufnr)
+          local absolute_filepath = vim.fn.expand('#' .. bufnr .. ':p')
+          if absolute_filepath:find('shining_software', 1, true) then
+            vim.notify('Disabling autoformat for shining_software project', vim.log.levels.WARN)
+            vim.b.disable_autoformat = true
+            return {}
+          end
+          return { 'ruff_organize_imports', 'ruff_format' }
+        end,
       },
     },
   },
