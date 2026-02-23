@@ -20,7 +20,7 @@ local function set_lsp_keymaps(client, bufnr)
   set_km({
     key = '<leader>cl',
     cmd = function()
-      Snacks.picker.lsp_config()
+      vim.cmd('LspInfo')
     end,
     desc = 'Lsp Info',
     bufnr = bufnr,
@@ -55,7 +55,9 @@ local lsp_attach = function(args)
     vim.lsp.codelens.refresh({ bufnr = buffer })
     vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
       buffer = buffer,
-      callback = vim.lsp.codelens.refresh,
+      callback = function()
+        vim.lsp.codelens.refresh({ bufnr = buffer })
+      end,
     })
   end
 end
@@ -76,6 +78,7 @@ spec.opts = {
 }
 
 spec.config = function(_, opts)
+  vim.lsp.set_log_level('error')
   vim.diagnostic.config({
     underline = true,
     update_in_insert = false,

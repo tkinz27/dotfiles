@@ -6,13 +6,6 @@ return {
     'nvim-neo-tree/neo-tree.nvim',
     cmd = 'Neotree',
     keys = {
-      {
-        '<leader>e',
-        function()
-          require('neo-tree.command').execute({ toggle = true, dir = require('config.util').get_root() })
-        end,
-        desc = 'Explorer NeoTree (root dir)',
-      },
       { '<leader>E', '<cmd>Neotree toggle<CR>', desc = 'Explorer NeoTree (cwd)' },
       {
         '<leader>eg',
@@ -31,15 +24,6 @@ return {
     },
     deactivate = function()
       vim.cmd([[Neotree close]])
-    end,
-    init = function()
-      vim.g.neo_tree_remove_legacy_commands = 1
-      if vim.fn.argc() == 1 then
-        local stat = vim.loop.fs_stat(vim.fn.argv(0))
-        if stat and stat.type == 'directory' then
-          require('neo-tree')
-        end
-      end
     end,
     opts = {
       sources = { 'filesystem', 'buffers', 'git_status', 'document_symbols' },
@@ -99,7 +83,7 @@ return {
 
   -- easily jump to any location and enhanced f/t motions for Leap
   {
-    'ggandor/leap.nvim',
+    url = 'https://codeberg.org/andyg/leap.nvim',
     event = 'VeryLazy',
     dependencies = { { 'ggandor/flit.nvim', opts = { labeled_modes = 'nv' } } },
     config = function(_, opts)
@@ -213,11 +197,6 @@ return {
     },
   },
 
-  {
-    'sindrets/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewToggleFiles' },
-  },
-
   -- better diagnostics list and others
   {
     'folke/trouble.nvim',
@@ -244,7 +223,7 @@ return {
           else
             local ok, err = pcall(vim.cmd.cprev)
             if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
+              vim.api.nvim_err_writeln(err)
             end
           end
         end,
@@ -258,7 +237,7 @@ return {
           else
             local ok, err = pcall(vim.cmd.cnext)
             if not ok then
-              vim.notify(err, vim.log.levels.ERROR)
+              vim.api.nvim_err_writeln(err)
             end
           end
         end,

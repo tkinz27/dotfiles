@@ -8,7 +8,20 @@ return {
     opts = {
       bigfile = { enabled = true },
       notifier = { enabled = true },
-      picker = { enabled = true },
+      picker = {
+        enabled = true,
+        ui_select = true,
+      },
+      explorer = {
+        enabled = true,
+        replace_netrw = false,
+      },
+      input = { enabled = true },
+      scope = { enabled = true },
+      scroll = { enabled = false },
+      statuscolumn = { enabled = true },
+      words = { enabled = true },
+      quickfile = { enabled = true },
     },
     keys = {
       -- Top Pickers & Explorer
@@ -509,6 +522,10 @@ return {
             Snacks.debug.backtrace()
           end
           vim.print = _G.dd -- Override print to use snacks for `:=` command
+
+          -- Set vim.ui.input to snacks.input
+          vim.ui.input = Snacks.input
+          vim.ui.select = Snacks.picker.select
 
           -- Create some toggle mappings
           Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')

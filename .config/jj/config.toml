@@ -8,4 +8,4 @@ email = "tkinsley.9@gmail.com"
 editor = "nvim"
 
 [working-copy]
-eol-conversion = "input-output"
+# eol-conversion = "input"

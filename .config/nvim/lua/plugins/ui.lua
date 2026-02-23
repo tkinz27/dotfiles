@@ -32,18 +32,7 @@ return {
   -- better vim.ui
   {
     'stevearc/dressing.nvim',
-    init = function()
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.select = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.select(...)
-      end
-      ---@diagnostic disable-next-line: duplicate-set-field
-      vim.ui.input = function(...)
-        require('lazy').load({ plugins = { 'dressing.nvim' } })
-        return vim.ui.input(...)
-      end
-    end,
+    lazy = true,
   },
 
   -- bufferline
@@ -88,9 +77,9 @@ return {
 
       local function fg(name)
         return function()
-          ---@type {foreground?:number}?
-          local hl = vim.api.nvim_get_hl_by_name(name, true)
-          return hl and hl.foreground and { fg = string.format('#%06x', hl.foreground) }
+          local hl = vim.api.nvim_get_hl(0, { name = name, link = false })
+          local fg = hl and (hl.fg or hl.foreground)
+          return fg and { fg = string.format('#%06x', fg) }
         end
       end
 
@@ -232,14 +221,14 @@ return {
 
       dashboard.section.header.val = vim.split(logo, '\n')
       dashboard.section.buttons.val = {
-        dashboard.button('f', ' ' .. ' Find file', ':Telescope find_files <CR>'),
-        dashboard.button('n', ' ' .. ' New file', ':ene <BAR> startinsert <CR>'),
-        dashboard.button('r', ' ' .. ' Recent files', ':Telescope oldfiles <CR>'),
-        dashboard.button('g', ' ' .. ' Find text', ':Telescope live_grep <CR>'),
-        dashboard.button('c', ' ' .. ' Config', ':e $MYVIMRC <CR>'),
-        dashboard.button('s', '勒' .. ' Restore Session', [[:lua require("persistence").load() <cr>]]),
-        dashboard.button('l', '鈴' .. ' Lazy', ':Lazy<CR>'),
-        dashboard.button('q', ' ' .. ' Quit', ':qa<CR>'),
+        dashboard.button('f', ' ' .. ' Find file', ':Telescope find_files <CR>'),
+        dashboard.button('n', '󰈔 ' .. ' New file', ':ene <BAR> startinsert <CR>'),
+        dashboard.button('r', '󰄉 ' .. ' Recent files', ':Telescope oldfiles <CR>'),
+        dashboard.button('g', '󰍉 ' .. ' Find text', ':Telescope live_grep <CR>'),
+        dashboard.button('c', '󰒓 ' .. ' Config', ':e $MYVIMRC <CR>'),
+        dashboard.button('s', '󰦛 ' .. ' Restore Session', [[:lua require("persistence").load() <cr>]]),
+        dashboard.button('l', '󰒲 ' .. ' Lazy', ':Lazy<CR>'),
+        dashboard.button('q', '󰗼 ' .. ' Quit', ':qa<CR>'),
       }
       for _, button in ipairs(dashboard.section.buttons.val) do
         button.opts.hl = 'AlphaButtons'

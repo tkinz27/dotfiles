@@ -7,36 +7,6 @@ return {
       -- configure llama server as needed
     end,
   },
-  -- github copilot
-  {
-    'zbirenbaum/copilot.lua',
-    lazy = false,
-    version = false,
-    event = { 'InsertEnter' },
-    opts = {
-      filetypes = {
-        ['*'] = true,
-      },
-      suggestion = {
-        enabled = false,
-        auto_trigger = true,
-      },
-      panel = {
-        enabled = false,
-      },
-    },
-    keys = {
-      {
-        '<leader>cc',
-        function()
-          require('copilot.panel').open({ position = 'bottom', ratio = 0.4 })
-        end,
-        mode = 'n',
-        desc = 'Open Copilot panel',
-      },
-    },
-    config = true,
-  },
   {
     'olimorris/codecompanion.nvim',
     dependencies = {
@@ -87,16 +57,14 @@ return {
         },
       },
       adapters = {
-        acp = {
-          gemini_cli = function()
-            return require('codecompanion.adapters').extend('gemini_cli', {
-              defaults = {
-                auth_method = 'vertex-ai',
-              },
-              env = {},
-            })
-          end,
-        },
+        gemini_cli = function()
+          return require('codecompanion.adapters').extend('gemini_cli', {
+            defaults = {
+              auth_method = 'vertex-ai',
+            },
+            env = {},
+          })
+        end,
       },
     },
   },
