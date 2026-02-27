@@ -35,6 +35,7 @@
 [difftool "diffview"]
     cmd = nvim -n -c "DiffviewOpen" "$MERGE"
 [alias]
+    new = switch -c
     caf = commit --amend --no-edit
     su = submodule update --init --recursive
     mt = mergetool

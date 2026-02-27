@@ -1,7 +1,8 @@
 return {
   {
-    'sindrets/diffview.nvim',
-    cmd = { 'DiffviewOpen', 'DiffviewFileHistory', 'DiffviewToggleFiles' },
+    'esmuellert/codediff.nvim',
+    cmd = { 'CodeDiff' },
+    opts = {},
   },
 
   {
