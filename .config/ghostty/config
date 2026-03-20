@@ -1,6 +1,7 @@
 theme = TokyoNight
 
 shell-integration = zsh
+shell-integration-features = ssh-terminfo,ssh-env,title,cursor,sudo
 
 # macos
 macos-titlebar-style = tabs
