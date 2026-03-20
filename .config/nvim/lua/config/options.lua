@@ -30,6 +30,18 @@ vim.opt.swapfile = false
 vim.opt.diffopt = vim.opt.diffopt + 'vertical'
 vim.opt.mouse = 'a'
 
+vim.g.clipboard = {
+  name = 'OSC 52',
+  copy = {
+    ['+'] = require('vim.ui.clipboard.osc52').copy('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').copy('*'),
+  },
+  paste = {
+    ['+'] = require('vim.ui.clipboard.osc52').paste('+'),
+    ['*'] = require('vim.ui.clipboard.osc52').paste('*'),
+  },
+}
+
 -- TODO looks cool from https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/options.lua
 -- TODO check what these do
 vim.opt.formatoptions = vim.opt.formatoptions
