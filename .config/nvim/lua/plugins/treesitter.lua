@@ -1,18 +1,15 @@
-local load_textobjects = false
-
 return {
   {
     'nvim-treesitter/nvim-treesitter',
-    version = false, -- last release is way too old and doesn't work on Windows
+    branch = 'main',
     build = ':TSUpdate',
     event = { 'BufReadPost', 'BufNewFile' },
     dependencies = {
-      'nvim-treesitter/nvim-treesitter-textobjects',
+      { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
-    cmd = { 'TSUpdateSync' },
     keys = {
       { '<c-space>', desc = 'Increment selection' },
-      { '<bs>', desc = 'Schrink selection', mode = 'x' },
+      { '<bs>', desc = 'Shrink selection', mode = 'x' },
     },
     ---@type TSConfig
     opts = {
@@ -53,18 +50,24 @@ return {
     },
     ---@param opts TSConfig
     config = function(_, opts)
-      if type(opts.ensure_installed) == 'table' then
-        ---@type table<string, boolean>
-        local added = {}
-        opts.ensure_installed = vim.tbl_filter(function(lang)
-          if added[lang] then
-            return false
-          end
-          added[lang] = true
-          return true
+      local ts = require('nvim-treesitter')
+
+      -- The new nvim-treesitter on 'main' branch exports setup() from the top-level.
+      -- Fallback to 'nvim-treesitter.configs' for compatibility if needed.
+      local setup = ts.setup or require('nvim-treesitter.configs').setup
+      setup(opts)
+
+      -- Automatic installation of parsers if on 'main' branch
+      if ts.setup and opts.ensure_installed then
+        local installed = require('nvim-treesitter.config').get_installed()
+        local missing = vim.tbl_filter(function(p)
+          return not vim.tbl_contains(installed, p)
         end, opts.ensure_installed)
+
+        if #missing > 0 then
+          ts.install(missing)
+        end
       end
-      require('nvim-treesitter.configs').setup(opts)
     end,
   },
 }

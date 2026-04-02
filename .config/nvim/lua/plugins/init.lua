@@ -511,23 +511,24 @@ return {
       },
     },
     init = function()
+      vim.ui.input = function(...)
+        return Snacks.input(...)
+      end
+      vim.ui.select = function(...)
+        return Snacks.picker.select(...)
+      end
+
       vim.api.nvim_create_autocmd('User', {
         pattern = 'VeryLazy',
         callback = function()
-          -- Setup some globals for debugging (lazy-loaded)
           _G.dd = function(...)
             Snacks.debug.inspect(...)
           end
           _G.bt = function()
             Snacks.debug.backtrace()
           end
-          vim.print = _G.dd -- Override print to use snacks for `:=` command
+          vim.print = _G.dd
 
-          -- Set vim.ui.input to snacks.input
-          vim.ui.input = Snacks.input
-          vim.ui.select = Snacks.picker.select
-
-          -- Create some toggle mappings
           Snacks.toggle.option('spell', { name = 'Spelling' }):map('<leader>us')
           Snacks.toggle.option('wrap', { name = 'Wrap' }):map('<leader>uw')
           Snacks.toggle.option('relativenumber', { name = 'Relative Number' }):map('<leader>uL')

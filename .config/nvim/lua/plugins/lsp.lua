@@ -78,7 +78,7 @@ spec.opts = {
 }
 
 spec.config = function(_, opts)
-  vim.lsp.set_log_level('error')
+  vim.lsp.log.set_level('error')
   vim.diagnostic.config({
     underline = true,
     update_in_insert = false,

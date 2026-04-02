@@ -10,6 +10,7 @@ return {
   {
     '3rd/diagram.nvim',
     dependencies = {
+      'nvim-treesitter/nvim-treesitter',
       {
         '3rd/image.nvim',
         opts = {
@@ -33,6 +34,10 @@ return {
   },
   {
     'MeanderingProgrammer/render-markdown.nvim',
+    dependencies = {
+      'nvim-treesitter/nvim-treesitter',
+      'nvim-tree/nvim-web-devicons',
+    },
     opts = {
       code = {
         sign = false,
