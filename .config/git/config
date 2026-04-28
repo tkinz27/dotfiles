@@ -55,8 +55,8 @@
     sc = show --pretty="" --name-only
 [fetch]
 	prune = true
-[url "git@github.com:"]
-	insteadOf = https://github.com/
+; [url "git@github.com:"]
+; 	insteadOf = https://github.com/
 [filter "lfs"]
 	smudge = git-lfs smudge -- %f
 	process = git-lfs filter-process

@@ -17,3 +17,5 @@ stupid
 .nvim
 
 .aider*
+
+**/.claude/settings.local.json
