@@ -12,6 +12,9 @@ function find-up {
   echo "$path"
 }
 
+function venv {
+    source $(find-up .venv)/.venv/bin/activate
+}
 
 function win_title {
     echo -e "\033]2;\"$*\"\077"
