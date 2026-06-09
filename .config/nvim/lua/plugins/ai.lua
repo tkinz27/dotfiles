@@ -4,7 +4,9 @@ return {
     lazy = false,
     event = { 'InsertEnter' },
     init = function()
-      -- configure llama server as needed
+      vim.g.llama_config = vim.tbl_deep_extend('force', vim.g.llama_config or {}, {
+        enable_at_startup = false,
+      })
     end,
   },
   {

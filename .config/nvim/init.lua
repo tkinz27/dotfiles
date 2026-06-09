@@ -5,6 +5,9 @@ else
   require('config.autocmds')
   require('config.lazy')
   require('lazy').setup('plugins', {
+    rocks = {
+      enabled = false,
+    },
     change_detection = {
       notify = false,
     },

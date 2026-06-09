@@ -62,11 +62,39 @@ local lsp_attach = function(args)
   end
 end
 
+local function ensure_mason_packages(packages)
+  if type(packages) ~= 'table' or vim.tbl_isempty(packages) then
+    return
+  end
+
+  local registry = require('mason-registry')
+  for _, name in ipairs(packages) do
+    local ok, package = pcall(registry.get_package, name)
+    if not ok then
+      vim.notify('Mason package not found: ' .. name, vim.log.levels.WARN)
+    elseif not package:is_installed() and not package:is_installing() then
+      package:install()
+    end
+  end
+end
+
+local function setup_mason(_, opts)
+  local mason_opts = vim.deepcopy(opts)
+  mason_opts.ensure_installed = nil
+
+  require('mason').setup(mason_opts)
+  if #vim.api.nvim_list_uis() == 0 then
+    return
+  end
+
+  ensure_mason_packages(opts.ensure_installed)
+end
+
 local spec = {
   'neovim/nvim-lspconfig',
   dependencies = {
     'mason-org/mason-lspconfig.nvim',
-    { 'mason-org/mason.nvim', opts = {} },
+    { 'mason-org/mason.nvim', opts = {}, config = setup_mason },
   },
 }
 
