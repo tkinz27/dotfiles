@@ -12,6 +12,40 @@ function install_rustup {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -- -q -y
 }
 
+function load_cargo_env {
+    if [[ -f "$HOME/.cargo/env" ]]; then
+        # shellcheck source=/dev/null
+        source "$HOME/.cargo/env"
+    fi
+}
+
+function install_cargo_binstall {
+    load_cargo_env
+
+    if ! command -v cargo-binstall >/dev/null 2>&1; then
+        cargo install cargo-binstall
+    fi
+}
+
+function install_uv {
+    load_cargo_env
+
+    if ! command -v uv >/dev/null 2>&1; then
+        install_cargo_binstall
+        cargo binstall -y uv || cargo install uv
+    fi
+}
+
+function install_neovim_python_provider {
+    local python_version="${NVIM_PYTHON_VERSION:-3.14}"
+    local provider_dir="$HOME/.local/share/nvim-python"
+
+    install_uv
+    uv python install "$python_version"
+    uv venv --python "$python_version" "$provider_dir"
+    uv pip install --python "$provider_dir/bin/python" pynvim
+}
+
 function install_ubuntu {
     sudo add-apt-repository -y ppa:neovim-ppa/stable
     sudo add-apt-repository -y ppa:git-core/ppa
@@ -49,6 +83,8 @@ else
 fi
 
 install_rustup
+load_cargo_env
+install_cargo_binstall
 
 if [[ $(uname -s) == "Linux" ]]; then
     id=$(cat /etc/os-release | grep ^ID= | cut -d'=' -f 2)
@@ -58,5 +94,7 @@ if [[ $(uname -s) == "Linux" ]]; then
 elif [[ $(uname -s) == "Darwin" ]]; then
     install_mac
 fi
+
+install_neovim_python_provider
 
 [ -n "$(which zsh)" ] && [ "$SHELL" != "$(which zsh)" ] && chsh -s $(which zsh) ${USER}

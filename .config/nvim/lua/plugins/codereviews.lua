@@ -2,7 +2,14 @@ return {
   {
     'esmuellert/codediff.nvim',
     cmd = { 'CodeDiff' },
-    opts = {},
+    opts = {
+      explorer = {
+        view_mode = 'tree',
+      },
+      history = {
+        view_mode = 'tree',
+      },
+    },
   },
 
   {

@@ -11,6 +11,9 @@ return {
       picker = {
         enabled = true,
         ui_select = true,
+        db = {
+          sqlite3_path = '/usr/lib/x86_64-linux-gnu/libsqlite3.so.0',
+        },
       },
       explorer = {
         enabled = true,
@@ -391,17 +394,8 @@ return {
       },
       -- Other
       {
-        '<leader>z',
-        function()
-          Snacks.zen()
-        end,
-        desc = 'Toggle Zen Mode',
-      },
-      {
         '<leader>Z',
-        function()
-          Snacks.zen.zoom()
-        end,
+        '<cmd>SimpleZoomToggle<cr>',
         desc = 'Toggle Zoom',
       },
       {

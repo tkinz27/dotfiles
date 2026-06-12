@@ -38,6 +38,12 @@ bindkey '^ ' autosuggest-accept
 [ -f ~/.localrc ] && source ~/.localrc
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
+path=("$HOME/.cargo/bin" $path)
+
+if command -v fnm >/dev/null 2>&1; then
+  eval "$(fnm env --use-on-cd --shell zsh)"
+fi
+
 # add Pulumi to the PATH
 if [[ -d "$HOME/.pulumi/bin" && ":$PATH:" != *":$HOME/.pulumi/bin:"* ]]; then
   export PATH="$PATH:$HOME/.pulumi/bin"

@@ -5,6 +5,11 @@ vim.g.loaded_perl_provider = 0
 vim.g.loaded_ruby_provider = 0
 vim.g.loaded_node_provider = 0
 
+local python3_host_prog = vim.fn.expand('~/.local/share/nvim-python/bin/python')
+if vim.fn.executable(python3_host_prog) == 1 then
+  vim.g.python3_host_prog = python3_host_prog
+end
+
 vim.opt.wildmenu = true
 vim.opt.wildmode = 'longest:full,full'
 vim.opt.wildignore = '*.o,*~,*.pyc,*/tmp/*,*.zip'
