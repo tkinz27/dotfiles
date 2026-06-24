@@ -28,6 +28,7 @@ return {
         mermaid = {
           background = 'transparent',
           theme = 'dark',
+          cli_args = { '-p', vim.fn.expand('~/.config/mmdc/puppeteer-config.json') },
         },
       },
     },

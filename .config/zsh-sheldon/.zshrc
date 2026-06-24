@@ -22,7 +22,7 @@ zstyle ':completion:*' use-cache on
 zstyle ':completion:*' cache-path ${ZDOTDIR:-~}/cache
 
 autoload -Uz compinit
-compinit -C
+compinit
 
 #####################################################################
 # bindings

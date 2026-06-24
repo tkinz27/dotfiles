@@ -51,7 +51,7 @@ return {
                   augroup RustLSP
                     autocmd CursorHold                      *.rs silent! lua vim.lsp.buf.document_highlight()
                     autocmd CursorMoved,InsertEnter         *.rs silent! lua vim.lsp.buf.clear_references()
-                    autocmd BufEnter,CursorHold,InsertLeave *.rs silent! lua vim.lsp.codelens.refresh()
+                    autocmd BufEnter,CursorHold,InsertLeave *.rs silent! lua vim.lsp.codelens.enable(true, { bufnr = 0 })
                   augroup END
                 ]])
           end,
@@ -89,7 +89,6 @@ return {
               procMacro = {
                 enable = true,
                 ignored = {
-                  ['async-trait'] = { 'async_trait' },
                   ['napi-derive'] = { 'napi' },
                   ['async-recursion'] = { 'async_recursion' },
                 },

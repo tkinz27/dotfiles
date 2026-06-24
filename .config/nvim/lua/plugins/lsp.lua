@@ -52,11 +52,11 @@ local lsp_attach = function(args)
   set_lsp_keymaps(client, buffer)
 
   if client:supports_method('textDocument/codeLens') then
-    vim.lsp.codelens.refresh({ bufnr = buffer })
+    vim.lsp.codelens.enable(true, { bufnr = buffer })
     vim.api.nvim_create_autocmd({ 'BufEnter', 'CursorHold', 'InsertLeave' }, {
       buffer = buffer,
       callback = function()
-        vim.lsp.codelens.refresh({ bufnr = buffer })
+        vim.lsp.codelens.enable(true, { bufnr = buffer })
       end,
     })
   end
