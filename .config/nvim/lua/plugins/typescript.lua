@@ -1,3 +1,19 @@
+local tsgo_cmd = vim.fn.stdpath('data') .. '/typescript-native-preview/node_modules/.bin/tsgo'
+
+local function root_dir(bufnr, on_dir)
+  local name = vim.api.nvim_buf_get_name(bufnr)
+  local root = vim.fs.root(name, {
+    'tsconfig.json',
+    'jsconfig.json',
+    'package.json',
+    '.git',
+  })
+
+  if root then
+    on_dir(root)
+  end
+end
+
 return {
 
   -- add typescript to treesitter
@@ -39,42 +55,13 @@ return {
   {
     'neovim/nvim-lspconfig',
     opts = {
-      -- make sure mason installs the server
       servers = {
-        vtsls = {
-          settings = {
-            complete_function_calls = true,
-            vtsls = {
-              enableMoveToFileCodeAction = true,
-              autoUseWorkspaceTsdk = true,
-              experimental = {
-                completion = {
-                  enableServerSideFuzzyMatch = true,
-                },
-              },
-            },
-            typescript = {
-              updateImportsOnFileMove = { enabled = 'always' },
-              suggest = {
-                completeFunctionCalls = true,
-              },
-              inlayHints = {
-                enumMemberValues = { enabled = true },
-                functionLikeReturnTypes = { enabled = true },
-                parameterNames = { enabled = 'literals' },
-                parameterTypes = { enabled = true },
-                propertyDeclarationTypes = { enabled = true },
-                variableTypes = { enabled = false },
-              },
-            },
-          },
+        tsgo = {
+          mason = false,
+          cmd = { tsgo_cmd, '--lsp', '--stdio' },
+          filetypes = { 'javascript', 'javascriptreact', 'typescript', 'typescriptreact' },
+          root_dir = root_dir,
         },
-      },
-      setup = {
-        vtsls = function(_, opts)
-          opts.settings.javascript =
-            vim.tbl_deep_extend('force', {}, opts.settings.typescript, opts.settings.javascript or {})
-        end,
       },
     },
   },

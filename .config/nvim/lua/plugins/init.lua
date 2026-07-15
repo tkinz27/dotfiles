@@ -504,14 +504,14 @@ return {
         end,
       },
     },
-    init = function()
-      vim.ui.input = function(...)
-        return Snacks.input(...)
-      end
-      vim.ui.select = function(...)
-        return Snacks.picker.select(...)
-      end
+    config = function(_, opts)
+      require('snacks').setup(opts)
 
+      vim.ui.input = Snacks.input.input
+      vim.ui.select = Snacks.picker.select
+    end,
+
+    init = function()
       vim.api.nvim_create_autocmd('User', {
         pattern = 'VeryLazy',
         callback = function()

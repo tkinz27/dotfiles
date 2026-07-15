@@ -131,10 +131,16 @@ spec.config = function(_, opts)
   local servers = opts.servers or {}
   for server, server_opts in pairs(servers) do
     if server_opts then
+      local install_with_mason = server_opts.mason ~= false
+      server_opts = vim.deepcopy(server_opts)
+      server_opts.mason = nil
+
       vim.lsp.config(server, server_opts)
       vim.lsp.enable(server)
+      if install_with_mason then
+        ensure_installed[#ensure_installed + 1] = server
+      end
     end
-    ensure_installed[#ensure_installed + 1] = server
   end
   require('mason-lspconfig').setup({
     ensure_installed = ensure_installed,
