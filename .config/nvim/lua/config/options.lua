@@ -53,13 +53,12 @@ vim.g.clipboard = {
 
 -- TODO looks cool from https://github.com/tjdevries/config_manager/blob/master/xdg_config/nvim/lua/tj/options.lua
 -- TODO check what these do
-vim.opt.formatoptions = vim.opt.formatoptions
-  - 'a' -- Auto formatting is BAD.
-  - 't' -- Don't auto format my code. I got linters for that.
-  + 'c' -- In general, I like it when comments respect textwidth
-  + 'q' -- Allow formatting comments w/ gq
-  - 'o' -- O and o, don't continue comments
-  + 'r' -- But do continue when pressing enter.
-  + 'j' -- Auto-remove comments if possible.
-  + 'n' -- indent with text, not with numbers (1. xxx\n  xxx)
-  - '2' -- do not use the indent of the second line
+vim.opt.formatoptions:remove('a') -- Auto formatting is BAD.
+vim.opt.formatoptions:remove('t') -- Don't auto format my code. I got linters for that.
+vim.opt.formatoptions:append('c') -- In general, I like it when comments respect textwidth
+vim.opt.formatoptions:append('q') -- Allow formatting comments w/ gq
+vim.opt.formatoptions:remove('o') -- O and o, don't continue comments
+vim.opt.formatoptions:append('r') -- But do continue when pressing enter.
+vim.opt.formatoptions:append('j') -- Auto-remove comments if possible.
+vim.opt.formatoptions:append('n') -- indent with text, not with numbers (1. xxx\n  xxx)
+vim.opt.formatoptions:remove('2') -- do not use the indent of the second line
