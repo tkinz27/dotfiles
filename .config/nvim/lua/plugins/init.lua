@@ -11,8 +11,13 @@ return {
       picker = {
         enabled = true,
         ui_select = true,
-        db = {
-          sqlite3_path = '/usr/lib/x86_64-linux-gnu/libsqlite3.so.0',
+        sources = {
+          files = {
+            hidden = true,
+          },
+          grep = {
+            hidden = true,
+          },
         },
       },
       explorer = {
