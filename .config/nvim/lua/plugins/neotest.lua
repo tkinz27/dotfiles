@@ -12,7 +12,7 @@ return {
         function()
           require('neotest').run.attach()
         end,
-        desc = 'Run test andattach',
+        desc = 'Attach to running test',
       },
       {
         '<leader>tf',

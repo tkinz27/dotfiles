@@ -17,7 +17,7 @@ return {
     },
     keys = {
       {
-        '<C-a>',
+        '<leader>aa',
         '<cmd>CodeCompanionActions<cr>',
         mode = { 'n', 'v' },
         desc = 'CodeCompanionActions',
@@ -36,38 +36,30 @@ return {
       },
     },
     opts = {
-      strategies = {
+      interactions = {
         chat = {
-          adapter = 'gemini_cli',
-        },
-        inline = {
-          adapter = 'gemini_cli',
-          keymaps = {
-            accept_change = {
-              modes = { n = 'ga' },
-              description = 'Accept the suggested change',
-            },
-            reject_change = {
-              modes = { n = 'gr' },
-              opts = { nowait = true },
-              description = 'Reject the suggested change',
-            },
-          },
-        },
-        cmd = {
-          adapter = 'gemini_cli',
+          adapter = 'codex',
         },
       },
       adapters = {
-        gemini_cli = function()
-          return require('codecompanion.adapters').extend('gemini_cli', {
-            defaults = {
-              auth_method = 'vertex-ai',
-            },
-            env = {},
-          })
-        end,
+        acp = {
+          codex = function()
+            return require('codecompanion.adapters').extend('codex', {
+              defaults = {
+                auth_method = 'chat-gpt',
+              },
+              env = {},
+            })
+          end,
+        },
       },
     },
+  },
+  {
+    'mason-org/mason.nvim',
+    opts = function(_, opts)
+      opts.ensure_installed = opts.ensure_installed or {}
+      vim.list_extend(opts.ensure_installed, { 'codex-acp' })
+    end,
   },
 }

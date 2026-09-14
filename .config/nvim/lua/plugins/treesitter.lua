@@ -50,21 +50,7 @@ return {
     dependencies = {
       { 'nvim-treesitter/nvim-treesitter-textobjects', branch = 'main' },
     },
-    keys = {
-      { '<c-space>', desc = 'Increment selection' },
-      { '<bs>', desc = 'Shrink selection', mode = 'x' },
-    },
-    ---@type TSConfig
     opts = {
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          init_selection = '<C-space>',
-          node_incremental = '<C-space>',
-          scope_incremental = false,
-          node_decremental = '<bs>',
-        },
-      },
       install_dir = vim.fn.stdpath('data') .. '/site',
       ensure_installed = ensure_installed,
     },

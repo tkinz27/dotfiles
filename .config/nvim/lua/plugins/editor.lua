@@ -81,7 +81,7 @@ return {
     },
   },
 
-  -- easily jump to any location and enhanced f/t motions for Leap
+  -- enhanced f/t motions with Flit, using Leap's labels
   {
     url = 'https://codeberg.org/andyg/leap.nvim',
     event = 'VeryLazy',
@@ -115,7 +115,6 @@ return {
           { '[', group = 'prev' },
           { ']', group = 'next' },
           { 'g', group = 'goto' },
-          { 'gs', group = 'surround' },
           { 'z', group = 'fold' },
           {
             '<leader>b',
@@ -132,8 +131,6 @@ return {
               return require('which-key.extras').expand.win()
             end,
           },
-          -- better descriptions
-          { 'gx', desc = 'Open with system app' },
         },
       },
     },
@@ -180,12 +177,11 @@ return {
         end
 
         -- stylua: ignore start
-        map("n", "]h", gs.next_hunk, "Next Hunk")
-        map("n", "[h", gs.prev_hunk, "Prev Hunk")
+        map("n", "]h", function() gs.nav_hunk("next") end, "Next Hunk")
+        map("n", "[h", function() gs.nav_hunk("prev") end, "Prev Hunk")
         map({ "n", "v" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
         map({ "n", "v" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
         map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
-        map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
         map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
         map("n", "<leader>ghp", gs.preview_hunk, "Preview Hunk")
         map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame")
@@ -221,7 +217,7 @@ return {
           if require('trouble').is_open() then
             require('trouble').prev({ skip_groups = true, jump = true })
           else
-            local ok, err = pcall(vim.cmd.cprev)
+            local ok, err = pcall(vim.cmd, vim.v.count1 .. 'cprev')
             if not ok then
               vim.api.nvim_err_writeln(err)
             end
@@ -235,7 +231,7 @@ return {
           if require('trouble').is_open() then
             require('trouble').next({ skip_groups = true, jump = true })
           else
-            local ok, err = pcall(vim.cmd.cnext)
+            local ok, err = pcall(vim.cmd, vim.v.count1 .. 'cnext')
             if not ok then
               vim.api.nvim_err_writeln(err)
             end
@@ -254,11 +250,11 @@ return {
     config = true,
     -- stylua: ignore
     keys = {
-      { "]t",          function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
-      { "[t",          function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
-      { "<leader>xt",  "<cmd>TodoTrouble<cr>",                              desc = "Todo Trouble" },
-      { "<leader>xtt", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",      desc = "Todo Trouble" },
-      { "<leader>xT",  "<cmd>TodoTelescope<cr>",                            desc = "Todo Telescope" },
+      { "<leader>xn", function() require("todo-comments").jump_next() end, desc = "Next todo comment" },
+      { "<leader>xp", function() require("todo-comments").jump_prev() end, desc = "Previous todo comment" },
+      { "<leader>xt", "<cmd>TodoTrouble<cr>",                             desc = "Todo comments (Trouble)" },
+      { "<leader>xf", "<cmd>TodoTrouble keywords=TODO,FIX,FIXME<cr>",     desc = "Todo/Fix/Fixme (Trouble)" },
+      { "<leader>xT", "<cmd>TodoTelescope<cr>",                           desc = "Todo comments (Telescope)" },
     },
   },
 }

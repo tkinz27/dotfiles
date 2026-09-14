@@ -41,8 +41,6 @@ return {
     version = '*',
     event = 'VeryLazy',
     init = function()
-      vim.keymap.set('n', '<s-h>', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Prev Buffer' })
-      vim.keymap.set('n', '<s-l>', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next Buffer' })
       vim.keymap.set('n', '<leader>b[', '<cmd>BufferLineCyclePrev<cr>', { desc = 'Previous' })
       vim.keymap.set('n', '<leader>b]', '<cmd>BufferLineCycleNext<cr>', { desc = 'Next' })
     end,
@@ -233,10 +231,10 @@ return {
 
       dashboard.section.header.val = vim.split(logo, '\n')
       dashboard.section.buttons.val = {
-        dashboard.button('f', ' ' .. ' Find file', ':Telescope find_files <CR>'),
+        dashboard.button('f', ' ' .. ' Find file', ':lua Snacks.picker.files()<CR>'),
         dashboard.button('n', '󰈔 ' .. ' New file', ':ene <BAR> startinsert <CR>'),
-        dashboard.button('r', '󰄉 ' .. ' Recent files', ':Telescope oldfiles <CR>'),
-        dashboard.button('g', '󰍉 ' .. ' Find text', ':Telescope live_grep <CR>'),
+        dashboard.button('r', '󰄉 ' .. ' Recent files', ':lua Snacks.picker.recent()<CR>'),
+        dashboard.button('g', '󰍉 ' .. ' Find text', ':lua Snacks.picker.grep()<CR>'),
         dashboard.button('d', ' ' .. ' CodeDiff', ':CodeDiff <CR>'),
         dashboard.button('c', '󰒓 ' .. ' Config', ':e $MYVIMRC <CR>'),
         dashboard.button('s', '󰦛 ' .. ' Restore Session', [[:lua require("persistence").load() <cr>]]),

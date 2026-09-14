@@ -161,13 +161,6 @@ return {
         end,
         desc = 'Git Diff (Hunks)',
       },
-      {
-        '<leader>gf',
-        function()
-          Snacks.picker.git_log_file()
-        end,
-        desc = 'Git Log File',
-      },
       -- Grep
       {
         '<leader>sb',
@@ -219,13 +212,6 @@ return {
           Snacks.picker.autocmds()
         end,
         desc = 'Autocmds',
-      },
-      {
-        '<leader>sb',
-        function()
-          Snacks.picker.lines()
-        end,
-        desc = 'Buffer Lines',
       },
       {
         '<leader>sc',
@@ -362,29 +348,28 @@ return {
         desc = 'Goto Declaration',
       },
       {
-        'gr',
+        'grr',
         function()
           Snacks.picker.lsp_references()
         end,
-        nowait = true,
         desc = 'References',
       },
       {
-        'gI',
+        'gri',
         function()
           Snacks.picker.lsp_implementations()
         end,
         desc = 'Goto Implementation',
       },
       {
-        'gy',
+        'grt',
         function()
           Snacks.picker.lsp_type_definitions()
         end,
-        desc = 'Goto T[y]pe Definition',
+        desc = 'Goto Type Definition',
       },
       {
-        '<leader>ss',
+        'gO',
         function()
           Snacks.picker.lsp_symbols()
         end,
@@ -416,13 +401,6 @@ return {
           Snacks.scratch.select()
         end,
         desc = 'Select Scratch Buffer',
-      },
-      {
-        '<leader>n',
-        function()
-          Snacks.notifier.show_history()
-        end,
-        desc = 'Notification History',
       },
       {
         '<leader>bd',
@@ -473,22 +451,6 @@ return {
           Snacks.terminal()
         end,
         desc = 'which_key_ignore',
-      },
-      {
-        ']]',
-        function()
-          Snacks.words.jump(vim.v.count1)
-        end,
-        desc = 'Next Reference',
-        mode = { 'n', 't' },
-      },
-      {
-        '[[',
-        function()
-          Snacks.words.jump(-vim.v.count1)
-        end,
-        desc = 'Prev Reference',
-        mode = { 'n', 't' },
       },
       {
         '<leader>N',

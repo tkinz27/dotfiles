@@ -52,7 +52,6 @@ return {
               },
             },
           })
-          return true
         end,
       },
     },
