@@ -14,6 +14,7 @@ return {
       {
         '3rd/image.nvim',
         opts = {
+          max_height_window_percentage = 75,
           integrations = {
             markdown = {
               enabled = true,
@@ -28,7 +29,11 @@ return {
         mermaid = {
           background = 'transparent',
           theme = 'dark',
-          cli_args = { '-p', vim.fn.expand('~/.config/mmdc/puppeteer-config.json') },
+          scale = 2,
+          cli_args = {
+            '-p', vim.fn.expand('~/.config/mmdc/puppeteer-config.json'),
+            '--size', '1200',
+          },
         },
       },
     },

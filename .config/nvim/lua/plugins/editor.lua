@@ -85,7 +85,19 @@ return {
   {
     url = 'https://codeberg.org/andyg/leap.nvim',
     event = 'VeryLazy',
-    dependencies = { { 'ggandor/flit.nvim', opts = { labeled_modes = 'nv' } } },
+    dependencies = {
+      {
+        'ggandor/flit.nvim',
+        opts = {
+          labeled_modes = 'nv',
+          opts = {
+            -- Flit still passes Leap's removed case_sensitive option.
+            case_sensitive = false,
+            vim_opts = { ['go.ignorecase'] = false },
+          },
+        },
+      },
+    },
     config = function(_, opts)
       local leap = require('leap')
       for k, v in pairs(opts) do

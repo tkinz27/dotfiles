@@ -1,0 +1,32 @@
+# Use the notification body as the default app-activation action.
+# Action buttons are hidden so a normal click opens the source application.
+[shell]
+time_format = "{:%I:%M %p}"
+
+[notification]
+show_actions = false
+
+[plugins]
+enabled = ["noctalia/world_clock"]
+
+[bar.default]
+center = ["clock", "world-clock"]
+end = [
+    "media",
+    "tray",
+    "notifications",
+    "clipboard",
+    "network",
+    "bluetooth",
+    "volume",
+    "brightness",
+    "battery",
+    "control-center",
+    "session"
+]
+
+[widget.clock]
+format = "{:%I:%M %p}"
+
+[widget.world-clock]
+type = "noctalia/world_clock:bar"
