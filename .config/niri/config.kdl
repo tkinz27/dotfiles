@@ -108,7 +108,7 @@ output "eDP-1" {
 
 output "DP-1" {
     mode "3840x2160@59.997"
-    scale 1.25
+    scale 1.0
     position x=-576 y=-1728
 }
 
@@ -398,6 +398,7 @@ binds {
     Mod+Shift+C repeat=false hotkey-overlay-title="Noctalia Control Center" { spawn "noctalia" "msg" "panel-toggle" "control-center"; }
     Mod+Shift+Comma repeat=false hotkey-overlay-title="Noctalia Settings" { spawn "noctalia" "msg" "settings-toggle"; }
     Mod+Alt+V repeat=false hotkey-overlay-title="Noctalia Clipboard" { spawn "noctalia" "msg" "panel-toggle" "clipboard"; }
+    Super+Z repeat=false hotkey-overlay-title="Voice Dictation Toggle" { spawn "/home/tk/.local/bin/voxtype" "record" "toggle"; }
     Super+Alt+L repeat=false hotkey-overlay-title="Lock the Screen: Noctalia" { spawn "noctalia" "msg" "session" "lock"; }
 
     // Use spawn-sh to run a shell command. Do this if you need pipes, multiple commands, etc.
